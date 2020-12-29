@@ -16,7 +16,6 @@
 	<description>Proyecto titulación</description>
 
 	<properties>
-		<java.version>11</java.version>
 	</properties>
 
 	<dependencies>
