@@ -26,7 +26,7 @@
             <form class="modal-content animate" action="" target="_self">
               <div class="imgcontainer">
                 <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
-                <img src="https://www.w3schools.com/howto/img_avatar2.png" alt="Avatar" class="avatar">
+                <img th:src="@{/images/img_avatar2.png}" alt="Avatar" class="avatar">
               </div>
           
               <div class="container">
@@ -50,7 +50,7 @@
     </div>
     <!-- Header -->
     <header class="w3-display-container w3-content" style="max-width:1500px;">
-        <img class="w3-image" src="https://inmolaude.com/wp-content/uploads/52169-inmobiliaria-jm-banner.jpg" alt="The Hotel" style="min-width:1000px; height: 620px" width="1500">
+        <img class="w3-image" th:src="@{/images/principal.jpg}" alt="The Hotel" style="min-width:1000px; height: 620px" width="1500">
         <div class="w3-display-left w3-padding w3-col l6 m8">
             <div class="w3-container w3-red">
                 <h2><i class="fas fa-laptop-house"></i> Inmobiliaria Mastarreno</h2>
@@ -104,7 +104,7 @@
                 </div>
             </div>
             <div class="w3-third w3-margin-bottom">
-                <img src="https://apollo-virginia.akamaized.net/v1/files/gnea07a1zg8f1-EC/image" alt="Norway" style="width:100%">
+                <img th:src="@{/images/terreno2.png}" alt="Norway" style="width:100%">
                 <div class="w3-container w3-white">
                     <h3>Sur de Guayaquil</h3>
                     <h6 class="w3-opacity">Desde $149.000</h6>
@@ -116,7 +116,7 @@
                 </div>
             </div>
             <div class="w3-third w3-margin-bottom">
-                <img src="https://www.doplim.ec/adpics/2020/10/02/65f774a7e479c3-y-de-repente-este-hermoso-terreno-con-pendiente-1505352_4.jpg" alt="Norway" style="width:100%">
+                <img th:src="@{/images/terreno3.jpg}" alt="Norway" style="width:100%">
                 <div class="w3-container w3-white">
                     <h3>Via la Costa</h3>
                     <h6 class="w3-opacity">Desde $199.000</h6>
@@ -140,7 +140,7 @@
             </div>
             <div class="w3-col l8 12">
                 <!-- Image of location/map -->
-                <img src="https://www.w3schools.com/w3images/map.jpg" class="w3-image w3-greyscale" style="width:100%;">
+                <img th:src="@{/images/map.jpg}" class="w3-image w3-greyscale" style="width:100%;">
             </div>
         </div>
 
