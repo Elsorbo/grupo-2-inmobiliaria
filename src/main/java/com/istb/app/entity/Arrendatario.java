@@ -1,14 +1,19 @@
 package com.istb.app.entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -38,6 +43,28 @@ public class Arrendatario implements Serializable {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JsonIgnoreProperties({"arrendatarios"})
-	@JoinColumn(name = "asesor_id")
-	private Empleado asesor;
+	@JoinColumn(name = "empleado_id")
+	private Empleado empleado;
+	
+	@ManyToMany
+    @JoinTable(name = "arrendatario_inmueble", 
+    joinColumns = @JoinColumn(name = "arrendatario_id", referencedColumnName = "id"), 
+    inverseJoinColumns = @JoinColumn(name = "inmueble_id", referencedColumnName = "id"))
+	private Collection<Inmueble> inmuebles;
+	
+	@OneToMany(mappedBy = "arrendatario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonIgnoreProperties({"arrendatario"})
+	private Collection<Reparacion> reparaciones;
+	
+	@OneToMany(mappedBy = "arrendatario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonIgnoreProperties({"arrendatario"})
+	private Collection<ReciboPago> recibos;
+	
+	@OneToMany(mappedBy = "arrendatario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonIgnoreProperties({"arrendatario"})
+	private Collection<Notificacion> notificaciones;
+	
+	@OneToMany(mappedBy = "arrendatario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonIgnoreProperties({"arrendatario"})
+	private Collection<Factura> facturas;
 }

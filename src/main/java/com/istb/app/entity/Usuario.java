@@ -2,6 +2,7 @@ package com.istb.app.entity;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,7 +10,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -37,9 +40,11 @@ public class Usuario implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JsonIgnoreProperties({"usuarios"})
-	private Role role;
+	@ManyToMany
+    @JoinTable(name = "role_usuario", 
+    joinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "id"), 
+    inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")) 
+	private Collection<Role> roles;
 	
 	@NotEmpty(message = "El campo cédula es requerido.")
 	private String cedula;
@@ -64,6 +69,8 @@ public class Usuario implements Serializable {
 	
 	@NotEmpty(message = "La contraseña es requerida.")
 	private String contrasena;
+	
+	private Boolean estado;
 	
 	@OneToOne(mappedBy = "usuario", fetch = FetchType.LAZY)
 	@JsonIgnoreProperties({"usuario"})
