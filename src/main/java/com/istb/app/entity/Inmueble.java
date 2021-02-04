@@ -1,3 +1,4 @@
+
 package com.istb.app.entity;
 
 import java.io.Serializable;
@@ -11,6 +12,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
@@ -44,6 +47,14 @@ public class Inmueble implements Serializable {
 	@Lob
 	private String descripcion;
 	
+	private long area;
+	
+	private boolean alquilado;
+	
+	private boolean comercializado;
+
+	private long precio;
+
 	@Column(name = "fecha_creacion", updatable = false)
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime fechaCreacion;
@@ -62,6 +73,14 @@ public class Inmueble implements Serializable {
 	@OneToMany(mappedBy = "inmueble", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JsonIgnoreProperties({"inmueble"})
 	private Collection<Fotos> fotos;
+	
+	@ManyToMany
+	@JoinTable(
+		name="inmueble_servicio",
+		joinColumns =  @JoinColumn(name = "inmueble_id", nullable = false),
+		inverseJoinColumns = @JoinColumn(name = "servicio_id", nullable = false)
+	)
+	private Collection<Servicio> servicios;
 	
 	@PrePersist
 	public void preCreated () {

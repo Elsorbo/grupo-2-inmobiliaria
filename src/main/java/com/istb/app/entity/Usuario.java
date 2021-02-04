@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
@@ -21,6 +22,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
@@ -40,7 +42,7 @@ public class Usuario implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "role_usuario", 
     joinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "id"), 
     inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")) 
@@ -88,6 +90,10 @@ public class Usuario implements Serializable {
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime fechaActualizacion;
 	
+	@Lob
+	@Column(name = "descripcion")
+	private String about;
+
 	@PrePersist
 	public void preCreated () {
 		this.fechaCreacion = LocalDateTime.now();
@@ -98,4 +104,12 @@ public class Usuario implements Serializable {
 	public void preUpdated () {
 		this.fechaActualizacion = LocalDateTime.now();
 	}
+
+	public void setContrasena(String newPassword) {
+
+		this.contrasena = PasswordEncoderFactories
+        	.createDelegatingPasswordEncoder().encode(newPassword);
+
+	}
+
 }

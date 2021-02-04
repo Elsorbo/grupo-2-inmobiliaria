@@ -61,6 +61,8 @@ public class FirebaseStrategyService implements FirebaseStrategy {
 	private String clientEmail;
 	
 	Logger log = LoggerFactory.getLogger(FirebaseStrategyService.class);
+
+	private final static String FOLDER = "inmobiliaria";
 	
 	@PostConstruct
 	private void initializeFirebase() throws Exception {
@@ -76,14 +78,12 @@ public class FirebaseStrategyService implements FirebaseStrategy {
 	    Path filePath = file.toPath();
 	    String objectName = generateFileName(multipartFile);
 	    
-	    String folder = "inmobiliaria";
-	    
 	    Storage storage = this.options.getService();
-	    BlobId blobId = BlobId.of(this.bucket, objectName);
+	    BlobId blobId = BlobId.of(this.bucket, FOLDER.concat("/").concat(objectName));
 	    	    
 	    BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
 			.setContentType(multipartFile.getContentType())
-			.setAcl(Arrays.asList(Acl.of(Acl.User.ofAllUsers(), Acl.Role.READER)))
+			.setAcl(Arrays.asList( Acl.of(Acl.User.ofAllUsers(), Acl.Role.READER) ))
 			.build();
 	    
 	    Blob blob = storage.create(blobInfo, Files.readAllBytes(filePath));
@@ -95,7 +95,7 @@ public class FirebaseStrategyService implements FirebaseStrategy {
 			blob.getGeneration(), 
 			blob.getSize(), 
 			blob.getContentType(),
-			this.getURL(blob.getName(), folder));
+			this.getURL(blob.getName()));
 	}
 
 	@Override
@@ -111,25 +111,29 @@ public class FirebaseStrategyService implements FirebaseStrategy {
 		});
 		
 		return filesUploads;
+	
 	}
 
 	@Override
 	public boolean deleteFile(String name) {
+	
 		Storage storage = this.options.getService();
 		BlobId blobId = BlobId.of(this.bucket, name);
 		boolean deleted = storage.delete(blobId);
+	
+		log.info("File deleted: " + deleted);
+	
 		return deleted;
+	
 	}
 
 	private String generateFileName(MultipartFile multiPart) {
 		return new Date().getTime() + "-" + Objects.requireNonNull(multiPart.getOriginalFilename()).replace(" ", "_");
 	}
 	
-	private String getURL (String name, String destination) {
+	private String getURL (String name) {
 		return "https://storage.googleapis.com/"
 			.concat(this.bucket)
-			.concat("/")
-			.concat(destination)
 			.concat("/")
 			.concat(name);
 	}

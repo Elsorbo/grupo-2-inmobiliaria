@@ -1,3 +1,4 @@
+
 package com.istb.app.entity;
 
 import java.io.Serializable;
@@ -28,7 +29,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "arrendatarios")
-public class Arrendatario implements Serializable {
+public class Arrendatario implements Serializable  {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -67,4 +68,11 @@ public class Arrendatario implements Serializable {
 	@OneToMany(mappedBy = "arrendatario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JsonIgnoreProperties({"arrendatario"})
 	private Collection<Factura> facturas;
+
+	public Arrendatario(Usuario user) {
+
+		this.usuario = user;
+		
+	}
+
 }

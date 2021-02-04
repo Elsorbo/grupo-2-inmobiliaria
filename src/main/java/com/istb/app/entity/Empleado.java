@@ -1,3 +1,4 @@
+
 package com.istb.app.entity;
 
 import java.io.Serializable;
@@ -37,7 +38,7 @@ public class Empleado implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@Size(min = 9, max = 10, message = "El teléfono debe no más de 10 dígitos.")
+	@Size(min = 0, max = 10, message = "El teléfono debe no más de 10 dígitos.")
 	private String telefono;
 	
 	@OneToOne
@@ -55,4 +56,12 @@ public class Empleado implements Serializable {
     joinColumns = @JoinColumn(name = "empleado_id", referencedColumnName = "id"), 
     inverseJoinColumns = @JoinColumn(name = "inmueble_id", referencedColumnName = "id"))
 	private Collection<Inmueble> inmuebles;
+
+	public Empleado(Usuario user, String telefono) {
+
+		this.usuario = user;
+		this.telefono = telefono;
+
+	}
+
 }

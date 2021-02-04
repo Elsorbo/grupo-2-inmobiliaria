@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html
+    xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security" >
 
 <head>
     <title>Inmobiliaria Masterreno</title>
@@ -12,18 +14,21 @@
 </head>
 
 <body class="w3-light-grey">
-
+	
     <!-- Navigation Bar -->
     <div class="w3-bar w3-white w3-large">
         <a href="/" class="w3-bar-item  w3-mobile nav_button nav_logo"><img class="menu_logo" src="/images/logo.jpg" alt=""></a>
         <a href="#rooms" class="w3-bar-item w3-button w3-mobile nav_button">Selección del mes</a>
         <a href="#contact" class="w3-bar-item w3-button w3-mobile nav_button">Contacto</a>
         <a href="#about" class="w3-bar-item w3-button w3-mobile nav_button">Acerca</a>
-        <a href="#" class="w3-bar-item w3-button w3-right w3-light-grey w3-mobile nav_button" onclick="document.getElementById('id01').style.display='block'">Ingresar</a>
+		
+		<a sec:authorize="!isAuthenticated()" href="#" class="w3-bar-item w3-button w3-right w3-light-grey w3-mobile nav_button" onclick="document.getElementById('id01').style.display='block'">Ingresar</a>
+		
+		<a sec:authorize="isAuthenticated()" th:href="@{/dashboard}" class="w3-bar-item w3-button w3-right w3-light-grey w3-mobile nav_button">Regresar al dashboard</a>
 
         <div id="id01" class="modal">
   
-            <form class="modal-content animate" action="" target="_self">
+            <form class="modal-content animate" th:action="@{/accounts/login}" th:method="post" target="_self">
               <div class="imgcontainer">
                 <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
                 <img th:src="@{/images/img_avatar2.png}" alt="Avatar" class="avatar">
@@ -31,10 +36,10 @@
           
               <div class="container">
                 <label for="uname"><b>Username</b></label>
-                <input type="text" placeholder="Enter Username" name="uname" required>
+                <input type="text" placeholder="Enter Username" name="username" required>
           
                 <label for="psw"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" name="psw" required>
+                <input type="password" placeholder="Enter Password" name="password" required>
                   
                 <button class="w3-red" type="submit">Login</button>
                 <label>
@@ -194,5 +199,4 @@
     </footer>
 
 </body>
-
 </html>
