@@ -22,7 +22,7 @@ public class Settings {
 
 	@GetMapping("/perfil")
 	public String profile(Principal account, Model attributes) {
-
+		
 		attributes.addAttribute("account", 
 			userManager.findByUsuario(account.getName()));
 

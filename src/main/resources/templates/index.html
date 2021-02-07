@@ -4,7 +4,7 @@
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security" >
 
 <head>
-    <title>Inmobiliaria Masterreno</title>
+    <title>Inmobiliaria Mastarreno</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -17,7 +17,7 @@
 	
     <!-- Navigation Bar -->
     <div class="w3-bar w3-white w3-large">
-        <a href="/" class="w3-bar-item  w3-mobile nav_button nav_logo"><img class="menu_logo" src="/images/logo.jpg" alt=""></a>
+        <a href="/" class="w3-bar-item  w3-mobile nav_button nav_logo"><img class="menu_logo" src="https://firebasestorage.googleapis.com/v0/b/tdemo-fc5b5.appspot.com/o/logo.jpg?alt=media&token=f93af709-4c3d-47e2-82ee-ea663321c2f4" alt="Mastarreno full logo"></a>
         <a href="#rooms" class="w3-bar-item w3-button w3-mobile nav_button">Selección del mes</a>
         <a href="#contact" class="w3-bar-item w3-button w3-mobile nav_button">Contacto</a>
         <a href="#about" class="w3-bar-item w3-button w3-mobile nav_button">Acerca</a>
@@ -35,16 +35,17 @@
               </div>
           
               <div class="container">
-                <label for="uname"><b>Username</b></label>
-                <input type="text" placeholder="Enter Username" name="username" required>
+                <label for="uname"><b>Usuario</b></label>
+                <input type="text" placeholder="Ingrese su usuario" name="username" required>
           
-                <label for="psw"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" name="password" required>
+                <label for="psw"><b>Contraseña</b></label>
+                <input type="password" placeholder="Ingrese la contraseña" name="password" required>
                   
-                <button class="w3-red" type="submit">Login</button>
+                <button class="w3-red" type="submit">Iniciar sesion</button>
                 <label>
-                  <input type="checkbox" checked="checked" name="remember"> Remember me
+                  <input type="checkbox" checked="checked" name="remember"> Recordarme
                 </label>
+                <br />
               </div>
             </form>
           </div>
@@ -69,11 +70,11 @@
                                 Inmbuebles de su preferencia</label>
                             <select class="w3-select" name="search-by-city" id="select-city">
                                 <!-- Modificar con información dinámica. -->
-                                <option value="">Sucursal Babahoyo</option>
-                                <option value="">Sucursal Guayaquil</option>
-                                <option value="">Sucursal Cuenca</option>
-                                <option value="">Sucursal Loja</option>
-                                <option value="">Sucursal Santo Domingo</option>
+                                <option value="">El Salto</option>
+                                <option value="">Puertas Negras</option>
+                                <option value="">Via Universitaria</option>
+                                <option value="">Barrio Lindo</option>
+                                <option value="">Avenida 5 de Junio</option>
                                 <!-- ####################################### -->
                             </select>
                         </div>

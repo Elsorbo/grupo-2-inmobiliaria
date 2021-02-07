@@ -20,8 +20,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		
 		http.csrf().disable();
 
-		http.authorizeRequests()
-			.antMatchers("/perfil").hasRole("USER");
+		http.authorizeRequests();
 		
 		http.formLogin()
 				.loginPage("/accounts/login")

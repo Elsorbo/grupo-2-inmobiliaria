@@ -1,7 +1,6 @@
 
 package com.istb.app.entity;
 
-import java.io.Serializable;
 import java.util.Collection;
 
 import javax.persistence.Entity;
@@ -27,7 +26,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "roles")
-public class Role implements Serializable, GrantedAuthority {
+public class Role implements GrantedAuthority {
 
 	private static final long serialVersionUID = 1L;
 
