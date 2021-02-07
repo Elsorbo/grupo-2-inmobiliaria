@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html
+    xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security" >
+
+<head>
+    <title>Inmobiliaria Mastarreno</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+
+<body class="w3-light-grey">
+	
+    <!-- Navigation Bar -->
+    <div class="w3-bar w3-white w3-large">
+        <a href="/" class="w3-bar-item  w3-mobile nav_button nav_logo"><img class="menu_logo" src="https://firebasestorage.googleapis.com/v0/b/tdemo-fc5b5.appspot.com/o/logo.jpg?alt=media&token=f93af709-4c3d-47e2-82ee-ea663321c2f4" alt="Mastarreno full logo"></a>
+        <a href="#rooms" class="w3-bar-item w3-button w3-mobile nav_button">Selección del mes</a>
+        <a href="#contact" class="w3-bar-item w3-button w3-mobile nav_button">Contacto</a>
+        <a href="#about" class="w3-bar-item w3-button w3-mobile nav_button">Acerca</a>
+		
+		<a sec:authorize="!isAuthenticated()" href="#" class="w3-bar-item w3-button w3-right w3-light-grey w3-mobile nav_button" onclick="document.getElementById('id01').style.display='block'">Ingresar</a>
+		
+		<a sec:authorize="isAuthenticated()" th:href="@{/dashboard}" class="w3-bar-item w3-button w3-right w3-light-grey w3-mobile nav_button">Regresar al dashboard</a>
+
+        <div id="id01" class="modal">
+  
+            <form class="modal-content animate" th:action="@{/accounts/login}" th:method="post" target="_self">
+              <div class="imgcontainer">
+                <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+                <img th:src="@{/images/img_avatar2.png}" alt="Avatar" class="avatar">
+              </div>
+          
+              <div class="container">
+                <label for="uname"><b>Usuario</b></label>
+                <input type="text" placeholder="Ingrese su usuario" name="username" required>
+          
+                <label for="psw"><b>Contraseña</b></label>
+                <input type="password" placeholder="Ingrese la contraseña" name="password" required>
+                  
+                <button class="w3-red" type="submit">Iniciar sesion</button>
+                <label>
+                  <input type="checkbox" checked="checked" name="remember"> Recordarme
+                </label>
+                <br />
+              </div>
+            </form>
+          </div>
+
+        </div>
+        </div> 
+
+    </div>
+    <!-- Header -->
+    <header class="w3-display-container w3-content" style="max-width:1500px;">
+        <img class="w3-image" th:src="@{/images/principal.jpg}" alt="The Hotel" style="min-width:1000px; height: 620px" width="1500">
+        <div class="w3-display-left w3-padding w3-col l6 m8">
+            <div class="w3-container w3-red">
+                <h2><i class="fas fa-laptop-house"></i> Inmobiliaria Mastarreno</h2>
+            </div>
+            <div class="w3-container w3-white w3-padding-16" style="height: 180px;">
+                <form action="" target="_self">
+                    <div class="w3-row-padding" style="margin:0 -16px;">
+                        <div class="w3-half w3-margin-bottom"  style="width: 100%;">
+                            <label style="font-weight: bold; font-size: 16px;">
+                                <i class="far fa-building"></i> 
+                                Inmbuebles de su preferencia</label>
+                            <select class="w3-select" name="search-by-city" id="select-city">
+                                <!-- Modificar con información dinámica. -->
+                                <option value="">El Salto</option>
+                                <option value="">Puertas Negras</option>
+                                <option value="">Via Universitaria</option>
+                                <option value="">Barrio Lindo</option>
+                                <option value="">Avenida 5 de Junio</option>
+                                <!-- ####################################### -->
+                            </select>
+                        </div>
+                    </div>
+                    <button class="w3-button w3-dark-grey" type="submit">
+                        <i class="fa fa-search w3-margin-right"></i>
+                        Realizar búsqueda</button>
+                </form>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page content -->
+    <div class="w3-content" style="max-width:1532px;">
+
+        <div class="w3-container w3-margin-top" id="rooms">
+            <h3 style="font-weight: bold;">Selección del mes</h3>
+            <p>Cada mes seleccionamos entre los mejores lotes disponibles y los ponemos a disposición de nuestra clientela con un descuento unico.
+            </p>
+        </div>
+
+        <div class="w3-row-padding w3-padding-16">
+            <div class="w3-third w3-margin-bottom">
+                <img src="/images/terreno1.png" alt="Norway" style="width:100%">
+                <div class="w3-container w3-white">
+                    <h3>Ciudadela Brisas del Norte</h3>
+                    <h6 class="w3-opacity">Desde $99.000</h6>
+                    <p>Single bed</p>
+                    <p>15m<sup>2</sup></p>
+                    <p class="w3-large"><i class="fa fa-bath"></i> <i class="fa fa-phone"></i> <i
+                            class="fa fa-wifi"></i></p>
+                    <button class="w3-button w3-block w3-black w3-margin-bottom">Ver detalles</button>
+                </div>
+            </div>
+            <div class="w3-third w3-margin-bottom">
+                <img th:src="@{/images/terreno2.png}" alt="Norway" style="width:100%">
+                <div class="w3-container w3-white">
+                    <h3>Sur de Guayaquil</h3>
+                    <h6 class="w3-opacity">Desde $149.000</h6>
+                    <p>Queen-size bed</p>
+                    <p>25m<sup>2</sup></p>
+                    <p class="w3-large"><i class="fa fa-bath"></i> <i class="fa fa-phone"></i> <i
+                            class="fa fa-wifi"></i> <i class="fa fa-tv"></i></p>
+                    <button class="w3-button w3-block w3-black w3-margin-bottom">Ver detalles</button>
+                </div>
+            </div>
+            <div class="w3-third w3-margin-bottom">
+                <img th:src="@{/images/terreno3.jpg}" alt="Norway" style="width:100%">
+                <div class="w3-container w3-white">
+                    <h3>Via la Costa</h3>
+                    <h6 class="w3-opacity">Desde $199.000</h6>
+                    <p>King-size bed</p>
+                    <p>40m<sup>2</sup></p>
+                    <p class="w3-large"><i class="fa fa-bath"></i> <i class="fa fa-phone"></i> <i
+                            class="fa fa-wifi"></i> <i class="fa fa-tv"></i> <i class="fa fa-glass"></i> <i
+                            class="fa fa-cutlery"></i></p>
+                    <button class="w3-button w3-block w3-black w3-margin-bottom">Ver detalles</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="w3-row-padding" id="about">
+            <div class="w3-col l4 12">
+                <h3 style="font-weight: bold;">Acerca de nosotros</h3>
+                <p style="text-align: justify;">Inmobiliaria Masterreno pone a disposición de la ciudadania en general el alquiler y venta de Inmuebles en sus diferentes sucursales asociadas.
+                </p>
+                <span style="font-weight: bold;">¿Necesitas ayuda para tramitar la venta de tu inmueble?</span><p>
+                Ofrecemos asesoramiento externo a quienes deseen poner en venta o alquilar un inmueble de su propiedad. Tramites municipales, registro de la propiedad y cotización de terrenos.</p>
+            </div>
+            <div class="w3-col l8 12">
+                <!-- Image of location/map -->
+                <img th:src="@{/images/map.jpg}" class="w3-image w3-greyscale" style="width:100%;">
+            </div>
+        </div>
+
+        <div class="w3-row-padding w3-large w3-center" style="margin:32px 0">
+            <div class="w3-third"><i class="fas fa-search-location w3-text-red"></i> 423 Av El Paraiso, Babahoyo, EC</div>
+            <div class="w3-third"><i class="fa fa-phone w3-text-red"></i> Teléfono: +593 969139500</div>
+            <div class="w3-third"><i class="fa fa-envelope w3-text-red"></i> Email: inmobiliariamastarreno@gmail.com</div>
+        </div>
+
+        <div class="w3-panel w3-red w3-leftbar w3-padding-32">
+            <h6><i class="fa fa-info w3-deep-orange w3-padding w3-margin-right"></i> Ofrecemos los mejores Inmuebles, compara nuestras ofertas, tenemos la mejor relación calidad - precio del mercado</h6>
+        </div>
+
+        <div class="w3-container w3-padding-32 w3-black w3-opacity w3-card w3-hover-opacity-off" style="margin:32px 0;">
+            <h2>Enterese de nuestras mejores ofertas!</h2>
+            <p>Subscríbase a nuestro boletin.</p>
+            <label>Correo Electronico</label>
+            <input class="w3-input w3-border" type="text" placeholder="Su dirección de correo">
+            <button type="button" class="w3-button w3-red w3-margin-top">Suscribírse</button>
+        </div>
+
+        <div class="w3-container" id="contact">
+            <h2>Contacto</h2>
+            <p>Si tiene alguna pregunta, no dude contactarnos.</p>
+            <i class="fas fa-map-marker-alt w3-text-red" style="width:30px"></i> Babahoyo, EC<br>
+            <i class="fa fa-phone w3-text-red" style="width:30px"></i> Phone: +593 969139500<br>
+            <i class="fa fa-envelope w3-text-red" style="width:30px"> </i> Email: inmobiliariamastarreno@gmail.com<br>
+            <form action="/action_page.php" target="_blank">
+                <p><input class="w3-input w3-padding-16 w3-border" type="text" placeholder="Nombre" required name="Name">
+                </p>
+                <p><input class="w3-input w3-padding-16 w3-border" type="text" placeholder="Email" required
+                        name="Email"></p>
+                <p><input class="w3-input w3-padding-16 w3-border" type="text" placeholder="Mensaje" required
+                        name="Message"></p>
+                <p><button class="w3-button w3-black w3-padding-large" type="submit">Enviar Mensaje</button></p>
+            </form>
+        </div>
+
+        <!-- End page content -->
+    </div>
+
+    <!-- Footer -->
+    <footer class="w3-padding-32 w3-black w3-center w3-margin-top">
+        <h5>Encuentrenos en nuestras redes sociales</h5>
+        <div class="w3-xlarge w3-padding-16">
+            <a href="https://www.facebook.com/inmobiliariamastarreno/" target="_blank"><i class="fab fa-facebook-square w3-hover-opacity"></i></a>
+            <a href="https://www.instagram.com/mastarreno_com/" target="_blank"><i class="fab fa-instagram-square w3-hover-opacity"></i></a>
+            <a href="https://ec.linkedin.com/in/erleny-mastarreno-61441813b" target="_blank"><i class="fab fa-linkedin w3-hover-opacity"></i></a>
+        </div>
+        <p>Desarrollado por un estudiante del <a href="https://istb.edu.ec/" target="_blank" class="w3-hover-text-green">ISTB</a></p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="maintemplate :: head">
+</head>
+
+<body class="">
+
+    <div class="wrapper ">
+
+        <div th:replace="maintemplate :: sidebar" class="sidebar" data-color="purple" data-background-color="white"
+            data-image="../assets/img/sidebar-1.jpg">
+        </div>
+
+        <div class="main-panel">
+            <!-- Navbar -->
+            <nav th:replace="maintemplate :: navbar"
+                class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
+            </nav>
+
+            <div class="content">
+                Contenido inmueble
+            </div>
+
+            <footer th:replace="maintemplate :: footer" class="footer">
+            </footer>
+        </div>
+    </div>
+    <script>
+        document.querySelector(".inmuebles").classList.add("active")
+    </script>
+    <div th:replace="maintemplate :: scripts"></div>
+</body>
+
+</html>
