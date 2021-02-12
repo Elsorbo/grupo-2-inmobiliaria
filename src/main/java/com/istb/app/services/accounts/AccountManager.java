@@ -37,6 +37,7 @@ public class AccountManager implements AccountsServiceI {
 		Empleado employee = new Empleado(user, "");
 		
 		user.setEstado(true);
+		user.setDescripcion("");
 		addRole(user, Arrays.asList("EMPLEADO"));
 		
 		userManager.save(user);
@@ -51,6 +52,7 @@ public class AccountManager implements AccountsServiceI {
 	
 		Arrendatario tenant = new Arrendatario(user);
 		user.setEstado(true);
+		user.setDescripcion("");
 		addRole(user, Arrays.asList("ARRENDATARIO"));
 		
 		userManager.save(user);

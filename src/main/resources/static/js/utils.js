@@ -13,6 +13,14 @@ const getFormValues = (form) => {
 
 }
 
+const getData = async (resource) => {
+
+    let response = await fetch(`/${resource}`);
+
+    return response.json();
+
+}
+
 const showNotification = (message, type) => {
 
     notificationTemplate = `\
@@ -36,7 +44,7 @@ const sendJSONData = async (resource, method, data) => {
 
     let headers = new Headers();
     headers.append("Content-Type", "application/json");
-
+    
     let response = await fetch(`/${resource}`, {
     
         "method": `${method}`,
@@ -69,9 +77,10 @@ const uploadFiles = async (resource, method, name, files) => {
 
 export { 
 
+    uploadFiles,
+    getData,
     getFormValues, 
     showNotification, 
     sendJSONData,
-    uploadFiles
 
 };

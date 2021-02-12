@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+  <head th:replace="maintemplate :: head">
+  </head>
+
+  <body class="">
+
+    <div class="wrapper ">
+
+      <div th:replace="maintemplate :: sidebar" class="sidebar" data-color="purple" data-background-color="white">
+      </div>
+
+      <div class="main-panel">
+        <!-- Navbar -->
+        <nav th:replace="maintemplate :: navbar"
+          class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
+        </nav>
+
+        <div class="content">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-8">
+                <div class="card">
+                  <div class="card-header card-header-danger">
+                    <h4 class="card-title">Editar Empleado</h4>
+                    <p class="card-category">Verifique la información del empleado</p>
+                  </div>
+                  <div class="card-body">
+                    <form method="post">
+                      <br>
+                      <div class="row">
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label class="bmd-label-floating">
+                              Usuario (Deshabilitado)
+                            </label>
+                            <input type="text" 
+                              class="form-control" name="usuario"
+                              disabled th:value="${account.usuario.usuario}">
+                          </div>
+                        </div>
+                        
+                        <div class="col-md-8">
+                          <div class="form-group">
+                            <label class="bmd-label-floating">
+                              No. Cédula
+                            </label>
+                            <input type="text" minlength="6" 
+                              class="form-control" name="cedula"
+                              th:value="${account.usuario.cedula}">
+                          </div>
+                        </div>
+                      </div>
+                      <br>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label class="bmd-label-floating">Nombres</label>
+                            <input type="text" name="nombres"
+                              class="form-control" th:value="${account.usuario.nombres}">
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label class="bmd-label-floating">Apellidos</label>
+                            <input type="text" 
+                              name="apellidos" class="form-control" 
+                              th:value="${account.usuario.apellidos}">
+                          </div>
+                        </div>
+                      </div>
+                      <br>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label class="bmd-label-floating">Correo</label>
+                            <input type="email" 
+                              class="form-control" name="correo"
+                              th:value="${account.usuario.correo}">
+                          </div>
+                        </div>
+                      </div>
+                      <!-- <br>
+                      <div class="row">
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label class="bmd-label-floating">City</label>
+                            <input type="text" class="form-control">
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label class="bmd-label-floating">Country</label>
+                            <input type="text" class="form-control">
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label class="bmd-label-floating">Postal Code</label>
+                            <input type="text" class="form-control">
+                          </div>
+                        </div>
+                      </div>
+                      <br> -->
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label>Acerca de mi</label>
+                            <div class="form-group">
+                              <label class="bmd-label-floating">Agregue una breve descripción sobre lo que lo apasiona y motiva</label>
+                              <textarea class="form-control" 
+                                rows="3" name="descripcion" 
+                                th:text="${account.usuario.descripcion}"></textarea>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <button id="updatePerfil" type="submit" class="btn btn-danger pull-right">Actualizar Empleado</button>
+                      <div class="clearfix"></div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card card-profile">
+                  <div class="card-avatar">
+                    <a href="javascript:;">
+                      <div class="updateImage" id="updateImage">
+                        <i class="material-icons" style="color: gray;">app_registration</i>
+                        <input type="file" accept="image/*" hidden name="newImage" id="inputImage">
+                      </div>
+                      <img id="perfil-load" th:src="@{/images/spiner.gif}" 
+                        alt="loader" style="visibility: hidden;">
+                      <img class="img" id="accountImage" 
+                        th:if = "${account.usuario.urlImagenPerfil != null}" 
+                        th:src="${account.usuario.urlImagenPerfil}" />
+                      <img class="img" id="accountImage" 
+                        th:unless = "${account.usuario.urlImagenPerfil != null}" 
+                        th:src="@{http://style.anu.edu.au/_anu/4/images/placeholders/person_8x10.png}" />
+                    </a>
+                  </div>
+                  <div class="card-body">
+                    <!-- <h6 class="card-category text-gray">CEO / Co-Founder</h6> -->
+                    <h4 class="card-title" 
+                      th:text="${account.usuario.nombres + ' ' + account.usuario.apellidos}">
+                      Alec Thompson
+                    </h4>
+                    <p id="perfilDetails"
+                      class="card-description" th:text="${account.usuario.descripcion}">
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <footer th:replace="maintemplate :: footer" class="footer">
+        </footer>
+      </div>
+    </div>
+    <div th:replace = "maintemplate :: scripts"></div>
+    <script type = "module" th:src = "@{/js/settings/perfil.js}"></script>
+  </body>
+
+</html>

@@ -24,3 +24,9 @@
   width: 50px;
 
 }
+
+tbody > tr:hover {
+
+  background-color: darkgray;
+
+}

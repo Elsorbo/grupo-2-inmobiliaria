@@ -19,77 +19,65 @@
             </nav>
 
             <div class="content">
+                <button class="btn btn-danger" id="showAddEmployee">
+                    <i class="material-icons">add</i>
+                    Añadir empleado
+                </button>
+                <div id="addEmployee" 
+                    style="display: none; margin: 12px auto; width: 90%;">
+                    <form method="post">
+                        <div class="form-row">
+                            <div class="form-group col-md-6 label-floating has-success">
+                              <input required type="text" class="form-control" name="usuario.nombres" id="userFirstName" placeholder="Nombres">
+                            </div>
+                            <div class="form-group col-md-6 label-floating has-success">
+                              <input required type="text" class="form-control" name="usuario.apellidos" id="lastName" placeholder="Apellidos">
+                            </div>
+                        </div>
+                        <div class="form-row">
 
+                            <div class="form-group col-md-3 label-floating has-success">
+                                <input required type="text" class="form-control" name="usuario.usuario" id="username" placeholder="Usuario">
+                            </div>
+
+                              <div class="form-group col-md-3  label-floating has-success">
+                                  <input required minlength="10" maxlength="10" type="text" name="usuario.cedula" class="form-control" id="idUser" placeholder="Cedula">
+                                </div>
+                              <div class="form-group col-md-6  label-floating has-success">
+                                  <input required type="email" class="form-control" name="usuario.correo" id="userEmail" placeholder="Correo">
+                                </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group col-md-6  label-floating has-success">
+                                <input required minlength="8" type="text" class="form-control" name="usuario.contrasena" id="userPassword" placeholder="Contraseña">
+                              </div>
+                            <div class="form-group col-md-6  label-floating has-success">
+                                
+                                <input required type="text" class="form-control" name="telefono" id="userPhone" placeholder="Teléfono">
+                              </div>
+                        </div>
+                        <div class="form-row flex-row-reverse">
+                            <button id="registerEmployee" type="submit" class="btn btn-danger" style="margin-right: 0px;">Registrar empleado</button>
+                        </div>
+                      </form>
+                </div>
                 <table class="table">
                     <thead>
                         <tr>
                             <th class="text-center">#</th>
-                            <th>Name</th>
-                            <th>Job Position</th>
-                            <th>Since</th>
-                            <th class="text-right">Salary</th>
-                            <th class="text-right">Actions</th>
+                            <th>Nombres</th>
+                            <th>Correo</th>
+                            <th>Estado</th>
+                            <th class="text-right">Teléfono</th>
+                            <th class="text-right">Acciones</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td class="text-center">1</td>
-                            <td>Andrew Mike</td>
-                            <td>Develop</td>
-                            <td>2013</td>
-                            <td class="text-right">&euro; 99,225</td>
-                            <td class="td-actions text-right">
-                                <button type="button" rel="tooltip" class="btn btn-info">
-                                    <i class="material-icons">person</i>
-                                </button>
-                                <button type="button" rel="tooltip" class="btn btn-success">
-                                    <i class="material-icons">edit</i>
-                                </button>
-                                <button type="button" rel="tooltip" class="btn btn-danger">
-                                    <i class="material-icons">close</i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">2</td>
-                            <td>John Doe</td>
-                            <td>Design</td>
-                            <td>2012</td>
-                            <td class="text-right">&euro; 89,241</td>
-                            <td class="td-actions text-right">
-                                <button type="button" rel="tooltip" class="btn btn-info btn-round">
-                                    <i class="material-icons">person</i>
-                                </button>
-                                <button type="button" rel="tooltip" class="btn btn-success btn-round">
-                                    <i class="material-icons">edit</i>
-                                </button>
-                                <button type="button" rel="tooltip" class="btn btn-danger btn-round">
-                                    <i class="material-icons">close</i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">3</td>
-                            <td>Alex Mike</td>
-                            <td>Design</td>
-                            <td>2010</td>
-                            <td class="text-right">&euro; 92,144</td>
-                            <td class="td-actions text-right">
-                                <button type="button" rel="tooltip" class="btn btn-info btn-simple">
-                                    <i class="material-icons">person</i>
-                                </button>
-                                <button type="button" rel="tooltip" class="btn btn-success btn-simple">
-                                    <i class="material-icons">edit</i>
-                                </button>
-                                <button type="button" rel="tooltip" class="btn btn-danger btn-simple">
-                                    <i class="material-icons">close</i>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>                      
+                    <tbody id="body-table-employees">
+                    </tbody>
                 </table>
                 <nav aria-label="...">
-                <ul class="pagination">
+                <ul class="pagination ">
                     <li class="page-item disabled">
                     <a class="page-link" href="#" tabindex="-1">Previous</a>
                     </li>
@@ -104,7 +92,33 @@
                 </ul>
                 </nav>    
             </div>
-
+            <!-- Modal -->
+            <div class="modal fade" id="userDetailsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Detalles del usuario</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        <br />
+                        <div class="card card-profile">
+                            <div class="card-avatar">
+                                <img class="img" id="accountImage" src="https://storage.googleapis.com/istb-storage.appspot.com/inmobiliaria/1613135110033-im-131021.jpg">
+                              </a>
+                            </div>
+                            <div class="card-body">
+                                <h4 class="card-title">CI: 1207929921</h4>
+                              <h4 class="card-title">Username: usuario</h4>
+                              <p id="perfilDetails" class="card-description">Descripción<br />Descripcion general otorgada por el empleado</p>
+                            </div>
+                          </div>
+                    </div>
+                </div>
+                </div>
+            </div>
             <footer th:replace="maintemplate :: footer" class="footer">
             </footer>
         </div>
@@ -113,6 +127,7 @@
         document.querySelector(".empleados").classList.add("active")
     </script>
     <div th:replace="maintemplate :: scripts"></div>
+    <script type="module" th:src="@{/js/dashboard/empleado.js}"></script>
 </body>
 
 </html>

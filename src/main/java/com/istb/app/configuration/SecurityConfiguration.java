@@ -20,7 +20,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		
 		http.cors().and().csrf().disable();
 
-		http.authorizeRequests();
+		http.authorizeRequests()
+			.antMatchers("/", "/images/**", "/css/**", "/js/**").permitAll()
+			.antMatchers("/empleados", "/empleado/**").hasRole("ADMINISTRADOR")
+			.anyRequest().authenticated();
 		
 		http.formLogin()
 				.loginPage("/accounts/login")
