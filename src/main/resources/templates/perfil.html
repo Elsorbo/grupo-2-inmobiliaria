@@ -8,8 +8,7 @@
 
     <div class="wrapper ">
 
-      <div th:replace="maintemplate :: sidebar" class="sidebar" data-color="purple" data-background-color="white"
-        data-image="../assets/img/sidebar-1.jpg">
+      <div th:replace="maintemplate :: sidebar" class="sidebar" data-color="purple" data-background-color="white">
       </div>
 
       <div class="main-panel">
@@ -23,12 +22,12 @@
             <div class="row">
               <div class="col-md-8">
                 <div class="card">
-                  <div class="card-header card-header-primary">
+                  <div class="card-header card-header-danger">
                     <h4 class="card-title">Editar Perfil</h4>
                     <p class="card-category">Complete su perfil</p>
                   </div>
                   <div class="card-body">
-                    <form>
+                    <form method="post">
                       <br>
                       <div class="row">
                         <div class="col-md-4">
@@ -36,7 +35,8 @@
                             <label class="bmd-label-floating">
                               Usuario (Deshabilitado)
                             </label>
-                            <input type="text" class="form-control" 
+                            <input type="text" 
+                              class="form-control" name="usuario"
                               disabled th:value="${account.usuario}">
                           </div>
                         </div>
@@ -46,7 +46,9 @@
                             <label class="bmd-label-floating">
                               No. Cédula
                             </label>
-                            <input type="text" class="form-control" th:value="${account.cedula}">
+                            <input type="text" minlength="6" 
+                              class="form-control" name="cedula"
+                              th:value="${account.cedula}">
                           </div>
                         </div>
                       </div>
@@ -55,7 +57,7 @@
                         <div class="col-md-6">
                           <div class="form-group">
                             <label class="bmd-label-floating">Nombres</label>
-                            <input type="text" 
+                            <input type="text" name="nombres"
                               class="form-control" th:value="${account.nombres}">
                           </div>
                         </div>
@@ -63,7 +65,8 @@
                           <div class="form-group">
                             <label class="bmd-label-floating">Apellidos</label>
                             <input type="text" 
-                              class="form-control" th:value="${account.apellidos}">
+                              name="apellidos" class="form-control" 
+                              th:value="${account.apellidos}">
                           </div>
                         </div>
                       </div>
@@ -72,7 +75,8 @@
                         <div class="col-md-12">
                           <div class="form-group">
                             <label class="bmd-label-floating">Correo</label>
-                            <input type="email" class="form-control" 
+                            <input type="email" 
+                              class="form-control" name="correo"
                               th:value="${account.correo}">
                           </div>
                         </div>
@@ -105,12 +109,14 @@
                             <label>Acerca de mi</label>
                             <div class="form-group">
                               <label class="bmd-label-floating">Agregue una breve descripción sobre lo que lo apasiona y motiva</label>
-                              <textarea class="form-control" rows="3"></textarea>
+                              <textarea class="form-control" 
+                                rows="3" name="descripcion" 
+                                th:text="${account.descripcion}"></textarea>
                             </div>
                           </div>
                         </div>
                       </div>
-                      <button type="submit" class="btn btn-primary pull-right">Actualizar perfil</button>
+                      <button id="updatePerfil" type="submit" class="btn btn-danger pull-right">Actualizar perfil</button>
                       <div class="clearfix"></div>
                     </form>
                   </div>
@@ -120,7 +126,18 @@
                 <div class="card card-profile">
                   <div class="card-avatar">
                     <a href="javascript:;">
-                      <img class="img" th:src="@{/images/faces/marc.jpg}" />
+                      <div class="updateImage" id="updateImage">
+                        <i class="material-icons" style="color: gray;">app_registration</i>
+                        <input type="file" accept="image/*" hidden name="newImage" id="inputImage">
+                      </div>
+                      <img id="perfil-load" th:src="@{/images/spiner.gif}" 
+                        alt="loader" style="visibility: hidden;">
+                      <img class="img" id="accountImage" 
+                        th:if = "${account.urlImagenPerfil != null}" 
+                        th:src="${account.urlImagenPerfil}" />
+                      <img class="img" id="accountImage" 
+                        th:unless = "${account.urlImagenPerfil != null}" 
+                        th:src="@{http://style.anu.edu.au/_anu/4/images/placeholders/person_8x10.png}" />
                     </a>
                   </div>
                   <div class="card-body">
@@ -129,9 +146,8 @@
                       th:text="${account.nombres + ' ' + account.apellidos}">
                       Alec Thompson
                     </h4>
-                    <p class="card-description">
-                      Don't be scared of the truth because we need to restart the human foundation in truth And I love you
-                      like Kanye loves Kanye I love Rick Owens’ bed design but the back is...
+                    <p id="perfilDetails"
+                      class="card-description" th:text="${account.descripcion}">
                     </p>
                   </div>
                 </div>
@@ -144,7 +160,8 @@
         </footer>
       </div>
     </div>
-    <div th:replace="maintemplate :: scripts"></div>
+    <div th:replace = "maintemplate :: scripts"></div>
+    <script type = "module" th:src = "@{/js/settings/perfil.js}"></script>
   </body>
 
 </html>

@@ -8,3 +8,19 @@
   background-color: red;
   color: #FFFFFF;
 }
+
+.updateImage {
+
+  position: absolute;
+  text-align: center;
+
+}
+
+#perfil-load {
+
+  position: absolute;
+  right: 138px;
+  top: -15px;
+  width: 50px;
+
+}

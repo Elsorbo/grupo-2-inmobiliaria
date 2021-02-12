@@ -1,7 +1,9 @@
 
-package com.istb.app.controller;
+package com.istb.app.controller.account;
 
 import java.security.Principal;
+
+import javax.transaction.Transactional;
 
 import com.istb.app.entity.Usuario;
 import com.istb.app.services.accounts.AccountsServiceI;
@@ -32,6 +34,7 @@ public class AccountController {
 	}
 
 	@PostMapping("/empleados")
+	@Transactional
 	public ResponseEntity<?> addNewEmployee(@RequestBody Usuario newUser) {
 
 		return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON)
@@ -40,6 +43,7 @@ public class AccountController {
 	}
 	
 	@PostMapping("/arrendatarios")
+	@Transactional
 	public ResponseEntity<?> addNewTenant(@RequestBody Usuario newUser) {
 
 		return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON)
