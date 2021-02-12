@@ -1,3 +1,4 @@
+
 package com.istb.app.entity;
 
 import java.io.Serializable;
@@ -91,8 +92,7 @@ public class Usuario implements Serializable {
 	private LocalDateTime fechaActualizacion;
 	
 	@Lob
-	@Column(name = "descripcion")
-	private String about;
+	private String descripcion;
 
 	@PrePersist
 	public void preCreated () {

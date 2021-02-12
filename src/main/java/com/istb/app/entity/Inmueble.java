@@ -44,7 +44,6 @@ public class Inmueble implements Serializable {
 	
 	private String titulo;
 	
-	@Lob
 	private String descripcion;
 	
 	private long area;

@@ -4,6 +4,8 @@ package com.istb.app.configuration;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import com.istb.app.entity.Role;
 import com.istb.app.entity.Usuario;
 import com.istb.app.repository.UsuarioRepositoryI;
@@ -23,6 +25,7 @@ public class AuthDetailService implements UserDetailsService {
 	private UsuarioRepositoryI userRepository;
 
 	@Override
+	@Transactional
 	public UserDetails loadUserByUsername(String username) 
 		throws UsernameNotFoundException {
 
