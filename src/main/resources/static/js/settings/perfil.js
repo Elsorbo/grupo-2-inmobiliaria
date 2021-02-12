@@ -37,6 +37,7 @@ const updateImage = async (event) => {
         profilePic.previousElementSibling.style.visibility = "visible";
     
         let res = await uploadFiles("updatepic", "put", "picture", inputFile.files);
+        console.log(res);
         profilePic.setAttribute("src", res.url);
     
     }
@@ -54,4 +55,3 @@ document.querySelector("#inputImage").addEventListener("change", updateImage);
 document.querySelector("#updatePerfil").addEventListener("click", updatePerfil);
 document.querySelector("#updateImage").addEventListener("click", 
     (e) => e.target.nextElementSibling.click());
-    
