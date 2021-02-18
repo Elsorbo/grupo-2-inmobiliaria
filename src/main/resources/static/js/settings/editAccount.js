@@ -67,8 +67,6 @@ const updateImage = async (event) => {
 
 const loadEmployeeData = (formData) => {
 
-    
-    debugger;
     let employeeValues = {"usuario": {}, "telefono": "0000000"};
         employeeValues.usuario['usuario'] = formData.usuario;
         employeeValues.usuario['cedula'] = formData.cedula;

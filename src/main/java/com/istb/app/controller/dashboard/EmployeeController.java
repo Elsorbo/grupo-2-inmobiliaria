@@ -78,6 +78,7 @@ public class EmployeeController {
 	}
 	
 	@PutMapping("/empleado/{id}")
+	@Transactional
 	public ResponseEntity<?> updateEmployee(
 		@PathVariable int id, @Valid @RequestBody Empleado empleado, BindingResult bindObjt) {
 
