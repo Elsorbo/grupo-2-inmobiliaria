@@ -29,26 +29,51 @@
                   <div class="card-body">
                     <form method="post">
                       <br>
+                      <input type="hidden" id="account-id" th:value="${account.id}">
+                      <div class="form-group">
+                        <div class="form-check">
+                          <label class="form-check-label">
+                              <input required class="form-check-input" 
+                                type="checkbox" name="estado"
+                                checked="${account.usuario.estado">
+                              Habilitado
+                              <span class="form-check-sign">
+                                <span class="check"></span>
+                              </span>
+                          </label>
+                        </div>
+                      </div>
+
                       <div class="row">
                         <div class="col-md-4">
                           <div class="form-group">
                             <label class="bmd-label-floating">
                               Usuario (Deshabilitado)
                             </label>
-                            <input type="text" 
+                            <input id="username-input" required type="text" 
                               class="form-control" name="usuario"
                               disabled th:value="${account.usuario.usuario}">
                           </div>
                         </div>
                         
-                        <div class="col-md-8">
+                        <div class="col-md-4">
                           <div class="form-group">
                             <label class="bmd-label-floating">
                               No. Cédula
                             </label>
-                            <input type="text" minlength="6" 
+                            <input required type="text" maxlength="10" minlength="10"
                               class="form-control" name="cedula"
                               th:value="${account.usuario.cedula}">
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label class="bmd-label-floating">
+                              Teléfono
+                            </label>
+                            <input required type="text" maxlength="10" minlength="10"
+                              class="form-control" name="telefono"
+                              th:value="${account.telefono}">
                           </div>
                         </div>
                       </div>
@@ -57,14 +82,14 @@
                         <div class="col-md-6">
                           <div class="form-group">
                             <label class="bmd-label-floating">Nombres</label>
-                            <input type="text" name="nombres"
+                            <input required type="text" name="nombres"
                               class="form-control" th:value="${account.usuario.nombres}">
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="form-group">
                             <label class="bmd-label-floating">Apellidos</label>
-                            <input type="text" 
+                            <input required type="text" 
                               name="apellidos" class="form-control" 
                               th:value="${account.usuario.apellidos}">
                           </div>
@@ -75,34 +100,47 @@
                         <div class="col-md-12">
                           <div class="form-group">
                             <label class="bmd-label-floating">Correo</label>
-                            <input type="email" 
+                            <input required type="email" 
                               class="form-control" name="correo"
                               th:value="${account.usuario.correo}">
                           </div>
                         </div>
                       </div>
+
+					  <!-- Contraseña -->
+                      <!-- <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label class="bmd-label-floating">Nueva contraseña</label>
+                            <input required type="password" 
+                              class="form-control" name="contrasena1" value="xxxxx">
+                          </div>
+                        </div>
+                          
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label class="bmd-label-floating">Repita la contraseña</label>
+                            <input required type="password" 
+                              class="form-control" name="contrasena2" value="yyyyy">
+                          </div>
+                        </div>
+                      </div> -->
+                      
                       <!-- <br>
                       <div class="row">
                         <div class="col-md-4">
                           <div class="form-group">
                             <label class="bmd-label-floating">City</label>
-                            <input type="text" class="form-control">
+                            <input required type="text" class="form-control">
                           </div>
                         </div>
                         <div class="col-md-4">
                           <div class="form-group">
                             <label class="bmd-label-floating">Country</label>
-                            <input type="text" class="form-control">
+                            <input required type="text" class="form-control">
                           </div>
                         </div>
-                        <div class="col-md-4">
-                          <div class="form-group">
-                            <label class="bmd-label-floating">Postal Code</label>
-                            <input type="text" class="form-control">
-                          </div>
-                        </div>
-                      </div>
-                      <br> -->
+                        <br> -->
                       <div class="row">
                         <div class="col-md-12">
                           <div class="form-group">
@@ -116,7 +154,7 @@
                           </div>
                         </div>
                       </div>
-                      <button id="updatePerfil" type="submit" class="btn btn-danger pull-right">Actualizar Empleado</button>
+                      <button id="updateAccount" type="submit" class="btn btn-danger pull-right">Actualizar Empleado</button>
                       <div class="clearfix"></div>
                     </form>
                   </div>
@@ -161,7 +199,7 @@
       </div>
     </div>
     <div th:replace = "maintemplate :: scripts"></div>
-    <script type = "module" th:src = "@{/js/settings/perfil.js}"></script>
+    <script type = "module" th:src = "@{/js/settings/editAccount.js}"></script>
   </body>
 
 </html>

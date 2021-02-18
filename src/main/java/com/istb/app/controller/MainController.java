@@ -1,12 +1,23 @@
 
 package com.istb.app.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import com.istb.app.repository.EmpleadoRepositoryI;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class MainController {
+
+	@Autowired
+	private EmpleadoRepositoryI employeeManager;
 
 	@GetMapping("/")
 	public String main(Model attributes) {
@@ -16,10 +27,24 @@ public class MainController {
 	}
 	
 	@GetMapping("/dashboard")
-	public String dashboard(Model attributes) {
-
+	public String dashboard(Model attributes, Authentication account) {
+		
+		List<String> roles = account.getAuthorities()
+			.stream()
+			.map( rol -> rol.getAuthority().replace("ROLE_", "") )
+			.collect(Collectors.toList());
+		
 		attributes.addAttribute("sectionTitle", "dashboard");
 		
+		if(roles.contains("ADMINISTRADOR")) {
+			return "redirect:/empleados"; }
+		
+		if(roles.contains("EMPLEADO")) {
+			return "redirect:/inmuebles"; }
+		
+		if(roles.contains("ADMINISTRADOR")) {
+			return "redirect:/facturas"; }
+
 		return "dashboard";
 		
 	}
@@ -64,6 +89,8 @@ public class MainController {
 	public String getEmpleados(Model attributes) {
 
 		attributes.addAttribute("sectionTitle", "empleados");
+		attributes.addAttribute("paginator", 
+			employeeManager.findAll( PageRequest.of(0, 5) ));
 		
 		return "empleado";
 		

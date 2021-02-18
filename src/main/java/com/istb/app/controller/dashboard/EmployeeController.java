@@ -1,20 +1,24 @@
 
 package com.istb.app.controller.dashboard;
 
-import java.util.List;
-
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
-import com.google.rpc.context.AttributeContext.Response;
 import com.istb.app.entity.Empleado;
 import com.istb.app.repository.EmpleadoRepositoryI;
 import com.istb.app.repository.UsuarioRepositoryI;
+import com.istb.app.services.accounts.AccountsServiceI;
+import com.istb.app.services.firebase.FirebaseStrategy;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,63 +26,92 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 @Controller
 public class EmployeeController {
 
 	@Autowired
-	private EmpleadoRepositoryI empleadoManager;
+	private FirebaseStrategy fbmanager;
 
 	@Autowired
-	private UsuarioRepositoryI usuarioManager;
+	private AccountsServiceI accountsManager;
+
+	@Autowired
+	private EmpleadoRepositoryI empleadoManager;
 
 	@GetMapping("/empleado/{id}")
 	public String editEmpleado(@PathVariable Integer id, Model attributes) {
 
-		attributes.addAttribute("sectionTitle", "arrendatarios");
+		attributes.addAttribute("sectionTitle", "Editar empleado");
 		attributes.addAttribute("account", empleadoManager.findById(id).get());
-
+		
 		return "editarEmpleado";
 		
 	}
 
 	@GetMapping("/empleado")
-	public ResponseEntity<?> getEmpleados() {
+	public ResponseEntity<?> getEmpleados(
+		@RequestParam(defaultValue = "0") int pageNumber) {
+
+		Pageable page = PageRequest.of(pageNumber, 5);
 
 		return ResponseEntity.ok()
 			.contentType(MediaType.APPLICATION_JSON)
-			.body(empleadoManager.findAll());
+			.body(empleadoManager.findAll(page));
 		
 	}
 
 	@PostMapping("/empleado")
 	@Transactional
-	public ResponseEntity<?> addEmployee(@RequestBody Empleado empleado) {
+	public ResponseEntity<?> addEmployee(
+		@Valid @RequestBody Empleado empleado, BindingResult bindObjt) {
 		
-		empleado.getUsuario().setEstado(true);
+		if (bindObjt.hasErrors() ) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+				.contentType(MediaType.APPLICATION_JSON)
+				.body(bindObjt.getAllErrors()); }
+		
+		return ResponseEntity.ok()
+			.contentType(MediaType.APPLICATION_JSON)
+			.body(accountsManager.createEmployeeAccount(empleado));
+		
+	}
+	
+	@PutMapping("/empleado/{id}")
+	public ResponseEntity<?> updateEmployee(
+		@PathVariable int id, @Valid @RequestBody Empleado empleado, BindingResult bindObjt) {
 
-		usuarioManager.save(empleado.getUsuario());
-		empleadoManager.save(empleado);
+		if(bindObjt.hasErrors()) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+				.contentType(MediaType.APPLICATION_JSON)
+				.body(bindObjt.getAllErrors()); }
+
+		Empleado employee = empleadoManager.findById(id).get();
+
+		employee.setTelefono(empleado.getTelefono());
+		employee.getUsuario().setEstado(empleado.getUsuario().getEstado());
+		employee.getUsuario().setCedula(empleado.getUsuario().getCedula());
+		employee.getUsuario().setCorreo(empleado.getUsuario().getCorreo());
+		employee.getUsuario().setNombres(empleado.getUsuario().getNombres());
+		employee.getUsuario().setApellidos(empleado.getUsuario().getApellidos());
+		employee.getUsuario().setDescripcion(empleado.getUsuario().getDescripcion());
 
 		return ResponseEntity.ok()
 			.contentType(MediaType.APPLICATION_JSON)
-			.body(empleado);
+			.body(empleadoManager.save(employee));
 		
 	}
 	
-	@PutMapping("/empleado")
-	public ResponseEntity<?> updateEmployee(Empleado empleado) {
+	@DeleteMapping("/empleado/{id}")
+	public ResponseEntity<?> deleteEmployee(@PathVariable int id) {
+		
+		fbmanager.deleteFile(
+			empleadoManager.findById(id).get().getUsuario().getNombreImagenPerfil());
+		empleadoManager.deleteById(id);
 
-		
-		return null;
-		
-	}
-	
-	@DeleteMapping("/empleado")
-	public ResponseEntity<?> deleteEmployee(Empleado empleado) {
-		
-		return null;
+		return ResponseEntity.ok()
+			.contentType(MediaType.APPLICATION_JSON)
+			.body("{\"message\": \"Usuario eliminado correctamente\"}");
 		
 	}
 	

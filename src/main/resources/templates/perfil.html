@@ -35,7 +35,7 @@
                             <label class="bmd-label-floating">
                               Usuario (Deshabilitado)
                             </label>
-                            <input type="text" 
+                            <input id="username-input" type="text" 
                               class="form-control" name="usuario"
                               disabled th:value="${account.usuario}">
                           </div>
@@ -116,7 +116,7 @@
                           </div>
                         </div>
                       </div>
-                      <button id="updatePerfil" type="submit" class="btn btn-danger pull-right">Actualizar perfil</button>
+                      <button id="updateAccount" type="submit" class="btn btn-danger pull-right">Actualizar perfil</button>
                       <div class="clearfix"></div>
                     </form>
                   </div>
@@ -161,7 +161,7 @@
       </div>
     </div>
     <div th:replace = "maintemplate :: scripts"></div>
-    <script type = "module" th:src = "@{/js/settings/perfil.js}"></script>
+    <script type = "module" th:src = "@{/js/settings/editAccount.js}"></script>
   </body>
 
 </html>

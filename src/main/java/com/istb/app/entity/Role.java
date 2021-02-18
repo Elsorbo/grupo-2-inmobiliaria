@@ -17,13 +17,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import org.springframework.security.core.GrantedAuthority;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "roles")
 public class Role implements GrantedAuthority {
@@ -42,11 +38,20 @@ public class Role implements GrantedAuthority {
 	@ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
 	private Collection<Usuario> usuarios;
 
+	public Role() {}
+
 	@Override
 	public String getAuthority() {
 	
 		return this.nombre;
 	
+	}
+
+	@Override
+	public String toString() {
+
+		return this.nombre;
+		
 	}
 
 }

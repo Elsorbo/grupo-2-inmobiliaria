@@ -15,9 +15,9 @@ const getFormValues = (form) => {
 
 const getData = async (resource) => {
 
-    let response = await fetch(`/${resource}`);
+    let response = fetch(`/${resource}`);
 
-    return response.json();
+    return response;
 
 }
 
@@ -40,12 +40,18 @@ const showNotification = (message, type) => {
 
 }
 
-const sendJSONData = async (resource, method, data) => {
+const sendJSONData = async (resource, method, data, headers = null) => {
 
-    let headers = new Headers();
-    headers.append("Content-Type", "application/json");
+    if(headers == null) {
+        headers = new Headers(); }
     
-    let response = await fetch(`/${resource}`, {
+    let tokenResponse = await getData("csrftoken");
+    let token = await tokenResponse.json();
+
+    headers.append("Content-Type", "application/json");
+        headers.append("X-CSRF-TOKEN", token.key);
+    
+    let response = fetch(`/${resource}`, {
     
         "method": `${method}`,
         "headers": headers,
@@ -53,25 +59,55 @@ const sendJSONData = async (resource, method, data) => {
     
     });
     
-    return response.json();
+    return response;
 
 }
 
-const uploadFiles = async (resource, method, name, files) => {
+const uploadFiles = async (resource, method, name, files, headers = null) => {
 
     let formData = new FormData();
+    let tokenResponse = await getData("csrftoken");
+    let token = await tokenResponse.json();
     
+    if(headers == null) { 
+        headers = new Headers(); }
+    
+    headers.append("X-CSRF-TOKEN", token.key);
+
     for(let x = files.length - 1; x >= 0; x--) {
         formData.append(name, files[x]); }
-
+    
     let response = await fetch(`/${resource}`, {
     
         "method": `${method}`,
+        "headers": headers,
         "body": formData
     
     });
     
-    return response.json();
+    return response;
+
+}
+
+const deleteObject = async (resource, headers = null) => {
+
+    let tokenResponse = await getData("csrftoken");
+    let token = await tokenResponse.json();
+
+    if(headers == null) {
+        headers = new Headers(); }
+            
+    headers.append("Content-Type", "application/json");
+    headers.append("X-CSRF-TOKEN", token.key);
+    
+    let response = fetch(`/${resource}`, {
+    
+        "method": "delete",
+        "headers": headers
+    
+    });
+
+    return response;
 
 }
 
@@ -82,5 +118,6 @@ export {
     getFormValues, 
     showNotification, 
     sendJSONData,
-
+    deleteObject
+    
 };

@@ -23,102 +23,187 @@
                     <i class="material-icons">add</i>
                     Añadir empleado
                 </button>
-                <div id="addEmployee" 
-                    style="display: none; margin: 12px auto; width: 90%;">
-                    <form method="post">
-                        <div class="form-row">
-                            <div class="form-group col-md-6 label-floating has-success">
-                              <input required type="text" class="form-control" name="usuario.nombres" id="userFirstName" placeholder="Nombres">
-                            </div>
-                            <div class="form-group col-md-6 label-floating has-success">
-                              <input required type="text" class="form-control" name="usuario.apellidos" id="lastName" placeholder="Apellidos">
-                            </div>
-                        </div>
-                        <div class="form-row">
-
-                            <div class="form-group col-md-3 label-floating has-success">
-                                <input required type="text" class="form-control" name="usuario.usuario" id="username" placeholder="Usuario">
-                            </div>
-
-                              <div class="form-group col-md-3  label-floating has-success">
-                                  <input required minlength="10" maxlength="10" type="text" name="usuario.cedula" class="form-control" id="idUser" placeholder="Cedula">
+                <div class="card" id="addEmployee" style="display: none; margin: 12px auto; width: 95%;">
+                    <h4 class="" style="padding: 20px 0px 0px 20px;">Nuevo empleado</h4>
+                    <div class="card-body">
+                        <div>
+                            <form method="post">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6 label-floating has-success">
+                                        <input required type="text" class="form-control" name="usuario.nombres"
+                                            id="userFirstName" placeholder="Nombres">
+                                    </div>
+                                    <div class="form-group col-md-6 label-floating has-success">
+                                        <input required type="text" class="form-control" name="usuario.apellidos"
+                                            id="lastName" placeholder="Apellidos">
+                                    </div>
                                 </div>
-                              <div class="form-group col-md-6  label-floating has-success">
-                                  <input required type="email" class="form-control" name="usuario.correo" id="userEmail" placeholder="Correo">
+                                <div class="form-row">
+
+                                    <div class="form-group col-md-3 label-floating has-success">
+                                        <input required type="text" class="form-control" name="usuario.usuario"
+                                            id="username" placeholder="Usuario">
+                                    </div>
+
+                                    <div class="form-group col-md-3 label-floating has-success">
+                                        <input required minlength="10" maxlength="10" type="text" name="usuario.cedula"
+                                            class="form-control" id="idUser" placeholder="Cedula">
+                                    </div>
+                                    <div class="form-group col-md-6 label-floating has-success">
+                                        <input required type="email" class="form-control" name="usuario.correo"
+                                            id="userEmail" placeholder="Correo">
+                                    </div>
                                 </div>
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-6 label-floating has-success">
+                                        <input required minlength="8" type="text" class="form-control"
+                                            name="usuario.contrasena" id="userPassword" placeholder="Contraseña">
+                                    </div>
+                                    <div class="form-group col-md-6 label-floating has-success">
+
+                                        <input required type="number" min="0" class="form-control" name="telefono"
+                                            id="userPhone" placeholder="Teléfono">
+                                    </div>
+                                </div>
+                                <div class="form-row flex-row-reverse">
+                                    <button id="registerEmployee" type="submit" class="btn btn-danger"
+                                        style="margin-right: 0px;">Registrar empleado</button>
+                                </div>
+                            </form>
                         </div>
-                        
-                        <div class="form-row">
-                            <div class="form-group col-md-6  label-floating has-success">
-                                <input required minlength="8" type="text" class="form-control" name="usuario.contrasena" id="userPassword" placeholder="Contraseña">
-                              </div>
-                            <div class="form-group col-md-6  label-floating has-success">
-                                
-                                <input required type="text" class="form-control" name="telefono" id="userPhone" placeholder="Teléfono">
-                              </div>
-                        </div>
-                        <div class="form-row flex-row-reverse">
-                            <button id="registerEmployee" type="submit" class="btn btn-danger" style="margin-right: 0px;">Registrar empleado</button>
-                        </div>
-                      </form>
+                    </div>
                 </div>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th class="text-center">#</th>
-                            <th>Nombres</th>
-                            <th>Correo</th>
-                            <th>Estado</th>
-                            <th class="text-right">Teléfono</th>
-                            <th class="text-right">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody id="body-table-employees">
-                    </tbody>
-                </table>
-                <nav aria-label="...">
-                <ul class="pagination ">
-                    <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1">Previous</a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item active">
-                    <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
-                    </li>
-                </ul>
-                </nav>    
+                <div class="card">
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title ">Empleados</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">#</th>
+                                        <th>Nombres</th>
+                                        <th>Correo</th>
+                                        <th>Estado</th>
+                                        <th class="text-right">Teléfono</th>
+                                        <th class="text-right">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="body-table-employees">
+                                    <tr th:each="employee : ${paginator.content}" th:id="employee-+${employee.id}">
+                                        <td class="text-center" th:text="${employee.id}">id</td>
+                                        <td th:text="${employee.usuario.nombres} + ' ' + ${employee.usuario.apellidos}">
+                                            Nombre Apellido</td>
+                                        <td th:text="${employee.usuario.correo}">correo</td>
+                                        <td th:text="${employee.usuario.estado} ? 'Activo' : 'Inactivo'">Estado</td>
+                                        <td class="text-right" th:text="${employee.telefono}">Teléfono</td>
+                                        <input type="hidden" th:value="${employee.usuario.cedula}">
+                                        <input type="hidden" th:value="${employee.usuario.usuario}">
+                                        <input type="hidden" th:value="${employee.usuario.descripcion}">
+                                        <input type="hidden" th:value="${employee.usuario.urlImagenPerfil} ? 
+                                        ${employee.usuario.urlImagenPerfil} : 
+                                        'http://style.anu.edu.au/_anu/4/images/placeholders/person_8x10.png'">
+                                        <input type="hidden" value="${new Date(employee.usuario.fechaActualizacion)}">
+                                        <td class="td-actions text-right">
+                                            <button type="button" rel="tooltip"
+                                                class="btn btn-info employee-aditional-info-btn" data-toggle="modal"
+                                                data-target="#userDetailsModal">
+                                                <i class="material-icons">person</i>
+                                            </button>
+                                            <button type="button" rel="tooltip" class="btn btn-success">
+                                                <a th:href="@{/empleado/} + ${employee.id}"
+                                                    style="text-decoration: none; color: white;">
+                                                    <i class="material-icons">edit</i>
+                                                </a>
+                                            </button>
+                                            <button type="button" rel="tooltip" data-toggle="modal"
+                                                data-target="#modal-confirm-delete"
+                                                class="btn btn-danger delete-employee-btn">
+                                                <i class="material-icons">close</i>
+                                            </button>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                            <nav aria-label="...">
+                                <ul class="pagination ">
+                                    <li class="page-item disabled" id = "paginator-previous">
+                                        <a class="page-link" href="#" tabindex="-1">Anterior</a>
+                                    </li>
+                                    <li class="page-item disabled"><a class="page-link" href="#">-</a></li>
+                                    <li class="page-item active">
+                                        <a class="page-link" href="#">1 <span class="sr-only"></span></a>
+                                    </li>
+                                    <li class="page-item disabled" ><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item" 
+                                        th:classappend="${paginator.size} < 5 ? 'disabled' : ''"  id = "paginator-next">
+                                        <a class="page-link" href="#">Siguiente</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+
             </div>
             <!-- Modal -->
-            <div class="modal fade" id="userDetailsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="userDetailsModal" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Detalles del usuario</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    </div>
-                    <div class="modal-body">
-                        <br />
-                        <div class="card card-profile">
-                            <div class="card-avatar">
-                                <img class="img" id="accountImage" src="https://storage.googleapis.com/istb-storage.appspot.com/inmobiliaria/1613135110033-im-131021.jpg">
-                              </a>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Detalles del usuario</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <br />
+                            <div class="card card-profile">
+                                <div class="card-avatar">
+                                    <img class="img" id="accountImage"
+                                        src="http://style.anu.edu.au/_anu/4/images/placeholders/person_8x10.png">
+                                    </a>
+                                </div>
+                                <div id="card-info-body" class="card-body">
+                                    <h4 class="card-title">CI: 1207929921</h4>
+                                    <h4 class="card-title">Username: usuario</h4>
+                                    <p id="perfilDetails" class="card-description">Descripción<br />Descripcion general
+                                        otorgada por el empleado</p>
+                                </div>
                             </div>
-                            <div class="card-body">
-                                <h4 class="card-title">CI: 1207929921</h4>
-                              <h4 class="card-title">Username: usuario</h4>
-                              <p id="perfilDetails" class="card-description">Descripción<br />Descripcion general otorgada por el empleado</p>
-                            </div>
-                          </div>
+                        </div>
                     </div>
-                </div>
                 </div>
             </div>
+
+            <!-- Modal confirm delete -->
+            <div class="modal fade" id="modal-confirm-delete" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Eliminar usuario</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Esta a punto de eliminar un empleado
+                            <br /> ¿Está segur@ que desea realizar esta acción?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-danger" id="employee-delete">Eliminar</button>
+                            <input id="employee-delete-id" type="hidden" name="employee_id">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <footer th:replace="maintemplate :: footer" class="footer">
             </footer>
         </div>

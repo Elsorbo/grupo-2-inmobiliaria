@@ -1,28 +1,23 @@
 
 import {
-    getData, getFormValues, sendJSONData, showNotification
+    getData, getFormValues, sendJSONData, deleteObject, showNotification
 } from "../utils.js";
 
+import Paginator from "../Paginator.js";
+
+
+let paginador = {};
+
 let addEmployeeBtn = document.querySelector("#addEmployee");
+let cardInfoBody = document.querySelector("#card-info-body");
+let paginatorNext = document.querySelector("#paginator-next");
 let showEmployee = document.querySelector("#showAddEmployee");
 let registerEmployee = document.querySelector("#registerEmployee");
 let tbodyEmployees = document.querySelector("#body-table-employees");
+let paginatorPrevious = document.querySelector("#paginator-previous");
+let employeeDeleteInputId = document.querySelector("#employee-delete");
 
-const getEmployees = async () => {
-
-    let employees = await getData("empleado");
-    
-    let htmlEmployees = employees.map( (employee) => {
-        
-        return newEmployeeFromTemplate(employee);
-
-    });
-
-    tbodyEmployees.innerHTML = htmlEmployees.reduce( (a, b) => a.concat(b));
-
-}
-
-const addEmployee = async (event) => {
+const newEmployee = async (event) => {
     
     event.preventDefault();
 
@@ -41,10 +36,29 @@ const addEmployee = async (event) => {
         formValues['telefono'] = form.telefono.value;
 
         let response = await sendJSONData("empleado", "post", formValues);
+        
+        if(response.ok) {
 
-        tbodyEmployees.innerHTML += newEmployeeFromTemplate(response);
-        showNotification("Se registro el empleado exitosamente", "success");
-        [...form].forEach( i => i.value = "");
+            let employee = await response.json()
+            
+            if(tbodyEmployees.children.length < 5) {
+            
+                tbodyEmployees.innerHTML += newEmployeeFromTemplate(employee);
+                addEmployeeListeners(tbodyEmployees.lastElementChild);
+            
+            }
+            
+            showNotification("Se registro el empleado exitosamente", "success");
+            [...form].forEach( i => i.value = "");
+        
+        } else {
+            
+            let errors = await response.json();
+            errors.map( error => {
+                showNotification(error.defaultMessage, "danger") }); 
+        
+        }
+        
     
     } else {
 
@@ -54,6 +68,48 @@ const addEmployee = async (event) => {
     }
 
     
+}
+
+const addEmployees = (employees) => {
+
+    if(employees.length > 0) {
+    
+        let htmlEmployees = employees.map( (employee) => {
+        return newEmployeeFromTemplate(employee); });
+    
+        tbodyEmployees.innerHTML = htmlEmployees.reduce( (a, b) => a.concat(b));
+        [...tbodyEmployees.children].map( tr => addEmployeeListeners(tr) );
+    
+    }
+
+}
+
+const previousEmployeePage = async (event) => {
+   
+    event.preventDefault();
+
+    let target = event.target;
+
+    if(target.nodeName == "A") { 
+        target = target.parentElement; }
+    
+    if(!target.classList.contains("disabled")) {
+        addEmployees( await paginador.previousPage() ); }
+
+}
+
+const nextEmployeePage = async (event) => {
+
+    event.preventDefault();
+    
+    let target = event.target;
+
+    if(target.nodeName == "A") { 
+        target = target.parentElement; }
+
+    if(!target.classList.contains("disabled")) {
+        addEmployees( await paginador.nextPage() ); }
+
 }
 
 const toggleAddEmployee = (event) => {
@@ -74,50 +130,112 @@ const toggleAddEmployee = (event) => {
 
 }
 
+const setEmployeeAditionalInfo = (event) => {
+
+    let target = event.target;
+    
+    if(target.nodeName == "I") {
+        target = target.parentElement; }
+    
+    let cardInfo = cardInfoBody.children;
+    let inputsInfo = target.parentElement.parentElement.getElementsByTagName("input");
+
+    cardInfo[0].textContent = `CI: ${inputsInfo[0].value}`;
+    cardInfo[1].textContent = `Username: ${inputsInfo[1].value}`;
+    cardInfo[2].innerHTML = `Descripcion: <br />${inputsInfo[2].value}`;
+    cardInfoBody.previousElementSibling.querySelector("img").src = inputsInfo[3].value;
+    
+    
+}
+
+const setEmployeeDeleteId = (event) => {
+
+    let target = event.target;
+    
+    if(target.nodeName == "I") {
+        target = target.parentElement; }
+    
+    employeeDeleteInputId.value = target.parentElement.parentElement.firstElementChild.innerText;
+
+}
+
+const deleteEmployee = async (event) => {
+
+    let target = event.target;
+    
+    let response = await deleteObject(
+        "empleado/".concat(employeeDeleteInputId.value));
+
+    if(response.ok) { 
+    
+        document.querySelector(`#employee-${employeeDeleteInputId.value}`)
+            .style.display = "none";
+        showNotification("Usuario eliminado correctamente", "success"); }
+        
+    target.previousElementSibling.click();
+
+}
+
 const newEmployeeFromTemplate = (employee) => {
 
     return (
-    `<tr>\
-        <td class="text-center">\
-            ${employee.id}
-        </td>\
-        <td>${employee.usuario.nombres} ${employee.usuario.apellidos}\
-        </td>\
-        <td>${employee.usuario.correo}</td>\
-        <td>${employee.usuario.estado ? "Activo" : "Inactivo"}</td>\
-        <td class="text-right">${employee.telefono}</td>\
-        <input type="text" hidden value="${employee.usuario.cedula}">
-        <input type="text" hidden value="${employee.usuario.usuario}">
-        <input type="text" hidden value="${employee.usuario.descripcion}">
-        <input type="text" hidden value="${employee.usuario.urlImagenPerfil}">
-        <input type="date" hidden value="${new Date(employee.usuario.fechaActualizacion)}">
-        <td class="td-actions text-right">\
-            <button id="userDetails" type="button" rel="tooltip" class="btn btn-info"\
-                data-toggle="modal" data-target="#userDetailsModal">\
-                <i class="material-icons">person</i>\
-            </button>\
-            <button type="button" rel="tooltip" class="btn btn-success">\
-                <a href="/empleado/${employee.id}" style="text-decoration: none; color: white;">
-                    <i class="material-icons">edit</i>\
+    `<tr id="employee-${employee.id}">
+        <td class="text-center">${employee.id}</td>
+        <td>${employee.usuario.nombres} ${employee.usuario.apellidos}</td>
+        <td>${employee.usuario.correo}</td>
+        <td>${employee.usuario.estado ? "Activo" : "Inactivo"}</td>
+        <td class="text-right">${employee.telefono}</td>
+        <input type="hidden" value="${employee.usuario.cedula}">
+        <input type="hidden" value="${employee.usuario.usuario}">
+        <input type="hidden" value="${employee.usuario.descripcion}">
+        <input type="hidden" value="${employee.usuario.urlImagenPerfil ? 
+            employee.usuario.urlImagenPerfil : 
+            'http://style.anu.edu.au/_anu/4/images/placeholders/person_8x10.png'}">
+        <input type="hidden" 
+            value="${new Date(employee.usuario.fechaActualizacion)}">
+        <td class="td-actions text-right">
+            <button type="button" rel="tooltip" 
+                class="btn btn-info employee-aditional-info-btn" 
+                data-toggle="modal" data-target="#userDetailsModal">
+                <i class="material-icons">person</i>
+            </button>
+            <button type="button" rel="tooltip" class="btn btn-success">
+                <a href="/empleado/${employee.id}" 
+                    style="text-decoration: none; color: white;">
+                    <i class="material-icons">edit</i>
                 </a>
-            </button>\
-            <button type="button" rel="tooltip" class="btn btn-danger">\
-                <i class="material-icons">close</i>\
-            </button>\
-        </td>\
+            </button>
+            <button type="button" rel="tooltip" data-toggle="modal" 
+                data-target="#modal-confirm-delete" 
+                class="btn btn-danger delete-employee-btn">
+                <i class="material-icons">close</i>
+            </button>
+        </td>
     </tr>`);
 
 }
 
-window.addEventListener("load", getEmployees);
-registerEmployee.addEventListener("click", addEmployee);
-showEmployee.addEventListener("click", toggleAddEmployee);
-
-
-const editEmployee = (event) => {
-
-	
+const addEmployeeListeners = (employee) => {
+    
+    let deleteBtn = employee.querySelector(".delete-employee-btn");
+    let infoBtn = employee.querySelector(".employee-aditional-info-btn");
+    
+    deleteBtn.addEventListener("click", setEmployeeDeleteId);
+    infoBtn.addEventListener("click", setEmployeeAditionalInfo);
 
 }
 
-export {editEmployee};
+window.addEventListener("load", (event) => {
+
+    tbodyEmployees.querySelectorAll("tr")
+        .forEach( tr => addEmployeeListeners(tr));
+
+    paginador = new Paginator("empleado", document.querySelector(".pagination"));
+        
+});
+
+registerEmployee.addEventListener("click", newEmployee);
+paginatorNext.addEventListener("click", nextEmployeePage)
+showEmployee.addEventListener("click", toggleAddEmployee);
+employeeDeleteInputId.addEventListener("click", deleteEmployee);
+paginatorPrevious.addEventListener("click", previousEmployeePage);

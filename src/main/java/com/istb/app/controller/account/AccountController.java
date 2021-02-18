@@ -5,6 +5,8 @@ import java.security.Principal;
 
 import javax.transaction.Transactional;
 
+import com.istb.app.entity.Arrendatario;
+import com.istb.app.entity.Empleado;
 import com.istb.app.entity.Usuario;
 import com.istb.app.services.accounts.AccountsServiceI;
 
@@ -35,7 +37,7 @@ public class AccountController {
 
 	@PostMapping("/empleados")
 	@Transactional
-	public ResponseEntity<?> addNewEmployee(@RequestBody Usuario newUser) {
+	public ResponseEntity<?> addNewEmployee(@RequestBody Empleado newUser) {
 
 		return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON)
 			.body(accountService.createEmployeeAccount(newUser));
@@ -44,7 +46,7 @@ public class AccountController {
 	
 	@PostMapping("/arrendatarios")
 	@Transactional
-	public ResponseEntity<?> addNewTenant(@RequestBody Usuario newUser) {
+	public ResponseEntity<?> addNewTenant(@RequestBody Arrendatario newUser) {
 
 		return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON)
 			.body(accountService.createTenantAccount(newUser));

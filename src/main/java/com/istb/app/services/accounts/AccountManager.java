@@ -32,13 +32,16 @@ public class AccountManager implements AccountsServiceI {
 	@Autowired
 	private RoleRepositoryI roleManager;
 
-	public Empleado createEmployeeAccount(Usuario user) {
+	private static final String DEFAULT_PROFILE_IMAGE = "http://style.anu.edu.au/_anu/4/images/placeholders/person_8x10.png";
 
-		Empleado employee = new Empleado(user, "");
+	public Empleado createEmployeeAccount(Empleado employee) {
+
+		Usuario user = employee.getUsuario();
 		
 		user.setEstado(true);
 		user.setDescripcion("");
 		addRole(user, Arrays.asList("EMPLEADO"));
+		user.setUrlImagenPerfil(DEFAULT_PROFILE_IMAGE);
 		
 		userManager.save(user);
 		employeeManager.save(employee);
@@ -48,12 +51,14 @@ public class AccountManager implements AccountsServiceI {
 	};
 	
 	@Override
-	public Arrendatario createTenantAccount(Usuario user) {
+	public Arrendatario createTenantAccount(Arrendatario tenant) {
 	
-		Arrendatario tenant = new Arrendatario(user);
+		Usuario user = tenant.getUsuario();
+		
 		user.setEstado(true);
 		user.setDescripcion("");
 		addRole(user, Arrays.asList("ARRENDATARIO"));
+		user.setUrlImagenPerfil(DEFAULT_PROFILE_IMAGE);
 		
 		userManager.save(user);
 		tenantManager.save(tenant);

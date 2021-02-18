@@ -26,8 +26,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "empleados")
 public class Empleado implements Serializable {
@@ -38,15 +36,15 @@ public class Empleado implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@Size(min = 0, max = 10, message = "El teléfono debe no más de 10 dígitos.")
+	@Size(min = 0, max = 10, message = "El teléfonon no debe tener más de 10 dígitos.")
 	private String telefono;
 	
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "usuario_id")
 	@JsonIgnoreProperties({"empleado", "arrendatario"})
 	private Usuario usuario;
 	
-	@OneToMany(mappedBy = "empleado", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "empleado", fetch = FetchType.LAZY)
 	@JsonIgnoreProperties({"empleado"})
 	@OrderBy("id desc")
 	private Collection<Arrendatario> arrendatarios;
@@ -56,12 +54,21 @@ public class Empleado implements Serializable {
     joinColumns = @JoinColumn(name = "empleado_id", referencedColumnName = "id"), 
     inverseJoinColumns = @JoinColumn(name = "inmueble_id", referencedColumnName = "id"))
 	private Collection<Inmueble> inmuebles;
+	
+	public Empleado() {}
 
 	public Empleado(Usuario user, String telefono) {
 
 		this.usuario = user;
 		this.telefono = telefono;
 
+	}
+
+	@Override
+	public String toString() {
+
+		return this.telefono;
+		
 	}
 
 }

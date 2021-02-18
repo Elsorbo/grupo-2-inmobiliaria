@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Collection;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -31,8 +32,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "usuarios")
 public class Usuario implements Serializable {
@@ -45,8 +44,8 @@ public class Usuario implements Serializable {
 	
 	@ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "role_usuario", 
-    joinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "id"), 
-    inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")) 
+    	joinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "id"), 
+    	inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")) 
 	private Collection<Role> roles;
 	
 	@NotEmpty(message = "El campo cédula es requerido.")
@@ -75,7 +74,7 @@ public class Usuario implements Serializable {
 	
 	private Boolean estado;
 	
-	@OneToOne(mappedBy = "usuario", fetch = FetchType.LAZY)
+	@OneToOne(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JsonIgnoreProperties({"usuario"})
 	private Empleado empleado;
 	
@@ -94,6 +93,8 @@ public class Usuario implements Serializable {
 	@Lob
 	private String descripcion;
 
+	public Usuario(){}
+
 	@PrePersist
 	public void preCreated () {
 		this.fechaCreacion = LocalDateTime.now();
@@ -110,6 +111,13 @@ public class Usuario implements Serializable {
 		this.contrasena = PasswordEncoderFactories
         	.createDelegatingPasswordEncoder().encode(newPassword);
 
+	}
+
+	@Override
+	public String toString() {
+
+		return this.nombres;
+		
 	}
 
 }

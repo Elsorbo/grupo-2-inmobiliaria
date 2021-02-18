@@ -3,6 +3,7 @@ package com.istb.app.controller.account;
 
 import java.security.Principal;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 import com.istb.app.entity.Usuario;
@@ -13,11 +14,13 @@ import com.istb.app.services.firebase.FirebaseStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
@@ -66,10 +69,10 @@ public class SettingsController {
 
 	@PutMapping("/updatepic")
 	@Transactional
-	public ResponseEntity<?> updatePicture(MultipartFile picture, Principal account) 
-		throws Exception {
+	public ResponseEntity<?> updatePicture(@RequestParam(defaultValue = "none") 
+		String username, MultipartFile picture) throws Exception {
 
-		Usuario user = userManager.findByUsuario(account.getName());
+		Usuario user = userManager.findByUsuario(username);
 		String previousName = user.getNombreImagenPerfil();
 		FileUpload img = fileManager.uploadFile(picture);
 
@@ -84,6 +87,18 @@ public class SettingsController {
 		return ResponseEntity.ok()
 			.contentType(MediaType.APPLICATION_JSON)
 			.body(img);
+
+	}
+
+	@GetMapping("/csrftoken")
+	public ResponseEntity<?> getToken(HttpServletRequest request) {
+
+		CsrfToken token = (CsrfToken) request
+			.getAttribute(CsrfToken.class.getName());
+
+		return ResponseEntity.ok()
+			.contentType(MediaType.APPLICATION_JSON)
+			.body(String.format("{\"key\": \"%s\"}", token.getToken()));
 
 	}
 	

@@ -54,6 +54,8 @@ public class Inmueble implements Serializable {
 
 	private long precio;
 
+	private String localidad;
+
 	@Column(name = "fecha_creacion", updatable = false)
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime fechaCreacion;
