@@ -3,7 +3,6 @@ package com.istb.app.services.accounts;
 
 import com.istb.app.entity.Arrendatario;
 import com.istb.app.entity.Empleado;
-import com.istb.app.entity.Usuario;
 
 /**
  * AccountsServiceI

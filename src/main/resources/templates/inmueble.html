@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="es" 
+    xmlns:th="http://www.thymeleaf.org" 
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="maintemplate :: head">
 </head>
@@ -19,17 +21,229 @@
             </nav>
 
             <div class="content">
-                Contenido inmueble
+
+                <button class="btn btn-danger" id="mostrar-inmueble">
+                    <i class="material-icons">add</i>
+                    Añadir inmueble
+                </button>
+                <div class="card" id="formulario-inmueble" style="display: none; margin: 12px auto; width: 95%;">
+                    <h4 class="" style="padding: 20px 0px 0px 20px;">Nuevo inmueble</h4>
+                    <div class="card-body">
+                        <div>
+                            <form method="post">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6 label-floating has-success">
+                                        <input required type="text" class="form-control" name="titulo"
+                                            id="titulo-inmueble" placeholder="Título">
+                                    </div>
+                                    <div class="form-group col-md-3 label-floating has-success">
+                                        <input required type="number" min="0" class="form-control" name="precio"
+                                            id="precio-inmueble" placeholder="Precio en $">
+                                    </div>
+                                    <div class="form-group col-md-3 label-floating has-success">
+                                        <input required type="number" min="0" class="form-control" name="area"
+                                            id="area-inmueble" placeholder="Area en m2">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6 label-floating has-success">
+                                        <select class="form-control" name="localidad" id="localidad-inmueble">
+                                            <option>Los Laureles</option>
+                                            <option>Los Perales</option>
+                                            <option>El Paraiso</option>
+                                            <option>Cdla. El mamey</option>
+                                            <option>El Salto</option>
+                                            <option>Cdla. 4 de mayo</option>
+                                            <option>Barreiro</option>
+                                            <option>Av. Juan X marcos</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group col-md-6 label-floating has-success"
+                                        sec:authorize="hasRole('ADMINISTRADOR')">
+                                        <select class="form-control" name="idEmpleado" id="empleado-id">
+                                            <option th:each="empleado : ${empleados}"
+                                                th:text="${empleado.usuario.nombres} + ' - ' + ${empleado.usuario.apellidos}"
+                                                th:value="${empleado.id}">
+                                                Nombre - Apellido</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                                <div class="form-row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Descripción</label>
+                                            <div class="form-group bmd-form-group is-filled">
+                                                <textarea id="descripcion-inmueble" class="form-control" rows="3"
+                                                    name="descripcion"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group form-file-upload form-file-multiple">
+                                    <input required type="file" multiple class="inputFileHidden" id="inmueble-img-picker">
+                                    <div class="input-group">
+                                        <input id="img-picker-label" type="text" class="form-control inputFileVisible"
+                                            placeholder="Imagenes del inmueble" multiple>
+                                        <span class="input-group-btn">
+                                            <button id="img-picker-btn" type="button" 
+                                                class="btn btn-fab btn-round btn-info">
+                                                <i class="material-icons">layers</i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <h4>En venta</h4>
+                                <div class="form-row">
+                                    <div class="form-check form-check-radio" style="margin-left: 20px;">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="exampleRadios"
+                                                id="radio-si" value="true">
+                                            Si
+                                            <span class="circle">
+                                                <span class="check"></span>
+                                            </span>
+                                        </label>
+
+                                    </div>
+                                    <div class="form-check form-check-radio" style="margin-left: 20px;">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="exampleRadios"
+                                                id="radio-no" value="false" checked>
+                                            No
+                                            <span class="circle">
+                                                <span class="check"></span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div><br />
+                                <h4>Servicios</h4>
+                                <div class="form-row">
+                                    <div th:each="servicio : ${servicios}" class="form-check"
+                                        style="margin-left: 20px;">
+                                        <label class="form-check-label">
+                                            <li style="list-style: none;" th:text="${servicio.nombre}">Agua</li>
+                                            <input class="form-check-input input-servicio-id" type="checkbox" th:value="${servicio.id}">
+                                            <span class="form-check-sign">
+                                                <span class="check"></span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-row flex-row-reverse">
+                                    <button id="registrar-inmueble" type="submit" class="btn btn-danger"
+                                        style="margin-right: 0px;">Registrar inmueble</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title ">Inmuebles</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">#</th>
+                                        <th>Título</th>
+                                        <th>Area</th>
+                                        <th>Precio</th>
+                                        <th>En venta</th>
+                                        <th>Encargado</th>
+                                        <th class="text-right">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="body-table-inmuebles">
+                                    <tr th:each="inmueble : ${paginator.content}" th:id="inmueble-+${inmueble.id}">
+                                        <td class="text-center" th:text="${inmueble.id}">id</td>
+                                        <td th:text="${inmueble.titulo}">Título</td>
+                                        <td th:text="${inmueble.area}">Area m2</td>
+                                        <td th:text="${inmueble.precio}">Precio</td>
+                                        <td th:text="${inmueble.comercializado} ? 'Si' : 'No' ">En venta</td>
+                                        <td
+                                            th:text="${inmueble.empleados[0].usuario.nombres} + ' ' + ${inmueble.empleados[0].usuario.apellidos}">
+                                            Encargado</td>
+                                        <input type="hidden" th:value="${inmueble.alquilado}">
+                                        <input type="hidden" th:value="${inmueble.descripcion}">
+                                        <td class="td-actions text-right">
+                                            <button type="button" rel="tooltip" class="btn btn-success">
+                                                <a th:href="@{/inmueble/} + ${inmueble.id}"
+                                                    style="text-decoration: none; color: white;">
+                                                    <i class="material-icons">edit</i>
+                                                </a>
+                                            </button>
+                                            <button type="button" rel="tooltip" data-toggle="modal"
+                                                data-target="#modal-confirm-delete"
+                                                class="btn btn-danger" id="borrar-inmueble-btn">
+                                                <i class="material-icons">close</i>
+                                            </button>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                            <nav aria-label="...">
+                                <ul class="pagination ">
+                                    <li class="page-item disabled" id="paginator-previous">
+                                        <a class="page-link" href="#" tabindex="-1">Anterior</a>
+                                    </li>
+                                    <li class="page-item disabled"><a class="page-link" href="#">-</a></li>
+                                    <li class="page-item active">
+                                        <a class="page-link" href="#">1 <span class="sr-only"></span></a>
+                                    </li>
+                                    <li class="page-item disabled"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"
+                                        th:classappend="${paginator.content.size} < 5 ? 'disabled' : ''"
+                                        id="paginator-next">
+                                        <a class="page-link" href="#">Siguiente</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Modal confirm delete -->
+            <div class="modal fade" id="modal-confirm-delete" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Eliminar inmueble</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Esta a punto de eliminar un inmueble
+                            <br /> ¿Está segur@ que desea realizar esta acción?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-danger" id="inmueble-borrar-btn">Eliminar</button>
+                            <input id="inmueble-delete-id" type="hidden" name="inmueble_id">
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <footer th:replace="maintemplate :: footer" class="footer">
             </footer>
         </div>
+
+    </div>
     </div>
     <script>
         document.querySelector(".inmuebles").classList.add("active")
     </script>
     <div th:replace="maintemplate :: scripts"></div>
+    <script type="module" th:src="@{/js/dashboard/inmueble.js}"></script>
 </body>
 
 </html>

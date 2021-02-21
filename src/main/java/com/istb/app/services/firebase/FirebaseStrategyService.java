@@ -64,15 +64,32 @@ public class FirebaseStrategyService implements FirebaseStrategy {
 	Logger log = LoggerFactory.getLogger(FirebaseStrategyService.class);
 
 	private final static String FOLDER = "inmobiliaria";
+
+	private String path;
 	
 	@PostConstruct
 	private void initializeFirebase() throws Exception {
+		
+		this.path = "/";
 		this.options = StorageOptions.newBuilder()
 			.setProjectId(this.projectId)
 			.setCredentials(GoogleCredentials.fromStream(getFirebaseCredential()))
 			.build();
+	
 	}
 	
+	@Override
+	public List<FileUpload> uploadFiles(MultipartFile[] multipartFiles, String path) 
+		throws Exception {
+	
+		this.path = String.format("/%s/", path);
+		List<FileUpload> files = uploadFiles(multipartFiles);
+		this.path = "/";
+
+		return files;
+	
+	}
+
 	@Override
 	public FileUpload uploadFile(MultipartFile multipartFile) throws Exception {
 		File file = convertMultiPartToFile(multipartFile);
@@ -80,7 +97,7 @@ public class FirebaseStrategyService implements FirebaseStrategy {
 	    String objectName = generateFileName(multipartFile);
 	    
 	    Storage storage = this.options.getService();
-	    BlobId blobId = BlobId.of(this.bucket, FOLDER.concat("/").concat(objectName));
+	    BlobId blobId = BlobId.of(this.bucket, FOLDER.concat(this.path).concat(objectName));
 	    	    
 	    BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
 			.setContentType(multipartFile.getContentType())

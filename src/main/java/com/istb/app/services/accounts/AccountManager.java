@@ -42,6 +42,7 @@ public class AccountManager implements AccountsServiceI {
 		user.setDescripcion("");
 		addRole(user, Arrays.asList("EMPLEADO"));
 		user.setUrlImagenPerfil(DEFAULT_PROFILE_IMAGE);
+		user.setNombreImagenPerfil("default");
 		
 		userManager.save(user);
 		employeeManager.save(employee);
@@ -59,6 +60,7 @@ public class AccountManager implements AccountsServiceI {
 		user.setDescripcion("");
 		addRole(user, Arrays.asList("ARRENDATARIO"));
 		user.setUrlImagenPerfil(DEFAULT_PROFILE_IMAGE);
+		user.setNombreImagenPerfil("default");
 		
 		userManager.save(user);
 		tenantManager.save(tenant);

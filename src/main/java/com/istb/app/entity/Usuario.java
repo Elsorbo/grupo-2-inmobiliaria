@@ -27,9 +27,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @Entity
@@ -45,7 +43,8 @@ public class Usuario implements Serializable {
 	@ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "role_usuario", 
     	joinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "id"), 
-    	inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")) 
+    	inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+	@JsonIgnoreProperties({"usuarios"})
 	private Collection<Role> roles;
 	
 	@NotEmpty(message = "El campo cédula es requerido.")

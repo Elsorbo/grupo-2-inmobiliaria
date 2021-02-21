@@ -9,7 +9,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
     <link rel="stylesheet" href="/css/main.css">
 </head>
 
@@ -62,19 +61,22 @@
                 <h2><i class="fas fa-laptop-house"></i> Inmobiliaria Mastarreno</h2>
             </div>
             <div class="w3-container w3-white w3-padding-16" style="height: 180px;">
-                <form action="" target="_self">
+                <form th:action="@{/infoinmuebles}">
                     <div class="w3-row-padding" style="margin:0 -16px;">
                         <div class="w3-half w3-margin-bottom"  style="width: 100%;">
                             <label style="font-weight: bold; font-size: 16px;">
                                 <i class="far fa-building"></i> 
                                 Inmbuebles de su preferencia</label>
-                            <select class="w3-select" name="search-by-city" id="select-city">
+                            <select class="w3-select" name="zone" id="select-city">
                                 <!-- Modificar con información dinámica. -->
-                                <option value="">El Salto</option>
-                                <option value="">Puertas Negras</option>
-                                <option value="">Via Universitaria</option>
-                                <option value="">Barrio Lindo</option>
-                                <option value="">Avenida 5 de Junio</option>
+                                <option>Los Laureles</option>
+                                <option>Los Perales</option>
+                                <option>El Paraiso</option>
+                                <option>Cdla. El mamey</option>
+                                <option>El Salto</option>
+                                <option>Cdla. 4 de mayo</option>
+                                <option>Barreiro</option>
+                                <option>Av. Juan X marcos</option>
                                 <!-- ####################################### -->
                             </select>
                         </div>
@@ -100,7 +102,7 @@
             <div class="w3-third w3-margin-bottom">
                 <img src="/images/terreno1.png" alt="Norway" style="width:100%">
                 <div class="w3-container w3-white">
-                    <h3>Ciudadela Brisas del Norte</h3>
+                    <h3>Terreno en Barreiro</h3>
                     <h6 class="w3-opacity">Desde $99.000</h6>
                     <p>Single bed</p>
                     <p>15m<sup>2</sup></p>
@@ -112,7 +114,7 @@
             <div class="w3-third w3-margin-bottom">
                 <img th:src="@{/images/terreno2.png}" alt="Norway" style="width:100%">
                 <div class="w3-container w3-white">
-                    <h3>Sur de Guayaquil</h3>
+                    <h3>Sur de la ciudad</h3>
                     <h6 class="w3-opacity">Desde $149.000</h6>
                     <p>Queen-size bed</p>
                     <p>25m<sup>2</sup></p>
@@ -124,7 +126,7 @@
             <div class="w3-third w3-margin-bottom">
                 <img th:src="@{/images/terreno3.jpg}" alt="Norway" style="width:100%">
                 <div class="w3-container w3-white">
-                    <h3>Via la Costa</h3>
+                    <h3>Via Montalvo</h3>
                     <h6 class="w3-opacity">Desde $199.000</h6>
                     <p>King-size bed</p>
                     <p>40m<sup>2</sup></p>
@@ -196,7 +198,9 @@
             <a href="https://www.instagram.com/mastarreno_com/" target="_blank"><i class="fab fa-instagram-square w3-hover-opacity"></i></a>
             <a href="https://ec.linkedin.com/in/erleny-mastarreno-61441813b" target="_blank"><i class="fab fa-linkedin w3-hover-opacity"></i></a>
         </div>
-        <p>Desarrollado por un estudiante del <a href="https://istb.edu.ec/" target="_blank" class="w3-hover-text-green">ISTB</a></p>
+        <p>Desarrollado por Genesis Intriago - Estudiante del <a href="https://istb.edu.ec/" target="_blank"
+            class="w3-hover-text-green">ISTB</a></p>
+  
     </footer>
 
 </body>

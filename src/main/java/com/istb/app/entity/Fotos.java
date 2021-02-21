@@ -1,3 +1,4 @@
+
 package com.istb.app.entity;
 
 import java.io.Serializable;
@@ -18,13 +19,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "fotos")
 public class Fotos implements Serializable {
@@ -61,4 +58,12 @@ public class Fotos implements Serializable {
 	public void preUpdated () {
 		this.fechaActualizacion = LocalDateTime.now();
 	}
+
+	@Override
+	public String toString() {
+
+		return String.format("[Foto: %]", this.url_foto);
+
+	}
+
 }

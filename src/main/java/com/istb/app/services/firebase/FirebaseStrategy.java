@@ -15,6 +15,16 @@ public interface FirebaseStrategy {
 	 * @throws Exception
 	 */
 	FileUpload uploadFile(MultipartFile multipartFile) throws Exception;
+
+	/**
+	 * 
+	 * @param multipartFile
+	 * @param path
+	 * @return
+	 * @throws Exception
+	 */
+	public List<FileUpload> uploadFiles(
+		MultipartFile[] multipartFile, String path) throws Exception;
 	
 	/**
 	 * 

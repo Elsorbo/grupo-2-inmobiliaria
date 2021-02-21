@@ -21,9 +21,7 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @Entity
@@ -41,7 +39,7 @@ public class Empleado implements Serializable {
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "usuario_id")
-	@JsonIgnoreProperties({"empleado", "arrendatario"})
+	@JsonIgnoreProperties({"empleado"})
 	private Usuario usuario;
 	
 	@OneToMany(mappedBy = "empleado", fetch = FetchType.LAZY)
@@ -53,6 +51,7 @@ public class Empleado implements Serializable {
     @JoinTable(name = "empleado_inmueble", 
     joinColumns = @JoinColumn(name = "empleado_id", referencedColumnName = "id"), 
     inverseJoinColumns = @JoinColumn(name = "inmueble_id", referencedColumnName = "id"))
+	@JsonIgnoreProperties({"empleados"})
 	private Collection<Inmueble> inmuebles;
 	
 	public Empleado() {}

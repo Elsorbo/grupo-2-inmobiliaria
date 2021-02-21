@@ -1,12 +1,13 @@
 
 package com.istb.app.controller.dashboard;
 
+import java.util.Optional;
+
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import com.istb.app.entity.Empleado;
 import com.istb.app.repository.EmpleadoRepositoryI;
-import com.istb.app.repository.UsuarioRepositoryI;
 import com.istb.app.services.accounts.AccountsServiceI;
 import com.istb.app.services.firebase.FirebaseStrategy;
 
@@ -39,17 +40,36 @@ public class EmployeeController {
 	@Autowired
 	private EmpleadoRepositoryI empleadoManager;
 
+	@GetMapping("/empleados")
+	@Transactional
+	public String getEmpleados(Model attributes) {
+
+		attributes.addAttribute("sectionTitle", "empleados");
+		attributes.addAttribute("paginator", 
+			empleadoManager.findAll( PageRequest.of(0, 5) ));
+		
+		return "empleado";
+		
+	}
+
 	@GetMapping("/empleado/{id}")
+	@Transactional
 	public String editEmpleado(@PathVariable Integer id, Model attributes) {
 
+		Optional<Empleado> employee = empleadoManager.findById(id);
+		
+		if(!employee.isPresent()) { 
+			return "redirect:/empleados"; }
+		
 		attributes.addAttribute("sectionTitle", "Editar empleado");
-		attributes.addAttribute("account", empleadoManager.findById(id).get());
+		attributes.addAttribute("account", employee.get());
 		
 		return "editarEmpleado";
 		
 	}
 
 	@GetMapping("/empleado")
+	@Transactional
 	public ResponseEntity<?> getEmpleados(
 		@RequestParam(defaultValue = "0") int pageNumber) {
 
@@ -104,10 +124,15 @@ public class EmployeeController {
 	}
 	
 	@DeleteMapping("/empleado/{id}")
+	@Transactional
 	public ResponseEntity<?> deleteEmployee(@PathVariable int id) {
 		
-		fbmanager.deleteFile(
-			empleadoManager.findById(id).get().getUsuario().getNombreImagenPerfil());
+		Empleado empleado = empleadoManager.findById(id).get();
+		
+		if( !empleado.getUsuario().getNombreImagenPerfil().equals("default") ) {
+			fbmanager.deleteFile(
+				empleado.getUsuario().getNombreImagenPerfil()); }
+		
 		empleadoManager.deleteById(id);
 
 		return ResponseEntity.ok()

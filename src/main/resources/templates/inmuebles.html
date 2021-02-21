@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Inmuebles</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+  <style>
+    .w3-sidebar a {
+      font-family: "Roboto", sans-serif
+    }
+
+    body,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    .w3-wide {
+      font-family: "Montserrat", sans-serif;
+    }
+
+    .filter {
+
+      padding: 12px;
+      margin-left: 10px;
+      /* font-size: medium; */
+
+    }
+  </style>
+
+</head>
+
+<body class="w3-content" style="max-width:100%;margin-left: 0px; margin-right: 0px;">
+
+  <!-- Sidebar/menu -->
+  <nav class="w3-sidebar w3-bar-block w3-white w3-collapse w3-top" style="z-index:3;width:200px" id="mySidebar">
+    <div class="w3-container w3-display-container w3-padding-16">
+      <i onclick="w3_close()" class="fa fa-remove w3-hide-large w3-button w3-display-topright"></i>
+      <a th:href="@{/}"><img
+          src="https://firebasestorage.googleapis.com/v0/b/tdemo-fc5b5.appspot.com/o/logo.jpg?alt=media&token=f93af709-4c3d-47e2-82ee-ea663321c2f4"
+          width="145" style="margin-left: 12px;"></a>
+    </div>
+    <div class="filter">
+      <h4>Filtrar por zona</h2>
+      <form>
+        <div>
+          <input class="w3-check" type="radio">
+          <label >Los Laureles</label>
+        </div>
+        <div>
+          <input class="w3-check" type="radio">
+          <label >Los Perales</label>
+        </div>
+        <div>
+          <input class="w3-check" type="radio">
+          <label >El Paraíso</label>
+        </div>
+        <div>
+          <input class="w3-check" type="radio">
+          <label >Cdla. El mamey</label>
+        </div>
+        <div>
+          <input class="w3-check" type="radio">
+          <label >El Salto</label>
+        </div>
+        <div>
+          <input class="w3-check" type="radio">
+          <label >Cdla. 4 de mayo</label>
+        </div>
+        <div>
+          <input class="w3-check" type="radio">
+          <label >Barreiro</label>
+        </div>
+        <div>
+          <input class="w3-check" type="radio">
+          <label >Av. Juan X marcos</label>
+        </div>
+      </form>
+    </div>
+  </nav>
+
+  <!-- Top menu on small screens -->
+  <header class="w3-bar w3-top w3-hide-large w3-black w3-xlarge">
+    <div class="w3-bar-item w3-padding-24 w3-wide">Inmuebles</div>
+    <a href="javascript:void(0)" class="w3-bar-item w3-button w3-padding-24 w3-right" onclick="w3_open()"><i
+        class="fa fa-bars"></i></a>
+  </header>
+
+  <!-- Overlay effect when opening sidebar on small screens -->
+  <div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu"
+    id="myOverlay"></div>
+
+  <!-- !PAGE CONTENT! -->
+  <div class="w3-main" style="margin-left:220px">
+
+    <!-- Push down content on small screens -->
+    <div class="w3-hide-large" style="margin-top:83px"></div>
+
+    <!-- Top header -->
+    <header class="w3-container w3-xlarge">
+      <p id="locacion-label" class="w3-left" 
+        th:text="${zona} ? 'Locación:' + ' ' + ${ zona} : 'Locación: Desconocida'">
+        Locación: Desconocida</p>
+    </header>
+
+
+    <div class="w3-container w3-text-grey" id="jeans">
+      <p th:text="${inmuebles} ? ${inmuebles.size} + ' Items': '0 Items'">0 items</p>
+    </div>
+
+    <!-- Product grid -->
+    <div>
+
+      <div class="w3-row-padding w3-padding-16">
+
+        <div class="w3-third w3-margin-bottom">
+          <img src="/images/terreno1.png" alt="Norway" style="width:100%">
+          <div class="w3-container w3-white card-container">
+            <h3>Ciudadela Brisas del Norte</h3>
+            <h6 class="w3-opacity">Desde $99.000</h6>
+            <p>Single bed</p>
+            <p>15m<sup>2</sup></p>
+            <p class="w3-large"><i class="fa fa-bath"></i> <i class="fa fa-phone"></i> <i class="fa fa-wifi"></i></p>
+            <button class="w3-button w3-block w3-black w3-margin-bottom">Ver detalles</button>
+          </div>
+        </div>
+        <div class="w3-third w3-margin-bottom">
+          <img th:src="@{/images/terreno2.png}" alt="Norway" style="width:100%">
+          <div class="w3-container w3-white card-container">
+            <h3>Sur de Guayaquil</h3>
+            <h6 class="w3-opacity">Desde $149.000</h6>
+            <p>Queen-size bed</p>
+            <p>25m<sup>2</sup></p>
+            <p class="w3-large"><i class="fa fa-bath"></i> <i class="fa fa-phone"></i> <i class="fa fa-wifi"></i> <i
+                class="fa fa-tv"></i></p>
+            <button class="w3-button w3-block w3-black w3-margin-bottom">Ver detalles</button>
+          </div>
+        </div>
+        <div class="w3-third w3-margin-bottom">
+          <img th:src="@{/images/terreno3.jpg}" alt="Norway" style="width:100%">
+          <div class="w3-container w3-white card-container">
+            <h3>Via la Costa</h3>
+            <h6 class="w3-opacity">Desde $199.000</h6>
+            <p>King-size bed</p>
+            <p>40m<sup>2</sup></p>
+            <p class="w3-large"><i class="fa fa-bath"></i> <i class="fa fa-phone"></i> <i class="fa fa-wifi"></i> <i
+                class="fa fa-tv"></i> <i class="fa fa-glass"></i> <i class="fa fa-cutlery"></i></p>
+            <button class="w3-button w3-block w3-black w3-margin-bottom">Ver detalles</button>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="w3-padding-32 w3-black w3-center w3-margin-top">
+      <h5>Encuentrenos en nuestras redes sociales</h5>
+      <div class="w3-xlarge w3-padding-16">
+        <a href="https://www.facebook.com/inmobiliariamastarreno/" target="_blank"><i
+            class="fab fa-facebook-square w3-hover-opacity"></i></a>
+        <a href="https://www.instagram.com/mastarreno_com/" target="_blank"><i
+            class="fab fa-instagram-square w3-hover-opacity"></i></a>
+        <a href="https://ec.linkedin.com/in/erleny-mastarreno-61441813b" target="_blank"><i
+            class="fab fa-linkedin w3-hover-opacity"></i></a>
+      </div>
+      <p>Desarrollado por Genesis Intriago - Estudiante del <a href="https://istb.edu.ec/" target="_blank"
+          class="w3-hover-text-green">ISTB</a></p>
+    </footer>
+
+    <!-- End page content -->
+  </div>
+
+  <script>
+    // Accordion 
+    function myAccFunc() {
+      var x = document.getElementById("demoAcc");
+      if (x.className.indexOf("w3-show") == -1) {
+        x.className += " w3-show";
+      } else {
+        x.className = x.className.replace(" w3-show", "");
+      }
+    }
+
+    // Open and close sidebar
+    function w3_open() {
+      document.getElementById("mySidebar").style.display = "block";
+      document.getElementById("myOverlay").style.display = "block";
+    }
+
+    function w3_close() {
+      document.getElementById("mySidebar").style.display = "none";
+      document.getElementById("myOverlay").style.display = "none";
+    }
+  </script>
+
+  <script type="module" th:src="@{/js/inmuebleInfo.js}"></script>
+
+</body>
+
+</html>

@@ -1,13 +1,8 @@
 
 package com.istb.app.controller;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import com.istb.app.util.AccountUtils;
 
-import com.istb.app.repository.EmpleadoRepositoryI;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,11 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class MainController {
 
-	@Autowired
-	private EmpleadoRepositoryI employeeManager;
-
 	@GetMapping("/")
-	public String main(Model attributes) {
+	public String mainPage(Model attributes) {
 
 		return "index";
 
@@ -29,32 +21,18 @@ public class MainController {
 	@GetMapping("/dashboard")
 	public String dashboard(Model attributes, Authentication account) {
 		
-		List<String> roles = account.getAuthorities()
-			.stream()
-			.map( rol -> rol.getAuthority().replace("ROLE_", "") )
-			.collect(Collectors.toList());
-		
 		attributes.addAttribute("sectionTitle", "dashboard");
 		
-		if(roles.contains("ADMINISTRADOR")) {
+		if(AccountUtils.hasRole(account, "ADMINISTRADOR")) {
 			return "redirect:/empleados"; }
 		
-		if(roles.contains("EMPLEADO")) {
+		if(AccountUtils.hasRole(account, "EMPLEADO")) {
 			return "redirect:/inmuebles"; }
 		
-		if(roles.contains("ADMINISTRADOR")) {
+		if(AccountUtils.hasRole(account, "ADMINISTRADOR")) {
 			return "redirect:/facturas"; }
 
 		return "dashboard";
-		
-	}
-	
-	@GetMapping("/inmuebles")
-	public String getInmueble(Model attributes) {
-
-		attributes.addAttribute("sectionTitle", "inmuebles");
-		
-		return "inmueble";
 		
 	}
 	
@@ -82,17 +60,6 @@ public class MainController {
 		attributes.addAttribute("sectionTitle", "notificaiones de desalojo");
 		
 		return "desalojo";
-		
-	}
-
-	@GetMapping("/empleados")
-	public String getEmpleados(Model attributes) {
-
-		attributes.addAttribute("sectionTitle", "empleados");
-		attributes.addAttribute("paginator", 
-			employeeManager.findAll( PageRequest.of(0, 5) ));
-		
-		return "empleado";
 		
 	}
 
