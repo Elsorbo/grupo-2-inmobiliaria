@@ -45,17 +45,4 @@ public class Servicio implements Serializable {
 
 	}
 
-	@Override
-	public boolean equals(Object objt) {
-
-		if (this == objt) { 
-			return true; }
-
-		if (this.nombre.equals( ((Servicio) objt).getNombre() )) { 
-			return true; }
-
-		return false;
-
-	}
-
 }
