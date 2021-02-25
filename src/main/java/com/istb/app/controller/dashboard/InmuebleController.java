@@ -4,6 +4,7 @@ package com.istb.app.controller.dashboard;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -109,6 +110,10 @@ public class InmuebleController {
 			return "redirect:/infoinmuebles"; }
 		
 		attributes.addAttribute("inmueble", inmueble.get());
+		attributes.addAttribute("servicios", 
+			inmueble.get().getServicios().stream()
+			.map( servicio -> servicio.getNombre() )
+			.collect( Collectors.toList()) );
 
 		return "detalleinmueble";
 

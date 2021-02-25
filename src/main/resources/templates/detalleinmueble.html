@@ -52,14 +52,14 @@
 		<div class="w3-container">
 
 			<h4><strong>Servicios incluidos</strong></h4>
-			<div class="w3-row w3-large">
+			<div th:if="${inmueble.servicios.size > 0}"class="w3-row w3-large">
 				<div class="w3-col s6">
-					<p><i class="fas fa-bolt"></i> Electricidad</p>
-					<p><i class="fas fa-tint"></i> Agua potable</p>
+					<p th:if="${#lists.contains(servicios, 'Electricidad')}"><i class="fas fa-bolt"></i> Electricidad</p>
+					<p th:if="${#lists.contains(servicios, 'Agua potable')}"><i class="fas fa-tint"></i> Agua potable</p>
 				</div>
 				<div class="w3-col s6">
-					<p><i class="fa fa-phone"></i> Teléfono</p>
-					<p><i class="fa fa-fw fa-wifi"></i> WiFi</p>
+					<p th:if="${#lists.contains(servicios, 'Teléfono')}"><i class="fa fa-phone"></i> Teléfono</p>
+					<p th:if="${#lists.contains(servicios, 'Wifi')}"><i class="fa fa-fw fa-wifi"></i> WiFi</p>
 				</div>
 			</div>
 			<hr>

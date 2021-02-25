@@ -65,5 +65,5 @@ public class Fotos implements Serializable {
 		return String.format("[Foto: %]", this.url_foto);
 
 	}
-
+	
 }
