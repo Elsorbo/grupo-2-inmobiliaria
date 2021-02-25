@@ -1,6 +1,6 @@
 
 import {
-    getData, getFormValues, sendJSONData, deleteObject, showNotification
+    sendJSONData, deleteObject, showNotification
 } from "../utils.js";
 
 import Paginator from "../Paginator.js";
@@ -24,21 +24,29 @@ const newEmployee = async (event) => {
     let target = event.target;
     let form = target.parentElement.parentElement;
     
-    if(form.checkValidity()) {
+    if( form.checkValidity() ) {
 
-        let formValues = {"usuario": {}};
-        formValues.usuario['usuario'] = form['usuario.usuario'].value;
-        formValues.usuario['cedula'] = form['usuario.cedula'].value;
-        formValues.usuario['nombres'] = form['usuario.nombres'].value;
-        formValues.usuario['apellidos'] = form['usuario.apellidos'].value;
-        formValues.usuario['correo'] = form['usuario.correo'].value;
-        formValues.usuario['contrasena'] = form['usuario.contrasena'].value;
-        formValues['telefono'] = form.telefono.value;
+        let formValues = {
+        
+            "telefono":  form.telefono.value,
+            "usuario": {
+
+                "usuario": form.usuario.value,
+                "cedula": form.cedula.value,
+                "nombres": form.nombres.value,
+                "apellidos": form.apellidos.value,
+                "correo": form.correo.value,
+                "contrasena": form.contrasena.value
+
+            }
+        
+        };
 
         let response = await sendJSONData("empleado", "post", formValues);
         
         if(response.ok) {
 
+            ++paginador.totalElements;
             let employee = await response.json()
             
             if(tbodyEmployees.children.length < 5) {
@@ -46,7 +54,8 @@ const newEmployee = async (event) => {
                 tbodyEmployees.innerHTML += newEmployeeFromTemplate(employee);
                 addEmployeeListeners(tbodyEmployees.lastElementChild);
             
-            }
+            } else {
+                addEmployees( await paginador.lastPage() ); }
             
             showNotification("Se registro el empleado exitosamente", "success");
             [...form].forEach( i => i.value = "");
@@ -62,8 +71,8 @@ const newEmployee = async (event) => {
     
     } else {
 
-        showNotification(
-            "Algunos campos del formulario son incorrectos o están vacios", "danger");
+        showNotification("Algunos campos del formulario son incorrectos\
+             o están vacios", "danger");
 
     }
 
@@ -73,11 +82,11 @@ const newEmployee = async (event) => {
 const addEmployees = (employees) => {
 
     if(employees.length > 0) {
-    
+        
         let htmlEmployees = employees.map( (employee) => {
-        return newEmployeeFromTemplate(employee); });
+            return newEmployeeFromTemplate(employee); });
     
-        tbodyEmployees.innerHTML = htmlEmployees.reduce( (a, b) => a.concat(b));
+        tbodyEmployees.innerHTML = htmlEmployees.join("");
         [...tbodyEmployees.children].map( tr => addEmployeeListeners(tr) );
     
     }
@@ -163,15 +172,25 @@ const deleteEmployee = async (event) => {
 
     let target = event.target;
     
-    let response = await deleteObject(
-        "empleado/".concat(employeeDeleteInputId.value));
+    deleteObject("empleado/".concat(employeeDeleteInputId.value)).then( (res, rej) => {
 
-    if(response.ok) { 
-    
-        document.querySelector(`#employee-${employeeDeleteInputId.value}`)
-            .style.display = "none";
-        showNotification("Usuario eliminado correctamente", "success"); }
+        if(res.ok) { 
         
+            document.querySelector(`#employee-${employeeDeleteInputId.value}`)
+                .style.display = "none";
+            
+            showNotification("Usuario eliminado correctamente", "success");
+        
+        }
+
+        return paginador.getPage(paginador.currentPageId);
+
+    }).then( (res, rej) => {
+
+        addEmployees(res);
+
+    });
+
     target.previousElementSibling.click();
 
 }
@@ -208,7 +227,7 @@ const newEmployeeFromTemplate = (employee) => {
             <button type="button" rel="tooltip" data-toggle="modal" 
                 data-target="#modal-confirm-delete" 
                 class="btn btn-danger delete-employee-btn">
-                <i class="material-icons">close</i>
+                <i class="material-icons">delete_forever</i>
             </button>
         </td>
     </tr>`);

@@ -21,6 +21,7 @@ import com.istb.app.util.AccountUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -75,19 +76,31 @@ public class InmuebleController {
 	@GetMapping("/infoinmuebles")
 	@Transactional
 	public String inmueblesPage(Model attributes, 
-		@RequestParam(defaultValue = "Los Laureles") String zone) {
+		@RequestParam(defaultValue = "none") String zone) {
 
-		attributes.addAttribute("inmuebles", 
-			inmuebleRepository.findByLocalidad(zone));
+		if( !zone.equals("none") ) {
 		
-		attributes.addAttribute("zona", zone);
+			attributes.addAttribute("inmuebles", 
+				inmuebleRepository.findByLocalidad(zone));
+				
+			attributes.addAttribute("zona", zone);
+		
+		} else { 
+			
+			attributes.addAttribute("inmuebles", 
+				inmuebleRepository.findAll(
+					PageRequest.of(0, 3, Sort.by("id").descending())).getContent() );
+				
+			attributes.addAttribute("zona", "Ultimos inmuebles");
+		
+		}
 
 		return "inmuebles";
 
 	}
 	
-	@GetMapping("/infoinmueble/{id}")
 	@Transactional
+	@GetMapping("/infoinmueble/{id}")
 	public String inmueblesDetalle(@PathVariable int id, Model attributes) {
 
 		Optional<Inmueble> inmueble = inmuebleRepository.findById(id);
@@ -127,7 +140,7 @@ public class InmuebleController {
 
 		return ResponseEntity.ok()
 			.contentType(MediaType.APPLICATION_JSON)
-			.body( inmuebleManager.crearInmueble(inmueble) );
+			.body( inmuebleManager.crearInmueble(inmueble).get("inmueble") );
 
 	}
 

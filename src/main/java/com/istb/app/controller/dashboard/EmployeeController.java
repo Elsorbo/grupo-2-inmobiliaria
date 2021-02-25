@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -116,6 +117,12 @@ public class EmployeeController {
 		employee.getUsuario().setNombres(empleado.getUsuario().getNombres());
 		employee.getUsuario().setApellidos(empleado.getUsuario().getApellidos());
 		employee.getUsuario().setDescripcion(empleado.getUsuario().getDescripcion());
+		
+		if( empleado.getUsuario().getContrasena() != null ) {
+			employee.getUsuario().setContrasena(
+				PasswordEncoderFactories
+					.createDelegatingPasswordEncoder()
+					.encode(empleado.getUsuario().getContrasena()) ); }
 
 		return ResponseEntity.ok()
 			.contentType(MediaType.APPLICATION_JSON)

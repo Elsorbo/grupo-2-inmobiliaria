@@ -13,8 +13,8 @@ const getFormValues = (form) => {
 
 }
 
-const getData = async (resource) => {
-
+const getData = async (resource, headers = null) => {
+    
     let response = fetch(`/${resource}`);
 
     return response;
@@ -96,19 +96,19 @@ const deleteObject = async (resource, headers = null) => {
 
     if(headers == null) {
         headers = new Headers(); }
-            
+    
     headers.append("Content-Type", "application/json");
     headers.append("X-CSRF-TOKEN", token.key);
     
     let response = fetch(`/${resource}`, {
-    
+        
         "method": "delete",
         "headers": headers
-    
+        
     });
 
     return response;
-
+    
 }
 
 export { 

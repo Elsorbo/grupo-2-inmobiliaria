@@ -3,8 +3,9 @@ import {
     getFormValues, showNotification, sendJSONData, uploadFiles} 
 from "../utils.js";
 
-let profilePic = document.querySelector("#accountImage");
 let accountId = document.querySelector("#account-id");
+let profilePic = document.querySelector("#accountImage");
+let perfilDetails = document.querySelector("#perfilDetails");
 let usernameInput = document.querySelector("#username-input");
 
 const updateAccount = async (event) => {
@@ -21,16 +22,15 @@ const updateAccount = async (event) => {
         accountValues = loadEmployeeData(accountValues);
     
     }
-
-    let details = document.querySelector("#perfilDetails");
     
     let response = await sendJSONData(path, "put", accountValues);
+
     if(response.ok) {
 
-        details.previousElementSibling.textContent = `
+        perfilDetails.previousElementSibling.textContent = `
         ${accountValues.nombres ? accountValues.nombres : accountValues.usuario.nombres} \
         ${accountValues.apellidos ? accountValues.apellidos : accountValues.usuario.apellidos}`;
-        details.textContent = accountValues.descripcion ? accountValues.descripcion : accountValues.usuario.descripcion;
+        perfilDetails.textContent = accountValues.descripcion ? accountValues.descripcion : accountValues.usuario.descripcion;
         showNotification(
             "El perfil se ha actualizado correctamente", "success");
     
@@ -44,7 +44,7 @@ const updateAccount = async (event) => {
 const updateImage = async (event) => {
 
     let inputFile = event.target;
-    let fileSizeMB = inputFile.files[0].size / (1024 * 1024);
+    let fileSizeMB = inputFile.files[0].size / (2048 * 1024);
     
     if( fileSizeMB >  1) {
         showNotification(
@@ -67,18 +67,26 @@ const updateImage = async (event) => {
 
 const loadEmployeeData = (formData) => {
 
-    let employeeValues = {"usuario": {}, "telefono": "0000000"};
-        employeeValues.usuario['usuario'] = formData.usuario;
-        employeeValues.usuario['cedula'] = formData.cedula;
-        employeeValues.usuario['nombres'] = formData.nombres;
-        employeeValues.usuario['apellidos'] = formData.apellidos;
-        employeeValues.usuario['correo'] = formData.correo;
-        employeeValues.usuario['descripcion'] = formData.descripcion;
-        employeeValues.usuario['estado'] = formData.estado == "on" ? true : false;
-        // if(formData.contrasena1 === formData.contrasena2) {
-        //     employeeValues.usuario['contrasena'] = formData.contrasena; }
-        employeeValues.telefono = formData.telefono;
+    let employeeValues = {
+        
+        "telefono":  formData.telefono,
+        "usuario": {
 
+            "usuario": formData.usuario,
+            "cedula": formData.cedula,
+            "nombres": formData.nombres,
+            "apellidos": formData.apellidos,
+            "correo": formData.correo,
+            "descripcion": formData.descripcion,
+            "estado": document.querySelector("#account-state").checked
+
+        }
+    
+    };
+    
+    if(formData.contrasena1 == formData.contrasena2) {
+        employeeValues.usuario["contrasena"] = formData.contrasena2; }
+    
     return employeeValues;
 
 }

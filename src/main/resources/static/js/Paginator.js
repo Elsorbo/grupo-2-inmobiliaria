@@ -6,14 +6,49 @@ class Paginator {
     constructor(resource, htmlPaginator){
 
         this.resource = resource;
-        
         this.last = false;
         this.first = true;
         this.nextPageId = 2;
+        this.totalElements = parseInt(htmlPaginator.lastElementChild.value);
         this.currentPageId = 1;
         this.previousPageId = 0;
 
         this.htmlPaginator = htmlPaginator;
+
+    }
+    
+    async lastPage() {
+
+        let response = await getData(
+            `${this.resource}?pageNumber=${Math.ceil((this.totalElements + 1) / 5) - 1}`);
+        
+        if(response.ok) {
+
+            let pageResponse = await response.json();
+            
+            this.last = true;
+            this.first = false;
+            this.nextPageId = pageResponse.totalPages + 1;
+            this.currentPageId = pageResponse.totalPages;
+            this.previousPageId = this.currentPageId - 1;
+            this.totalElements = pageResponse.totalElements;
+
+            this.htmlPaginator.children[4].classList.add("disabled");
+            this.htmlPaginator.children[1].children[0].innerText = this.previousPageId;
+            this.htmlPaginator.children[2].children[0].textContent = this.currentPageId;
+            this.htmlPaginator.children[3].children[0].textContent = this.nextPageId;
+            this.htmlPaginator.children[3].children[0].innerText = "-";
+
+            if(this.currentPageId == 1) { 
+                this.htmlPaginator.children[0].classList.add("disabled"); 
+            } else { 
+                this.htmlPaginator.children[0].classList.remove("disabled"); }
+
+            return pageResponse.content;
+
+        }
+
+        return [];
 
     }
 
@@ -23,9 +58,9 @@ class Paginator {
 
         if(response.ok) { 
 
-            let page = await response.json()
+            let pageResponse = await response.json()
 
-            return page.content;
+            return pageResponse.content;
 
         }
 
@@ -52,8 +87,8 @@ class Paginator {
                 this.htmlPaginator.children[0].classList.remove("disabled");
                 this.htmlPaginator.children[1].children[0].innerText = this.previousPageId;
                 this.htmlPaginator.children[2].children[0].textContent = this.currentPageId;
-                this.htmlPaginator.children[3].children[0].textContent = this.nextPageId;
-
+                this.htmlPaginator.children[3].children[0].textContent = this.nextPageId;        
+            
             } 
             
             if(this.last) {
@@ -88,8 +123,8 @@ class Paginator {
                 this.htmlPaginator.children[4].classList.remove("disabled");
                 this.htmlPaginator.children[1].children[0].innerText = this.previousPageId;
                 this.htmlPaginator.children[2].children[0].textContent = this.currentPageId;
-                this.htmlPaginator.children[3].children[0].textContent = this.nextPageId;
-
+                this.htmlPaginator.children[3].children[0].textContent = this.nextPageId;        
+            
             }
             
             if(this.first) {

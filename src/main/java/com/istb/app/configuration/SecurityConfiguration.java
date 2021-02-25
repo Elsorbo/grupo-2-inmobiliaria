@@ -21,7 +21,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.cors().disable();
 
 		http.authorizeRequests()
-			.antMatchers("/", "/infoinmuebles/**/", 
+			.antMatchers("/", "/infoinmuebles/**/", "/infoinmueble/**",
 				"/images/**", "/css/**", "/js/**").permitAll()
 			.antMatchers("/empleados", "/empleado/**").hasRole("ADMINISTRADOR")
 			.antMatchers("/inmuebles", "/inmueble/**", "/inmueblepics").hasAnyRole("EMPLEADO", "ADMINISTRADOR")

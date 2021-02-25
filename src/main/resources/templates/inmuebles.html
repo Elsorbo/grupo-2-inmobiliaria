@@ -52,39 +52,47 @@
         <div>
           <input class="w3-check" type="radio">
           <label >Los Laureles</label>
+          <a th:href="@{/infoinmuebles?zone=} + 'Los+Laureles' "></a>
         </div>
         <div>
           <input class="w3-check" type="radio">
           <label >Los Perales</label>
+          <a th:href="@{/infoinmuebles?zone=} + 'Los+Perales' "></a>
         </div>
         <div>
           <input class="w3-check" type="radio">
-          <label >El Paraíso</label>
+          <label >El Paraiso</label>
+          <a th:href="@{/infoinmuebles?zone=} + 'El+Paraiso' "></a>
         </div>
         <div>
           <input class="w3-check" type="radio">
           <label >Cdla. El mamey</label>
+          <a th:href="@{/infoinmuebles?zone=} + 'Cdla.+El+mamey' "></a>
         </div>
         <div>
           <input class="w3-check" type="radio">
           <label >El Salto</label>
+          <a th:href="@{/infoinmuebles?zone=} + 'El+Salto' "></a>
         </div>
         <div>
           <input class="w3-check" type="radio">
           <label >Cdla. 4 de mayo</label>
+          <a th:href="@{/infoinmuebles?zone=} + 'Cdla.+4+de+mayo' "></a>
         </div>
         <div>
           <input class="w3-check" type="radio">
           <label >Barreiro</label>
+          <a th:href="@{/infoinmuebles?zone=} + 'Barreiro' "></a>
         </div>
         <div>
           <input class="w3-check" type="radio">
           <label >Av. Juan X marcos</label>
+          <a th:href="@{/infoinmuebles?zone=} + 'Av.+Juan+X+marcos' "></a>
         </div>
       </form>
     </div>
   </nav>
-
+  
   <!-- Top menu on small screens -->
   <header class="w3-bar w3-top w3-hide-large w3-black w3-xlarge">
     <div class="w3-bar-item w3-padding-24 w3-wide">Inmuebles</div>
@@ -117,45 +125,23 @@
     <!-- Product grid -->
     <div>
 
-      <div class="w3-row-padding w3-padding-16">
+      <div id="inmuebles-container" class="w3-row-padding w3-padding-16">
 
-        <div class="w3-third w3-margin-bottom">
-          <img src="/images/terreno1.png" alt="Norway" style="width:100%">
+        <div th:each="inmueble : ${inmuebles}" class="w3-third w3-margin-bottom">
+          <img th:src="${inmueble.fotos[0].url_foto}" alt="Norway" style="width:100%">
           <div class="w3-container w3-white card-container">
-            <h3>Ciudadela Brisas del Norte</h3>
-            <h6 class="w3-opacity">Desde $99.000</h6>
-            <p>Single bed</p>
-            <p>15m<sup>2</sup></p>
+            <h3 th:text="${inmueble.titulo}">Título</h3>
+            <h6 th:text="'$' + ${inmueble.precio}" class="w3-opacity">$00.00</h6>
+            <p th:text="${inmueble.localidad}">Locación</p>
+            <p th:utext="${inmueble.area} + ' ' + 'm<sup>2</sup>'">0m<sup>2</sup></p>
             <p class="w3-large"><i class="fa fa-bath"></i> <i class="fa fa-phone"></i> <i class="fa fa-wifi"></i></p>
-            <button class="w3-button w3-block w3-black w3-margin-bottom">Ver detalles</button>
+            <form th:action="@{/infoinmueble/} + ${inmueble.id}">
+              <button type="submit" class="w3-button w3-block w3-black w3-margin-bottom">Ver detalles</button>
+            </form>
           </div>
         </div>
-        <div class="w3-third w3-margin-bottom">
-          <img th:src="@{/images/terreno2.png}" alt="Norway" style="width:100%">
-          <div class="w3-container w3-white card-container">
-            <h3>Sur de Guayaquil</h3>
-            <h6 class="w3-opacity">Desde $149.000</h6>
-            <p>Queen-size bed</p>
-            <p>25m<sup>2</sup></p>
-            <p class="w3-large"><i class="fa fa-bath"></i> <i class="fa fa-phone"></i> <i class="fa fa-wifi"></i> <i
-                class="fa fa-tv"></i></p>
-            <button class="w3-button w3-block w3-black w3-margin-bottom">Ver detalles</button>
-          </div>
-        </div>
-        <div class="w3-third w3-margin-bottom">
-          <img th:src="@{/images/terreno3.jpg}" alt="Norway" style="width:100%">
-          <div class="w3-container w3-white card-container">
-            <h3>Via la Costa</h3>
-            <h6 class="w3-opacity">Desde $199.000</h6>
-            <p>King-size bed</p>
-            <p>40m<sup>2</sup></p>
-            <p class="w3-large"><i class="fa fa-bath"></i> <i class="fa fa-phone"></i> <i class="fa fa-wifi"></i> <i
-                class="fa fa-tv"></i> <i class="fa fa-glass"></i> <i class="fa fa-cutlery"></i></p>
-            <button class="w3-button w3-block w3-black w3-margin-bottom">Ver detalles</button>
-          </div>
-        </div>
+        
       </div>
-
 
     </div>
 

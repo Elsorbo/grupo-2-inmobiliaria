@@ -33,9 +33,10 @@
                       <div class="form-group">
                         <div class="form-check">
                           <label class="form-check-label">
-                              <input required class="form-check-input" 
+                              <input id="account-state"
+                                required class="form-check-input" 
                                 type="checkbox" name="estado"
-                                checked="${account.usuario.estado">
+                                th:checked="${account.usuario.estado}">
                               Habilitado
                               <span class="form-check-sign">
                                 <span class="check"></span>
@@ -106,9 +107,9 @@
                           </div>
                         </div>
                       </div>
-
-					  <!-- Contraseña -->
-                      <!-- <div class="row">
+                      <br />
+					            <!-- Contraseña -->
+                      <div class="row">
                         <div class="col-md-6">
                           <div class="form-group">
                             <label class="bmd-label-floating">Nueva contraseña</label>
@@ -124,7 +125,7 @@
                               class="form-control" name="contrasena2" value="yyyyy">
                           </div>
                         </div>
-                      </div> -->
+                      </div>
                       
                       <!-- <br>
                       <div class="row">

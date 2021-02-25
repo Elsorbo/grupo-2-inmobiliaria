@@ -80,7 +80,10 @@ public class InmuebleService {
 
 		});
 
-		return new HashMap<>();
+		Map<String, Object> datos = new HashMap<>();
+		datos.put("inmueble", inmueble);
+
+		return datos;
 
 	}
 

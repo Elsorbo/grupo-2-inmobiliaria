@@ -30,27 +30,27 @@
                             <form method="post">
                                 <div class="form-row">
                                     <div class="form-group col-md-6 label-floating has-success">
-                                        <input required type="text" class="form-control" name="usuario.nombres"
+                                        <input required type="text" class="form-control" name="nombres"
                                             id="userFirstName" placeholder="Nombres">
                                     </div>
                                     <div class="form-group col-md-6 label-floating has-success">
-                                        <input required type="text" class="form-control" name="usuario.apellidos"
+                                        <input required type="text" class="form-control" name="apellidos"
                                             id="lastName" placeholder="Apellidos">
                                     </div>
                                 </div>
                                 <div class="form-row">
 
                                     <div class="form-group col-md-3 label-floating has-success">
-                                        <input required type="text" class="form-control" name="usuario.usuario"
+                                        <input required type="text" class="form-control" name="usuario"
                                             id="username" placeholder="Usuario">
                                     </div>
 
                                     <div class="form-group col-md-3 label-floating has-success">
-                                        <input required minlength="10" maxlength="10" type="text" name="usuario.cedula"
+                                        <input required minlength="10" maxlength="10" type="text" name="cedula"
                                             class="form-control" id="idUser" placeholder="Cedula">
                                     </div>
                                     <div class="form-group col-md-6 label-floating has-success">
-                                        <input required type="email" class="form-control" name="usuario.correo"
+                                        <input required type="email" class="form-control" name="correo"
                                             id="userEmail" placeholder="Correo">
                                     </div>
                                 </div>
@@ -58,7 +58,7 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-6 label-floating has-success">
                                         <input required minlength="8" type="text" class="form-control"
-                                            name="usuario.contrasena" id="userPassword" placeholder="Contraseña">
+                                            name="contrasena" id="userPassword" placeholder="Contraseña">
                                     </div>
                                     <div class="form-group col-md-6 label-floating has-success">
 
@@ -121,7 +121,7 @@
                                             <button type="button" rel="tooltip" data-toggle="modal"
                                                 data-target="#modal-confirm-delete"
                                                 class="btn btn-danger delete-employee-btn">
-                                                <i class="material-icons">close</i>
+                                                <i class="material-icons">delete_forever</i>
                                             </button>
                                         </td>
                                     </tr>
@@ -129,7 +129,7 @@
                                 </tbody>
                             </table>
                             <nav aria-label="...">
-                                <ul class="pagination ">
+                                <ul class="pagination">
                                     <li class="page-item disabled" id = "paginator-previous">
                                         <a class="page-link" href="#" tabindex="-1">Anterior</a>
                                     </li>
@@ -139,9 +139,10 @@
                                     </li>
                                     <li class="page-item disabled" ><a class="page-link" href="#">2</a></li>
                                     <li class="page-item" 
-                                        th:classappend="${paginator.content.size} < 5 ? 'disabled' : ''"  id = "paginator-next">
+                                        th:classappend="${paginator.last} ? 'disabled' : ''"  id = "paginator-next">
                                         <a class="page-link" href="#">Siguiente</a>
                                     </li>
+                                    <input type="hidden" name="total" th:value="${paginator.totalElements}">
                                 </ul>
                             </nav>
                         </div>

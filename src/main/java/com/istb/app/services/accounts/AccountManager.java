@@ -15,6 +15,7 @@ import com.istb.app.repository.RoleRepositoryI;
 import com.istb.app.repository.UsuarioRepositoryI;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -43,7 +44,9 @@ public class AccountManager implements AccountsServiceI {
 		addRole(user, Arrays.asList("EMPLEADO"));
 		user.setUrlImagenPerfil(DEFAULT_PROFILE_IMAGE);
 		user.setNombreImagenPerfil("default");
-		
+		user.setContrasena( PasswordEncoderFactories
+			.createDelegatingPasswordEncoder().encode(user.getContrasena()) );
+
 		userManager.save(user);
 		employeeManager.save(employee);
 
@@ -61,6 +64,8 @@ public class AccountManager implements AccountsServiceI {
 		addRole(user, Arrays.asList("ARRENDATARIO"));
 		user.setUrlImagenPerfil(DEFAULT_PROFILE_IMAGE);
 		user.setNombreImagenPerfil("default");
+		user.setContrasena( PasswordEncoderFactories
+			.createDelegatingPasswordEncoder().encode(user.getContrasena()) );
 		
 		userManager.save(user);
 		tenantManager.save(tenant);

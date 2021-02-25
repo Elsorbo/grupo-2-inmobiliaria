@@ -7,7 +7,6 @@
 </head>
 
 <body class="">
-
     <div class="wrapper ">
 
         <div th:replace="maintemplate :: sidebar" class="sidebar" data-color="purple" data-background-color="white"
@@ -81,6 +80,9 @@
                                         </div>
                                     </div>
                                 </div>
+                                
+                                <img id="inmueble-loader" style="display: none;" th:src="@{/images/loader.gif}" alt="loader">
+                                
                                 <div class="form-group form-file-upload form-file-multiple">
                                     <input required type="file" multiple class="inputFileHidden" id="inmueble-img-picker">
                                     <div class="input-group">
@@ -132,8 +134,10 @@
                                     </div>
                                 </div>
                                 <div class="form-row flex-row-reverse">
-                                    <button id="registrar-inmueble" type="submit" class="btn btn-danger"
-                                        style="margin-right: 0px;">Registrar inmueble</button>
+                                    <button id="registrar-inmueble" 
+                                        type="submit" class="btn btn-danger" 
+                                        style="margin-right: 0px;">Registrar inmueble
+                                    </button>
                                 </div>
                             </form>
                         </div>
@@ -153,7 +157,7 @@
                                         <th>Area</th>
                                         <th>Precio</th>
                                         <th>En venta</th>
-                                        <th>Encargado</th>
+                                        <th>Encargad@</th>
                                         <th class="text-right">Acciones</th>
                                     </tr>
                                 </thead>
@@ -161,11 +165,12 @@
                                     <tr th:each="inmueble : ${paginator.content}" th:id="inmueble-+${inmueble.id}">
                                         <td class="text-center" th:text="${inmueble.id}">id</td>
                                         <td th:text="${inmueble.titulo}">Título</td>
-                                        <td th:text="${inmueble.area}">Area m2</td>
+                                        <td th:utext="${inmueble.area} + ' ' + 'm<sup>2</sup>'">Area m2</td>
                                         <td th:text="${inmueble.precio}">Precio</td>
-                                        <td th:text="${inmueble.comercializado} ? 'Si' : 'No' ">En venta</td>
-                                        <td
-                                            th:text="${inmueble.empleados[0].usuario.nombres} + ' ' + ${inmueble.empleados[0].usuario.apellidos}">
+                                        <td class="text-center" th:text="${inmueble.comercializado} ? 'Si' : 'No' ">En venta</td>
+                                        <td th:text="${inmueble.empleados.size > 0} ? 
+                                            ${inmueble.empleados[0].usuario.nombres} + ' ' + ${inmueble.empleados[0].usuario.apellidos} 
+                                            : 'No asignado'">
                                             Encargado</td>
                                         <input type="hidden" th:value="${inmueble.alquilado}">
                                         <input type="hidden" th:value="${inmueble.descripcion}">
@@ -179,7 +184,7 @@
                                             <button type="button" rel="tooltip" data-toggle="modal"
                                                 data-target="#modal-confirm-delete"
                                                 class="btn btn-danger" id="borrar-inmueble-btn">
-                                                <i class="material-icons">close</i>
+                                                <i class="material-icons">delete_forever</i>
                                             </button>
                                         </td>
                                     </tr>
@@ -197,10 +202,11 @@
                                     </li>
                                     <li class="page-item disabled"><a class="page-link" href="#">2</a></li>
                                     <li class="page-item"
-                                        th:classappend="${paginator.content.size} < 5 ? 'disabled' : ''"
+                                        th:classappend="${paginator.last} ? 'disabled' : ''"
                                         id="paginator-next">
                                         <a class="page-link" href="#">Siguiente</a>
                                     </li>
+                                    <input type="hidden" name="total" th:value="${paginator.totalElements}">
                                 </ul>
                             </nav>
                         </div>
@@ -232,7 +238,7 @@
                     </div>
                 </div>
             </div>
-
+            
             <footer th:replace="maintemplate :: footer" class="footer">
             </footer>
         </div>

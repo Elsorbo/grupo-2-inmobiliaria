@@ -9,6 +9,12 @@
   color: #FFFFFF;
 }
 
+tbody > tr:hover {
+
+  background-color: darkgray;
+
+}
+
 .updateImage {
 
   position: absolute;
@@ -25,8 +31,10 @@
 
 }
 
-tbody > tr:hover {
+#inmueble-loader {
 
-  background-color: darkgray;
+  position: absolute;
+  top: 40%;
+  left: 46%;
 
 }

@@ -10,8 +10,9 @@ let paginador = {};
 let paginatorNext = document.querySelector("#paginator-next");
 let imgPickerBtn = document.querySelector("#img-picker-btn");
 let imgPicker = document.querySelector("#inmueble-img-picker");
+let inmuebleLoader = document.querySelector("#inmueble-loader");
+let tbodyInmuebles = document.querySelector("#body-table-inmuebles");
 let registrarInmueble = document.querySelector("#registrar-inmueble");
-let tbodyEmployees = document.querySelector("#body-table-inmuebles");
 let paginatorPrevious = document.querySelector("#paginator-previous");
 let inmuebleIdBorrado = document.querySelector("#inmueble-delete-id");
 let inmuebleBorrarBtn = document.querySelector("#inmueble-borrar-btn");
@@ -27,6 +28,7 @@ const nuevoInmueble = async (event) => {
     
     if(form.checkValidity()) {
         
+        inmuebleLoader.style.display = "block";
         let upladedPictures = await uploadFiles(
             "inmueblepics", "post", "inmueblepics", imgPicker.files);
         let picturesData = await upladedPictures.json();
@@ -35,7 +37,6 @@ const nuevoInmueble = async (event) => {
         let formValues = getFormValues(form);
         let inmuebleValues = {
         
-
             "titulo": formValues.titulo,
             "descripcion": formValues.descripcion,
             "localidad": formValues.localidad,
@@ -52,16 +53,16 @@ const nuevoInmueble = async (event) => {
         
         if(response.ok) {
 
-            
+            ++paginador.totalElements;
             let inmueble = await response.json();
-            console.log(inmueble);
             
-            // if(tbodyEmployees.children.length < 5) {
+            if(tbodyInmuebles.children.length < 5) {
             
-            //     tbodyEmployees.innerHTML += nuevoInmuebleDesdePlantilla(employee);
-            //     addEmployeeListeners(tbodyEmployees.lastElementChild);
+                tbodyInmuebles.innerHTML += nuevoInmuebleDesdePlantilla(inmueble);
+                agregarInmuebleListener(tbodyInmuebles.lastElementChild);
             
-            // }
+            } else {
+                agregarInmuebles( await paginador.lastPage() ); }
             
             showNotification("Se registro el inmueble exitosamente", "success");
             [...form].forEach( i => i.value = "");
@@ -74,7 +75,8 @@ const nuevoInmueble = async (event) => {
         
         }
         
-    
+        inmuebleLoader.style.display = "none";
+
     } else {
 
         showNotification(
@@ -82,7 +84,6 @@ const nuevoInmueble = async (event) => {
 
     }
 
-    
 }
 
 const getServicios = () => {
@@ -103,21 +104,21 @@ const pickImages = (event) => {
 
 }
 
-const addEmployees = (employees) => {
+const agregarInmuebles = (inmuebles) => {
 
-    if(employees.length > 0) {
+    if(inmuebles.length > 0) {
     
-        let htmlEmployees = employees.map( (employee) => {
-        return nuevoInmuebleDesdePlantilla(employee); });
-    
-        tbodyEmployees.innerHTML = htmlEmployees.reduce( (a, b) => a.concat(b));
-        [...tbodyEmployees.children].map( tr => addEmployeeListeners(tr) );
+        let htmlinmuebles = inmuebles.map( (inmueble) => {
+            return nuevoInmuebleDesdePlantilla(inmueble); });
+        
+        tbodyInmuebles.innerHTML = htmlinmuebles.join("");
+        [...tbodyInmuebles.children].map( tr => agregarInmuebleListener(tr) );
     
     }
 
 }
 
-const previousEmployeePage = async (event) => {
+const previousInmueblePage = async (event) => {
    
     event.preventDefault();
 
@@ -127,11 +128,11 @@ const previousEmployeePage = async (event) => {
         target = target.parentElement; }
     
     if(!target.classList.contains("disabled")) {
-        addEmployees( await paginador.previousPage() ); }
+        agregarInmuebles( await paginador.previousPage() ); }
 
 }
 
-const nextEmployeePage = async (event) => {
+const nextInmueblePage = async (event) => {
 
     event.preventDefault();
     
@@ -140,8 +141,9 @@ const nextEmployeePage = async (event) => {
     if(target.nodeName == "A") { 
         target = target.parentElement; }
 
-    if(!target.classList.contains("disabled")) {
-        addEmployees( await paginador.nextPage() ); }
+    if(!target.classList.contains("disabled")) { 
+        agregarInmuebles( await paginador.nextPage() ); }
+    
 
 }
 
@@ -179,7 +181,7 @@ const borrarInmueble = async (event) => {
     let target = event.target;
     
     let response = await deleteObject(
-        "empleado/".concat(inmuebleIdBorrado.value));
+        "inmueble/".concat(inmuebleIdBorrado.value));
 
     if(response.ok) { 
     
@@ -192,47 +194,39 @@ const borrarInmueble = async (event) => {
 }
 
 const nuevoInmuebleDesdePlantilla = (inmueble) => {
-
+    
     return (
-    `<tr id="inmueble-${inmueble.id}">
+    ` <tr id="inmueble-+${inmueble.id}">
         <td class="text-center">${inmueble.id}</td>
-        <td>${inmueble.usuario.nombres} ${inmueble.usuario.apellidos}</td>
-        <td>${inmueble.usuario.correo}</td>
-        <td>${inmueble.usuario.estado ? "Activo" : "Inactivo"}</td>
-        <td class="text-right">${inmueble.telefono}</td>
-        <input type="hidden" value="${inmueble.usuario.cedula}">
-        <input type="hidden" value="${inmueble.usuario.usuario}">
-        <input type="hidden" value="${inmueble.usuario.descripcion}">
-        <input type="hidden" value="${inmueble.usuario.urlImagenPerfil ? 
-            inmueble.usuario.urlImagenPerfil : 
-            'http://style.anu.edu.au/_anu/4/images/placeholders/person_8x10.png'}">
-        <input type="hidden" 
-            value="${new Date(inmueble.usuario.fechaActualizacion)}">
+        <td>${inmueble.titulo}</td>
+        <td>${inmueble.area} m2</td>
+        <td>${inmueble.precio}</td>
+        <td class="text-center">${inmueble.comercializado ? "Si" : "No"}</td>
+        <td>${inmueble.empleados.length > 0 ? 
+            inmueble.empleados[0].usuario.nombres + " " + inmueble.empleados[0].usuario.apellidos 
+            : "No asignado" } </td>
+        <input type="hidden" value="${inmueble.alquilado}">
+        <input type="hidden" value="${inmueble.descripcion}">
         <td class="td-actions text-right">
-            <button type="button" rel="tooltip" 
-                class="btn btn-info inmueble-aditional-info-btn" 
-                data-toggle="modal" data-target="#userDetailsModal">
-                <i class="material-icons">person</i>
-            </button>
             <button type="button" rel="tooltip" class="btn btn-success">
-                <a href="/empleado/${inmueble.id}" 
+                <a href="/inmueble/${inmueble.id}"
                     style="text-decoration: none; color: white;">
                     <i class="material-icons">edit</i>
                 </a>
             </button>
-            <button type="button" rel="tooltip" data-toggle="modal" 
-                data-target="#modal-confirm-delete" 
-                class="btn btn-danger delete-inmueble-btn">
-                <i class="material-icons">close</i>
+            <button type="button" rel="tooltip" data-toggle="modal"
+                data-target="#modal-confirm-delete"
+                class="btn btn-danger" id="borrar-inmueble-btn">
+                <i class="material-icons">delete_forever</i>
             </button>
         </td>
     </tr>`);
-
+    
 }
 
-const addEmployeeListeners = (employee) => {
+const agregarInmuebleListener = (inmueble) => {
     
-    let deleteBtn = employee.querySelector("#borrar-inmueble-btn");
+    let deleteBtn = inmueble.querySelector("#borrar-inmueble-btn");
     
     deleteBtn.addEventListener("click", definirIdBorrado);
 
@@ -240,18 +234,18 @@ const addEmployeeListeners = (employee) => {
 
 window.addEventListener("load", (event) => {
 
-    tbodyEmployees.querySelectorAll("tr")
-        .forEach( tr => addEmployeeListeners(tr));
+    tbodyInmuebles.querySelectorAll("tr")
+        .forEach( tr => agregarInmuebleListener(tr));
 
-    paginador = new Paginator("empleado", document.querySelector(".pagination"));
+    paginador = new Paginator("inmueble", document.querySelector(".pagination"));
 
 
 });
 
 imgPicker.addEventListener("change", pickImages);
 registrarInmueble.addEventListener("click", nuevoInmueble);
-paginatorNext.addEventListener("click", nextEmployeePage)
+paginatorNext.addEventListener("click", nextInmueblePage)
 inmuebleBorrarBtn.addEventListener("click", borrarInmueble);
-paginatorPrevious.addEventListener("click", previousEmployeePage);
+paginatorPrevious.addEventListener("click", previousInmueblePage);
 imgPickerBtn.addEventListener("click", event => imgPicker.click() );
 mostrarAnadirInmueble.addEventListener("click", toggleAgregarInmueble);

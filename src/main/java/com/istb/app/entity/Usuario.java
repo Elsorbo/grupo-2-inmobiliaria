@@ -24,7 +24,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
@@ -107,9 +106,8 @@ public class Usuario implements Serializable {
 
 	public void setContrasena(String newPassword) {
 
-		this.contrasena = PasswordEncoderFactories
-        	.createDelegatingPasswordEncoder().encode(newPassword);
-
+		this.contrasena = newPassword;
+		
 	}
 
 	@Override
