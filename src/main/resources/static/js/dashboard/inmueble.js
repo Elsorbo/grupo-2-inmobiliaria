@@ -29,6 +29,9 @@ const nuevoInmueble = async (event) => {
     if(form.checkValidity()) {
         
         inmuebleLoader.style.display = "block";
+        showNotification(
+            "Subiendo las imagenes del inmueble, esto puede tardar unos segundos", "warning");
+        debugger;
         let upladedPictures = await uploadFiles(
             "inmueblepics", "post", "inmueblepics", imgPicker.files);
         let picturesData = await upladedPictures.json();
