@@ -10,6 +10,18 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link rel="stylesheet" href="/css/main.css">
+    <style>
+        #dashboardbtn {
+            border-radius:  60px 0px 0px 0px;
+            right: 0px;
+            width: 300px;
+        }
+        #loginbtn {
+            border-radius:  60px 0px 0px 0px;
+            right: 0px;
+            width: 220px;
+        }
+    </style>
 </head>
 
 <body class="w3-light-grey">
@@ -21,9 +33,11 @@
         <a href="#contact" class="w3-bar-item w3-button w3-mobile nav_button">Contacto</a>
         <a href="#about" class="w3-bar-item w3-button w3-mobile nav_button">Acerca</a>
 		
-		<a sec:authorize="!isAuthenticated()" href="#" class="w3-bar-item w3-button w3-right w3-light-grey w3-mobile nav_button" onclick="document.getElementById('id01').style.display='block'">Ingresar</a>
+		<a id="loginbtn" sec:authorize="!isAuthenticated()" href="#" class="w3-bar-item w3-button w3-right w3-mobile nav_button w3-red" onclick="document.getElementById('id01').style.display='block'">
+            <i class="fas fa-user-lock"></i> Iniciar sesión
+        </a>
 		
-		<a sec:authorize="isAuthenticated()" th:href="@{/dashboard}" class="w3-bar-item w3-button w3-right w3-light-grey w3-mobile nav_button">Regresar al dashboard</a>
+		<a id="dashboardbtn" sec:authorize="isAuthenticated()" th:href="@{/dashboard}" class="w3-bar-item w3-button w3-right w3-red w3-mobile nav_button">Regresar al dashboard</a>
 
         <div id="id01" class="modal">
   
@@ -41,9 +55,9 @@
                 <input type="password" placeholder="Ingrese la contraseña" name="password" required>
                   
                 <button class="w3-red" type="submit">Iniciar sesion</button>
-                <label>
+                <!-- <label>
                   <input type="checkbox" checked="checked" name="remember"> Recordarme
-                </label>
+                </label> -->
                 <br />
               </div>
             </form>

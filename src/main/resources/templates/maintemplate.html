@@ -46,37 +46,37 @@
 						</li> -->
 						<li class="nav-item recibos" sec:authorize="hasRole('ARRENDATARIO')">
 							<a class="nav-link" th:href="@{/recibos}">
-								<i class="material-icons">location_ons</i>
+								<i class="material-icons">receipt</i>
 								<p>Recibos de pago</p>
 							</a>
 						</li>
 						<li class="nav-item empleados" sec:authorize="hasRole('ADMINISTRADOR')">
 							<a class="nav-link" th:href="@{/empleados}">
-								<i class="material-icons">person</i>
+								<i class="material-icons">assignment_ind</i>
 								<p>Empleados</p>
 							</a>
 						</li>
 						<li class="nav-item arrendatarios" sec:authorize="!hasRole('ARRENDATARIO')">
 							<a class="nav-link" th:href="@{/arrendatarios}">
-								<i class="material-icons">language</i>
+								<i class="material-icons">supervisor_account</i>
 								<p>Arrendatarios</p>
 							</a>
 						</li>
 						<li class="nav-item inmuebles" sec:authorize="!hasRole('ARRENDATARIO')">
 							<a class="nav-link" th:href="@{/inmuebles}">
-								<i class="material-icons">content_paste</i>
+								<i class="material-icons">apartment</i>
 								<p>Inmuebles</p>
 							</a>
 						</li>
 						<li class="nav-item reparaciones">
 							<a class="nav-link" th:href="@{/reparaciones}">
-								<i class="material-icons">library_books</i>
+								<i class="material-icons">engineering</i>
 								<p>Reparaciones</p>
 							</a>
 						</li>
 						<li class="nav-item facturas">
 							<a class="nav-link" th:href="@{/facturas}">
-								<i class="material-icons">bubble_chart</i>
+								<i class="material-icons">receipt_long</i>
 								<p>Facturas</p>
 							</a>
 						</li>
@@ -135,7 +135,7 @@
 								<li class="nav-item dropdown" >
 									<a class="nav-link" href="javascript:;" id="navbarDropdownProfile"
 										data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										<i class="material-icons">person</i>
+										<i class="material-icons" style="font-size: 25px;">account_circle</i>
 										<p class="d-lg-none d-md-block">
 											Account
 										</p>

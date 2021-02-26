@@ -31,7 +31,7 @@ const nuevoInmueble = async (event) => {
         inmuebleLoader.style.display = "block";
         showNotification(
             "Subiendo las imagenes del inmueble, esto puede tardar unos segundos", "warning");
-        debugger;
+        
         let upladedPictures = await uploadFiles(
             "inmueblepics", "post", "inmueblepics", imgPicker.files);
         let picturesData = await upladedPictures.json();
@@ -47,10 +47,14 @@ const nuevoInmueble = async (event) => {
             "comercializado": document.querySelector("#radio-si").checked,
             "area": formValues.area,
             "fotos": picturesData,
-            "servicios": idServicios,
-            "empleados": [{"id": formValues.idEmpleado}]
+            "servicios": idServicios
         
         };
+
+        if( formValues.idEmpleado ) {
+            inmuebleValues["empleados"] = [{"id": formValues.idEmpleado}]; }
+        else { 
+            inmuebleValues["empleados"] = [{"id": -1}];}
 
         let response = await sendJSONData("inmueble", "post", inmuebleValues);
         
@@ -183,23 +187,32 @@ const borrarInmueble = async (event) => {
 
     let target = event.target;
     
-    let response = await deleteObject(
-        "inmueble/".concat(inmuebleIdBorrado.value));
-
-    if(response.ok) { 
+    deleteObject("inmueble/".concat(inmuebleIdBorrado.value)).then((res, rej) => {
     
-        document.querySelector(`#inmueble-${inmuebleIdBorrado.value}`)
-            .style.display = "none";
-        showNotification("Inmueble eliminado correctamente", "success"); }
+        if(res.ok) { 
+            
+            document.querySelector(`#inmueble-${inmuebleIdBorrado.value}`)
+                .style.display = "none";
+            showNotification("Inmueble eliminado correctamente", "success"); 
         
-    target.previousElementSibling.click();
+        }
 
+        return paginador.getPage(paginador.currentPageId);
+    
+    }).then((res, rej) => {
+
+        agregarInmuebles(res);
+    
+    });
+    
+    target.previousElementSibling.click();
+    
 }
 
 const nuevoInmuebleDesdePlantilla = (inmueble) => {
     
     return (
-    ` <tr id="inmueble-+${inmueble.id}">
+    ` <tr id="inmueble-${inmueble.id}">
         <td class="text-center">${inmueble.id}</td>
         <td>${inmueble.titulo}</td>
         <td>${inmueble.area} m2</td>
@@ -211,6 +224,12 @@ const nuevoInmuebleDesdePlantilla = (inmueble) => {
         <input type="hidden" value="${inmueble.alquilado}">
         <input type="hidden" value="${inmueble.descripcion}">
         <td class="td-actions text-right">
+            <button type="button" rel="tooltip"
+                class="btn btn-info employee-aditional-info-btn" data-toggle="modal">
+                <a href="/infoinmueble/${inmueble.id}" target="_blank" style="color: white; text-decoration: none;">
+                    <i class="material-icons">home_work</i>
+                </a>
+            </button>
             <button type="button" rel="tooltip" class="btn btn-success">
                 <a href="/inmueble/${inmueble.id}"
                     style="text-decoration: none; color: white;">

@@ -68,14 +68,9 @@ const newEmployee = async (event) => {
         
         }
         
-    
     } else {
-
         showNotification("Algunos campos del formulario son incorrectos\
-             o están vacios", "danger");
-
-    }
-
+             o están vacios", "danger"); }
     
 }
 

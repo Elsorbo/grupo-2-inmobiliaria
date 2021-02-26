@@ -18,8 +18,15 @@
 		font-family: "Raleway", Arial, Helvetica, sans-serif
 	}
 
+	#logo {
+
+		position: fixed;
+		left: -10px;
+
+	}
+
 	.mySlides {
-		display: none
+		display: none;
 	}
 </style>
 
@@ -33,6 +40,12 @@
 
 		<!-- Slideshow Header -->
 		<div class="w3-container" id="apartment">
+			<div id="logo" class="w3-container w3-display-container w3-padding-16">
+				<i onclick="w3_close()" class="fa fa-remove w3-hide-large w3-button w3-display-topright"></i>
+				<a th:href="@{/}"><img
+					src="https://firebasestorage.googleapis.com/v0/b/tdemo-fc5b5.appspot.com/o/logo.jpg?alt=media&token=f93af709-4c3d-47e2-82ee-ea663321c2f4"
+					width="145" style="margin-left: 12px;"></a>
+			  </div>
 			<h2 class="w3-text-green" th:text="${inmueble.titulo}">The Apartment</h2>
 			<div th:each="foto: ${inmueble.fotos}" class="w3-display-container mySlides">
 				<img th:src="${foto.url_foto}" style="width:100%;margin-bottom:-6px">
@@ -68,6 +81,9 @@
 			<p th:text="${inmueble.descripcion}">Our apartment is really clean and we like to keep it that way. Enjoy the lorem ipsum dolor sit amet,
 				consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
 				ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+			
+				<p th:if="${inmueble.alquilado}"><i class="fas fa-hand-holding-usd"></i> En alquiler</p>
+				<p th:if="${inmueble.comercializado}"><i class="fas fa-money-bill-wave"></i> En venta</p>
 			<p>Aceptamos: <i class="fa fa-credit-card w3-large"></i> <i class="fab fa-cc-mastercard w3-large"></i> <i
 					class="fab fa-cc-visa w3-large"></i> <i class="fab fa-cc-discover w3-large"></i></p>
 			<hr>

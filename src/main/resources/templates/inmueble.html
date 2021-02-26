@@ -175,6 +175,13 @@
                                         <input type="hidden" th:value="${inmueble.alquilado}">
                                         <input type="hidden" th:value="${inmueble.descripcion}">
                                         <td class="td-actions text-right">
+                                            <button type="button" rel="tooltip"
+                                                class="btn btn-info employee-aditional-info-btn" data-toggle="modal">
+                                                <a th:href="@{/infoinmueble/} + ${inmueble.id}" target="_blank" style="color: white; text-decoration: none;">
+
+                                                    <i class="material-icons">home_work</i>
+                                                </a>
+                                            </button>
                                             <button type="button" rel="tooltip" class="btn btn-success">
                                                 <a th:href="@{/inmueble/} + ${inmueble.id}"
                                                     style="text-decoration: none; color: white;">
