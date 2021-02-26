@@ -190,7 +190,7 @@ const borrarInmueble = async (event) => {
     deleteObject("inmueble/".concat(inmuebleIdBorrado.value)).then((res, rej) => {
     
         if(res.ok) { 
-            
+
             document.querySelector(`#inmueble-${inmuebleIdBorrado.value}`)
                 .style.display = "none";
             showNotification("Inmueble eliminado correctamente", "success"); 
