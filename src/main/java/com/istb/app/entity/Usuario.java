@@ -1,9 +1,11 @@
+
 package com.istb.app.entity;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Collection;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -22,16 +24,11 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "usuarios")
 public class Usuario implements Serializable {
@@ -44,8 +41,9 @@ public class Usuario implements Serializable {
 	
 	@ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "role_usuario", 
-    joinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "id"), 
-    inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")) 
+    	joinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "id"), 
+    	inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+	@JsonIgnoreProperties({"usuarios"})
 	private Collection<Role> roles;
 	
 	@NotEmpty(message = "El campo cédula es requerido.")
@@ -74,7 +72,7 @@ public class Usuario implements Serializable {
 	
 	private Boolean estado;
 	
-	@OneToOne(mappedBy = "usuario", fetch = FetchType.LAZY)
+	@OneToOne(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JsonIgnoreProperties({"usuario"})
 	private Empleado empleado;
 	
@@ -91,8 +89,9 @@ public class Usuario implements Serializable {
 	private LocalDateTime fechaActualizacion;
 	
 	@Lob
-	@Column(name = "descripcion")
-	private String about;
+	private String descripcion;
+
+	public Usuario(){}
 
 	@PrePersist
 	public void preCreated () {
@@ -107,9 +106,15 @@ public class Usuario implements Serializable {
 
 	public void setContrasena(String newPassword) {
 
-		this.contrasena = PasswordEncoderFactories
-        	.createDelegatingPasswordEncoder().encode(newPassword);
+		this.contrasena = newPassword;
+		
+	}
 
+	@Override
+	public String toString() {
+
+		return this.nombres;
+		
 	}
 
 }

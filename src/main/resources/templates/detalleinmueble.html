@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<title th:text="${inmueble.titulo}"></title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+<style>
+	body,
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		font-family: "Raleway", Arial, Helvetica, sans-serif
+	}
+
+	#logo {
+
+		position: fixed;
+		left: -10px;
+
+	}
+
+	.mySlides {
+		display: none;
+	}
+</style>
+
+<body class="w3-content w3-border-left w3-border-right">
+
+	<!-- !PAGE CONTENT! -->
+	<div class="w3-main w3-white" style="margin-left:0px">
+
+		<!-- Push down content on small screens -->
+		<div class="w3-hide-large" style="margin-top:80px"></div>
+
+		<!-- Slideshow Header -->
+		<div class="w3-container" id="apartment">
+			<div id="logo" class="w3-container w3-display-container w3-padding-16">
+				<i onclick="w3_close()" class="fa fa-remove w3-hide-large w3-button w3-display-topright"></i>
+				<a th:href="@{/}"><img
+					src="https://firebasestorage.googleapis.com/v0/b/tdemo-fc5b5.appspot.com/o/logo.jpg?alt=media&token=f93af709-4c3d-47e2-82ee-ea663321c2f4"
+					width="145" style="margin-left: 12px;"></a>
+			  </div>
+			<h2 class="w3-text-green" th:text="${inmueble.titulo}">The Apartment</h2>
+			<div th:each="foto: ${inmueble.fotos}" class="w3-display-container mySlides">
+				<img th:src="${foto.url_foto}" style="width:100%;margin-bottom:-6px">
+				<div class="w3-display-bottomleft w3-container w3-black">
+					<p th:text="Imagen + ' ' + ${fotoStat.index + 1}">Living Room</p>
+				</div>
+			</div>
+		</div>
+		<div class="w3-row-padding w3-section">
+			<div th:each="foto, index : ${inmueble.fotos}" class="w3-col s3">
+				<img class="demo w3-opacity w3-hover-opacity-off" th:src="${foto.url_foto}"
+					style="width:100%;cursor:pointer" th:attr="onclick=|currentDiv(${index.index + 1})|"
+					th:title="Figura + ' ' + ${index.index + 1}">
+			</div>
+		</div>
+
+		<div class="w3-container">
+
+			<h4><strong>Servicios incluidos</strong></h4>
+			<div th:if="${inmueble.servicios.size > 0}"class="w3-row w3-large">
+				<div class="w3-col s6">
+					<p th:if="${#lists.contains(servicios, 'Electricidad')}"><i class="fas fa-bolt"></i> Electricidad</p>
+					<p th:if="${#lists.contains(servicios, 'Agua potable')}"><i class="fas fa-tint"></i> Agua potable</p>
+				</div>
+				<div class="w3-col s6">
+					<p th:if="${#lists.contains(servicios, 'Teléfono')}"><i class="fa fa-phone"></i> Teléfono</p>
+					<p th:if="${#lists.contains(servicios, 'Wifi')}"><i class="fa fa-fw fa-wifi"></i> WiFi</p>
+				</div>
+			</div>
+			<hr>
+
+			<h4><strong>Información</strong></h4>
+			<p th:text="${inmueble.descripcion}">Our apartment is really clean and we like to keep it that way. Enjoy the lorem ipsum dolor sit amet,
+				consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+				ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+			
+				<p th:if="${inmueble.alquilado}"><i class="fas fa-hand-holding-usd"></i> En alquiler</p>
+				<p th:if="${inmueble.comercializado}"><i class="fas fa-money-bill-wave"></i> En venta</p>
+			<p>Aceptamos: <i class="fa fa-credit-card w3-large"></i> <i class="fab fa-cc-mastercard w3-large"></i> <i
+					class="fab fa-cc-visa w3-large"></i> <i class="fab fa-cc-discover w3-large"></i></p>
+			<hr>
+				<a th:if="${inmueble.empleados.size > 0}" th:attr="href='https://api.whatsapp.com/send/?phone=+593' + ${#strings.substringAfter(inmueble.empleados[0].telefono, 0)} + '&text=Hola+quisiera+mas+información+sobre+el+inmueble https://inmobiliaria-mastarreno.herokuapp.com/infoinmueble/' + ${inmueble.id}"><button type="submit" class="w3-button w3-green w3-third"><i class="fab fa-whatsapp w3-large"></i> Contactar con el asesor</button></a>
+		</div>
+		<hr>
+		
+		<!-- Contact -->
+		<div class="w3-container" id="contact">
+			<h2>Contacto por Email</h2>
+			<i class="fa fa-phone" style="width:30px"></i> <span
+				th:text="'Teléfono: ' + ${inmueble.empleados[0].telefono} ? ${inmueble.empleados[0].telefono} : 'Teléfono: No disponible'">Phone:
+				No disponible</span><br>
+			<i class="fa fa-envelope" style="width:30px"> </i> <span
+				th:text="'Email: ' + ${inmueble.empleados[0].usuario.correo} ? ${inmueble.empleados[0].usuario.correo} : 'Email: No disponible'">
+				Email: mail@mail.com</span><br>
+			<p>Preguntas? No dude en consultarnos:</p>
+			<form action="/" target="_blank">
+				<p><input class="w3-input w3-border" type="text" placeholder="Nombre" required name="Name"></p>
+				<p><input class="w3-input w3-border" type="text" placeholder="Su email" required name="Email"></p>
+				<p><input class="w3-input w3-border" type="text" placeholder="Mensaje" required name="Message"></p>
+				<button type="submit" class="w3-button w3-green w3-third">Enviar mensaje</button>
+			</form>
+		</div>
+
+		<!-- Footer -->
+		<footer class="w3-padding-32 w3-black w3-center w3-margin-top">
+			<h5>Encuentrenos en nuestras redes sociales</h5>
+			<div class="w3-xlarge w3-padding-16">
+				<a href="https://www.facebook.com/inmobiliariamastarreno/" target="_blank"><i
+						class="fab fa-facebook-square w3-hover-opacity"></i></a>
+				<a href="https://www.instagram.com/mastarreno_com/" target="_blank"><i
+						class="fab fa-instagram-square w3-hover-opacity"></i></a>
+				<a href="https://ec.linkedin.com/in/erleny-mastarreno-61441813b" target="_blank"><i
+						class="fab fa-linkedin w3-hover-opacity"></i></a>
+			</div>
+			<p>Desarrollado por Genesis Intriago - Estudiante del <a href="https://istb.edu.ec/" target="_blank"
+					class="w3-hover-text-green">ISTB</a></p>
+		</footer>
+	
+		<!-- End page content -->
+	</div>
+
+	<script>
+		// Script to open and close sidebar when on tablets and phones
+		function w3_open() {
+			document.getElementById("mySidebar").style.display = "block";
+			document.getElementById("myOverlay").style.display = "block";
+		}
+
+		function w3_close() {
+			document.getElementById("mySidebar").style.display = "none";
+			document.getElementById("myOverlay").style.display = "none";
+		}
+
+		// Slideshow Apartment Images
+		var slideIndex = 1;
+		showDivs(slideIndex);
+
+		function plusDivs(n) {
+			showDivs(slideIndex += n);
+		}
+
+		function currentDiv(n) {
+			showDivs(slideIndex = n);
+		}
+
+		function showDivs(n) {
+			var i;
+			var x = document.getElementsByClassName("mySlides");
+			var dots = document.getElementsByClassName("demo");
+			if (n > x.length) { slideIndex = 1 }
+			if (n < 1) { slideIndex = x.length }
+			for (i = 0; i < x.length; i++) {
+				x[i].style.display = "none";
+			}
+			for (i = 0; i < dots.length; i++) {
+				dots[i].className = dots[i].className.replace(" w3-opacity-off", "");
+			}
+			x[slideIndex - 1].style.display = "block";
+			dots[slideIndex - 1].className += " w3-opacity-off";
+		}
+	</script>
+
+</body>
+
+</html>

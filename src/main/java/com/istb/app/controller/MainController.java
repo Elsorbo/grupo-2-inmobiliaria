@@ -1,6 +1,9 @@
 
 package com.istb.app.controller;
 
+import com.istb.app.util.AccountUtils;
+
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,27 +12,27 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class MainController {
 
 	@GetMapping("/")
-	public String main(Model attributes) {
+	public String mainPage(Model attributes) {
 
 		return "index";
 
 	}
 	
 	@GetMapping("/dashboard")
-	public String dashboard(Model attributes) {
-
+	public String dashboard(Model attributes, Authentication account) {
+		
 		attributes.addAttribute("sectionTitle", "dashboard");
 		
-		return "dashboard";
+		if(AccountUtils.hasRole(account, "ADMINISTRADOR")) {
+			return "redirect:/empleados"; }
 		
-	}
-	
-	@GetMapping("/inmuebles")
-	public String getInmueble(Model attributes) {
+		if(AccountUtils.hasRole(account, "EMPLEADO")) {
+			return "redirect:/inmuebles"; }
+		
+		if(AccountUtils.hasRole(account, "ADMINISTRADOR")) {
+			return "redirect:/facturas"; }
 
-		attributes.addAttribute("sectionTitle", "inmuebles");
-		
-		return "inmueble";
+		return "dashboard";
 		
 	}
 	
@@ -57,15 +60,6 @@ public class MainController {
 		attributes.addAttribute("sectionTitle", "notificaiones de desalojo");
 		
 		return "desalojo";
-		
-	}
-
-	@GetMapping("/empleados")
-	public String getEmpleados(Model attributes) {
-
-		attributes.addAttribute("sectionTitle", "empleados");
-		
-		return "empleado";
 		
 	}
 

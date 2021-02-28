@@ -3,7 +3,6 @@ package com.istb.app.services.accounts;
 
 import com.istb.app.entity.Arrendatario;
 import com.istb.app.entity.Empleado;
-import com.istb.app.entity.Usuario;
 
 /**
  * AccountsServiceI
@@ -16,13 +15,13 @@ public interface AccountsServiceI {
 	 * @param user User details
 	 * @return
 	 */
-	public Arrendatario createTenantAccount(Usuario user);
+	public Arrendatario createTenantAccount(Arrendatario user);
 
 	/**
 	 * Create a new employee account
 	 * @param user User details
 	 * @return
 	 */
-	public Empleado createEmployeeAccount(Usuario user);
+	public Empleado createEmployeeAccount(Empleado user);
 	
 }

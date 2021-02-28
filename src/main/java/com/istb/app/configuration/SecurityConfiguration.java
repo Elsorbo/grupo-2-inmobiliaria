@@ -18,9 +18,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		
-		http.csrf().disable();
+		http.cors().disable();
 
-		http.authorizeRequests();
+		http.authorizeRequests()
+			.antMatchers("/", "/infoinmuebles/**/", "/infoinmueble/**",
+				"/images/**", "/css/**", "/js/**").permitAll()
+			.antMatchers("/empleados", "/empleado/**").hasRole("ADMINISTRADOR")
+			.antMatchers("/inmuebles", "/inmueble/**", "/inmueblepics", 
+				"/arrendatarios", "/arrendatario/**").hasAnyRole("EMPLEADO", "ADMINISTRADOR")
+			.anyRequest().authenticated();
 		
 		http.formLogin()
 				.loginPage("/accounts/login")

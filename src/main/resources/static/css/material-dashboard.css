@@ -8,3 +8,33 @@
   background-color: red;
   color: #FFFFFF;
 }
+
+tbody > tr:hover {
+
+  background-color: darkgray;
+
+}
+
+.updateImage {
+
+  position: absolute;
+  text-align: center;
+
+}
+
+#perfil-load {
+
+  position: absolute;
+  right: 138px;
+  top: -15px;
+  width: 50px;
+
+}
+
+#inmueble-loader {
+
+  position: absolute;
+  top: 40%;
+  left: 46%;
+
+}
