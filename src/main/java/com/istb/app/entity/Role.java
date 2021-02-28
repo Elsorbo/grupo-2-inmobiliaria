@@ -14,16 +14,13 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import org.springframework.security.core.GrantedAuthority;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "roles")
 public class Role implements GrantedAuthority {
@@ -40,13 +37,23 @@ public class Role implements GrantedAuthority {
 
 	@JsonIgnore
 	@ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
+	@JsonIgnoreProperties({"roles"})
 	private Collection<Usuario> usuarios;
+
+	public Role() {}
 
 	@Override
 	public String getAuthority() {
 	
 		return this.nombre;
 	
+	}
+
+	@Override
+	public String toString() {
+
+		return this.nombre;
+		
 	}
 
 }

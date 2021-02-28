@@ -13,16 +13,14 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * Servicio
  */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name="servicios")
 public class Servicio implements Serializable {
@@ -37,6 +35,14 @@ public class Servicio implements Serializable {
 	private String nombre;
 
 	@ManyToMany(mappedBy = "servicios", fetch = FetchType.LAZY)
+	@JsonIgnoreProperties({"servicios"})
 	private Collection<Inmueble> inmuebles;
-	
+
+	@Override
+	public String toString() {
+
+		return String.format("[Servicio: %]", this.nombre);
+
+	}
+
 }

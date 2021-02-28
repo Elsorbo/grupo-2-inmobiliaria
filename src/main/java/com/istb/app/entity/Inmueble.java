@@ -14,24 +14,20 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "inmuebles")
 public class Inmueble implements Serializable {
@@ -44,7 +40,6 @@ public class Inmueble implements Serializable {
 	
 	private String titulo;
 	
-	@Lob
 	private String descripcion;
 	
 	private long area;
@@ -55,6 +50,8 @@ public class Inmueble implements Serializable {
 
 	private long precio;
 
+	private String localidad;
+
 	@Column(name = "fecha_creacion", updatable = false)
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime fechaCreacion;
@@ -63,13 +60,15 @@ public class Inmueble implements Serializable {
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime fechaActualizacion;
 	
-	@ManyToMany(mappedBy = "inmuebles", fetch = FetchType.LAZY)
+	@ManyToMany(mappedBy = "inmuebles", fetch = FetchType.EAGER)
+	@JsonIgnoreProperties({"inmuebles"})
 	private Collection<Empleado> empleados;
 	
 	@ManyToMany(mappedBy = "inmuebles", fetch = FetchType.LAZY)
-	@JsonIgnoreProperties({"inmueble", "empleado"})
+	@JsonIgnoreProperties({"inmuebles"})
 	private Collection<Arrendatario> arrendatarios;
 	
+	@NotEmpty(message = "Se necesita al menos una foto para el inmueble")
 	@OneToMany(mappedBy = "inmueble", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JsonIgnoreProperties({"inmueble"})
 	private Collection<Fotos> fotos;
@@ -80,6 +79,7 @@ public class Inmueble implements Serializable {
 		joinColumns =  @JoinColumn(name = "inmueble_id", nullable = false),
 		inverseJoinColumns = @JoinColumn(name = "servicio_id", nullable = false)
 	)
+	@JsonIgnoreProperties({"inmuebles"})
 	private Collection<Servicio> servicios;
 	
 	@PrePersist
@@ -92,4 +92,12 @@ public class Inmueble implements Serializable {
 	public void preUpdated () {
 		this.fechaActualizacion = LocalDateTime.now();
 	}
+
+	@Override
+	public String toString() {
+
+		return String.format("[Inmueble: %]", this.titulo);
+
+	}
+
 }

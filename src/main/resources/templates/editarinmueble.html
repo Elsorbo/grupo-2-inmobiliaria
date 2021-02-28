@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="maintemplate :: head">
+</head>
+
+<body class="">
+    <div class="wrapper ">
+
+        <div th:replace="maintemplate :: sidebar" class="sidebar" data-color="purple" data-background-color="white"
+            data-image="../assets/img/sidebar-1.jpg">
+        </div>
+
+        <div class="main-panel">
+            <!-- Navbar -->
+            <nav th:replace="maintemplate :: navbar"
+                class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
+            </nav>
+
+            <div class="content">
+
+                <div class="card" id="formulario-inmueble" style="margin: 12px auto; width: 95%;">
+                    <div class="card-header card-header-danger">
+                        <h4 class="card-title">Editar inmueble</h4>
+                        <p class="card-category">Verifique la información del inmueble</p>
+                      </div>
+                    <div class="card-body">
+                        <div>
+                            <form method="post">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6 label-floating has-success">
+                                        <input required type="text" class="form-control" name="titulo"
+                                            id="titulo-inmueble" placeholder="Título" th:value="${inmueble.titulo}">
+                                    </div>
+                                    <div class="form-group col-md-3 label-floating has-success">
+                                        <input required type="number" min="0" class="form-control" name="precio"
+                                            id="precio-inmueble" placeholder="Precio en $" th:value="${inmueble.precio}">
+                                    </div>
+                                    <div class="form-group col-md-3 label-floating has-success">
+                                        <input required type="number" min="0" class="form-control" name="area"
+                                            id="area-inmueble" placeholder="Area en m2" th:value="${inmueble.area}">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6 label-floating has-success">
+                                        <select class="form-control" name="localidad" id="localidad-inmueble">
+                                            <option th:each="locacion : ${locaciones}" 
+                                                th:text="${locacion}"
+                                                th:selected="${locacion == inmueble.localidad} ? 'true' : 'false'"></option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6 label-floating has-success"
+                                        sec:authorize="hasRole('ADMINISTRADOR')">
+                                    <select disabled class="form-control" name="idEmpleado" id="empleado-id">
+                                        <option th:each="empleado : ${empleados}"
+                                        th:text="${empleado.usuario.nombres} + ' - ' + ${empleado.usuario.apellidos}"
+                                        th:value="${empleado.id}"
+                                        th:selected="${inmueble.empleados[0].id == empleado.id} ? 'true': 'false'"
+                                        >
+                                            Nombre - Apellido</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                                <div class="form-row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Descripción</label>
+                                            <div class="form-group bmd-form-group is-filled">
+                                                <textarea id="descripcion-inmueble" class="form-control" rows="3"
+                                                    name="descripcion" th:text="${inmueble.descripcion}"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- <img id="inmueble-loader" style="display: none;" th:src="@{/images/loader.gif}"
+                                    alt="loader">
+
+                                <div class="form-group form-file-upload form-file-multiple">
+                                    <input required type="file" multiple class="inputFileHidden"
+                                        id="inmueble-img-picker">
+                                    <div class="input-group">
+                                        <input id="img-picker-label" type="text" class="form-control inputFileVisible"
+                                            placeholder="Imagenes del inmueble" multiple>
+                                        <span class="input-group-btn">
+                                            <button id="img-picker-btn" type="button"
+                                                class="btn btn-fab btn-round btn-info">
+                                                <i class="material-icons">layers</i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div> -->
+                                <h4>En venta</h4>
+                                <div class="form-row">
+                                    <div class="form-check form-check-radio" style="margin-left: 20px;">
+                                        <label class="form-check-label">
+                                            <input id="radio-si"  class="form-check-input" type="radio" 
+                                                name="exampleRadios" value="true" 
+                                                th:checked="${inmueble.comercializado}">
+                                                    Si<span class="circle"><span class="check"></span>
+                                            </span>
+                                        </label>
+
+                                    </div>
+                                    <div class="form-check form-check-radio" style="margin-left: 20px;">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="exampleRadios"
+                                                id="radio-no" value="false" th:checked="${!inmueble.comercializado}">
+                                            No
+                                            <span class="circle">
+                                                <span class="check"></span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                    <input type="hidden" name="inmuebleId" th:value="${inmueble.id}">
+                                </div><br />
+                                <!-- <h4>Servicios</h4>
+                                <div class="form-row">
+                                    <div th:each="servicio : ${servicios}" class="form-check"
+                                        style="margin-left: 20px;">
+                                        <label class="form-check-label">
+                                            <li style="list-style: none;" th:text="${servicio.nombre}">Agua</li>
+                                            <input class="form-check-input input-servicio-id" type="checkbox"
+                                                th:value="${servicio.id}">
+                                            <span class="form-check-sign">
+                                                <span class="check"></span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div> -->
+                                <div class="form-row flex-row-reverse">
+                                    <button id="actualizar-inmueble" type="submit" class="btn btn-danger"
+                                        style="margin-right: 0px;">Actualizar inmueble</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <footer th:replace="maintemplate :: footer" class="footer">
+                </footer>
+            </div>
+
+        </div>
+    </div>
+    <div th:replace="maintemplate :: scripts"></div>
+    <script type="module" th:src="@{/js/dashboard/editarinmueble.js}"></script>
+</body>
+
+</html>
