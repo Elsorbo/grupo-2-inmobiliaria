@@ -69,7 +69,7 @@ class Paginator {
     }
     
     async nextPage() {
-
+        
         let response = await getData(`${this.resource}?pageNumber=${this.nextPageId - 1}`);
         
         if(response.ok) {

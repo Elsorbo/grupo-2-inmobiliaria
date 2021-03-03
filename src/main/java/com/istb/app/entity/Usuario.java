@@ -61,6 +61,7 @@ public class Usuario implements Serializable {
 	@Column(name = "nombre_imagen_perfil")
 	private String nombreImagenPerfil;
 	
+	@Column(unique = true)
 	private String usuario;
 	
 	@NotEmpty(message = "El correo electrónico es requerido.")
@@ -72,11 +73,11 @@ public class Usuario implements Serializable {
 	
 	private Boolean estado;
 	
-	@OneToOne(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
 	@JsonIgnoreProperties({"usuario"})
 	private Empleado empleado;
 	
-	@OneToOne(mappedBy = "usuario", fetch = FetchType.LAZY)
+	@OneToOne(mappedBy = "usuario")
 	@JsonIgnoreProperties({"usuario"})
 	private Arrendatario arrendatario;
 	

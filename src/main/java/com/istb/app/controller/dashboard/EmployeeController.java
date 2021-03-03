@@ -7,7 +7,9 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import com.istb.app.entity.Empleado;
+import com.istb.app.entity.Usuario;
 import com.istb.app.repository.EmpleadoRepositoryI;
+import com.istb.app.repository.UsuarioRepositoryI;
 import com.istb.app.services.accounts.AccountsServiceI;
 import com.istb.app.services.firebase.FirebaseStrategy;
 
@@ -34,6 +36,9 @@ public class EmployeeController {
 
 	@Autowired
 	private FirebaseStrategy fbmanager;
+
+	@Autowired
+	private UsuarioRepositoryI usuarioRepository;
 
 	@Autowired
 	private AccountsServiceI accountsManager;
@@ -134,13 +139,16 @@ public class EmployeeController {
 	@Transactional
 	public ResponseEntity<?> deleteEmployee(@PathVariable int id) {
 		
+		Usuario storedUser = null;
 		Empleado empleado = empleadoManager.findById(id).get();
 		
 		if( !empleado.getUsuario().getNombreImagenPerfil().equals("default") ) {
 			fbmanager.deleteFile(
 				empleado.getUsuario().getNombreImagenPerfil()); }
 		
+		storedUser = empleado.getUsuario();
 		empleadoManager.deleteById(id);
+		usuarioRepository.delete(storedUser);
 
 		return ResponseEntity.ok()
 			.contentType(MediaType.APPLICATION_JSON)

@@ -6,7 +6,6 @@ import java.util.Collection;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -42,8 +41,8 @@ public class Empleado implements Serializable {
 	@JsonIgnoreProperties({"empleado"})
 	private Usuario usuario;
 	
-	@OneToMany(mappedBy = "empleado", fetch = FetchType.LAZY)
-	@JsonIgnoreProperties({"empleado"})
+	@OneToMany(mappedBy = "empleado")
+	@JsonIgnoreProperties({"empleado", "inmuebles"})
 	@OrderBy("id desc")
 	private Collection<Arrendatario> arrendatarios;
 	
@@ -51,7 +50,7 @@ public class Empleado implements Serializable {
     @JoinTable(name = "empleado_inmueble", 
     joinColumns = @JoinColumn(name = "empleado_id", referencedColumnName = "id"), 
     inverseJoinColumns = @JoinColumn(name = "inmueble_id", referencedColumnName = "id"))
-	@JsonIgnoreProperties({"empleados"})
+	@JsonIgnoreProperties({"empleados", "arrendatarios"})
 	private Collection<Inmueble> inmuebles;
 	
 	public Empleado() {}

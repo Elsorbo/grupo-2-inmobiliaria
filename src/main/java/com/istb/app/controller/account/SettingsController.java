@@ -14,6 +14,7 @@ import com.istb.app.services.firebase.FirebaseStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,14 +49,23 @@ public class SettingsController {
 	public ResponseEntity<?> updateProfile(@RequestBody Usuario account) {
 
 		Usuario userAccount = userManager.findByUsuario(account.getUsuario());
-
-		if(userAccount != null) {
 		
+		if(userAccount != null) {
+			
 			userAccount.setCedula(account.getCedula());
 			userAccount.setNombres(account.getNombres());
 			userAccount.setApellidos(account.getApellidos());
 			userAccount.setCorreo(account.getCorreo());
 			userAccount.setDescripcion(account.getDescripcion());
+
+			if( account.getEstado() != null ) {
+				userAccount.setEstado(account.getEstado()); }
+			
+			if( account.getContrasena() != null ) { 
+				userAccount.setContrasena(
+					PasswordEncoderFactories
+						.createDelegatingPasswordEncoder()
+						.encode(account.getContrasena())); }
 
 			userManager.save(userAccount);
 			

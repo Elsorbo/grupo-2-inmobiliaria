@@ -71,7 +71,7 @@ public class InmuebleController {
 			attributes.addAttribute("empleados", empleadoRepository.findAll()); }
 		
 		attributes.addAttribute("paginator", 
-			inmuebleRepository.findAll( PageRequest.of(0, 5, Sort.by("id")) ));
+			inmuebleRepository.findAll( PageRequest.of(0, 5) ));
 		
 		return "inmueble";
 		
@@ -206,7 +206,7 @@ public class InmuebleController {
 			.body(fotos);
 
 	}
-		
+	
 	@PutMapping("/inmueble")
 	@Transactional
 	public ResponseEntity<?> updateInmueble(

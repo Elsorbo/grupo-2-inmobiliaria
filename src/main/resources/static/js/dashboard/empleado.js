@@ -149,7 +149,6 @@ const setEmployeeAditionalInfo = (event) => {
     cardInfo[2].innerHTML = `Descripcion: <br />${inputsInfo[2].value}`;
     cardInfoBody.previousElementSibling.querySelector("img").src = inputsInfo[3].value;
     
-    
 }
 
 const setEmployeeDeleteId = (event) => {

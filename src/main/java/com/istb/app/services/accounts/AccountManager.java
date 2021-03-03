@@ -33,21 +33,14 @@ public class AccountManager implements AccountsServiceI {
 	@Autowired
 	private RoleRepositoryI roleManager;
 
-	private static final String DEFAULT_PROFILE_IMAGE = "http://style.anu.edu.au/_anu/4/images/placeholders/person_8x10.png";
+	private static final String DEFAULT_PROFILE_IMAGE = "https://style.anu.edu.au/_anu/4/images/placeholders/person_8x10.png";
 
 	public Empleado createEmployeeAccount(Empleado employee) {
 
 		Usuario user = employee.getUsuario();
-		
-		user.setEstado(true);
-		user.setDescripcion("");
 		addRole(user, Arrays.asList("EMPLEADO"));
-		user.setUrlImagenPerfil(DEFAULT_PROFILE_IMAGE);
-		user.setNombreImagenPerfil("default");
-		user.setContrasena( PasswordEncoderFactories
-			.createDelegatingPasswordEncoder().encode(user.getContrasena()) );
 
-		userManager.save(user);
+		userManager.save( setUserDefatulValues(user) );
 		employeeManager.save(employee);
 
 		return employee;
@@ -57,21 +50,26 @@ public class AccountManager implements AccountsServiceI {
 	@Override
 	public Arrendatario createTenantAccount(Arrendatario tenant) {
 	
-		Usuario user = tenant.getUsuario();
+		addRole(tenant.getUsuario(), Arrays.asList("ARRENDATARIO"));
 		
-		user.setEstado(true);
-		user.setDescripcion("");
-		addRole(user, Arrays.asList("ARRENDATARIO"));
-		user.setUrlImagenPerfil(DEFAULT_PROFILE_IMAGE);
-		user.setNombreImagenPerfil("default");
-		user.setContrasena( PasswordEncoderFactories
-			.createDelegatingPasswordEncoder().encode(user.getContrasena()) );
-		
-		userManager.save(user);
+		userManager.save( setUserDefatulValues(tenant.getUsuario()) );
 		tenantManager.save(tenant);
 
 		return tenant;
 	
+	}
+
+	private Usuario setUserDefatulValues(Usuario user) {
+
+		user.setEstado(true);
+		user.setDescripcion("");
+		user.setUrlImagenPerfil(DEFAULT_PROFILE_IMAGE);
+		user.setNombreImagenPerfil("default");
+		user.setContrasena( PasswordEncoderFactories
+			.createDelegatingPasswordEncoder().encode(user.getContrasena()) );
+
+		return user;
+		
 	}
 
 	private void addRole(Usuario user, List<String> roles) {

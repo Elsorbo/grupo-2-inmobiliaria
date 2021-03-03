@@ -46,7 +46,7 @@
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-6 label-floating has-success">
-                                        <select class="form-control" name="localidad" id="localidad-inmueble">
+                                        <select class="form-control" name="localidad" id="localidad-inmueble" required>
                                             <option>Los Laureles</option>
                                             <option>Los Perales</option>
                                             <option>El Paraiso</option>
@@ -60,7 +60,7 @@
 
                                     <div class="form-group col-md-6 label-floating has-success"
                                         sec:authorize="hasRole('ADMINISTRADOR')">
-                                        <select class="form-control" name="idEmpleado" id="empleado-id">
+                                        <select class="form-control" name="idEmpleado" id="empleado-id" required>
                                             <option th:each="empleado : ${empleados}"
                                                 th:text="${empleado.usuario.nombres} + ' - ' + ${empleado.usuario.apellidos}"
                                                 th:value="${empleado.id}">
