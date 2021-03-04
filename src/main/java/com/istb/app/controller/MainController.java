@@ -71,14 +71,5 @@ public class MainController {
 		return "recibo";
 		
 	}
-
-	@GetMapping("/arrendatarios")
-	public String getArrendatarios(Model attributes) {
-
-		attributes.addAttribute("sectionTitle", "arrendatarios");
-		
-		return "arrendatario";
-		
-	}
-
+	
 }

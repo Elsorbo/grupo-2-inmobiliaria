@@ -11,5 +11,9 @@ public interface InmuebleRepositoryI
 	extends JpaRepository<Inmueble, Integer> {
 
 	List<Inmueble> findByLocalidad(String localidad);
-		
+
+	List<Inmueble> findByAlquilado(boolean alquilado);
+
+	List<Inmueble> findByAlquiladoOrderByIdAsc(boolean alquilado);
+	
 }

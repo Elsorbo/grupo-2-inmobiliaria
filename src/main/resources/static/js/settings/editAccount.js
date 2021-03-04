@@ -15,12 +15,22 @@ const updateAccount = async (event) => {
     
     let path = "perfil";
     let accountValues = getFormValues(target.parentElement);
-
-    if(accountValues.telefono) { 
     
+    if(accountValues.hasOwnProperty("estado")) {
+        accountValues["estado"] = document.querySelector("#account-state").checked; }
+    
+    if(accountValues.hasOwnProperty("contrasena1")) {
+		
+        if(accountValues.contrasena1 == accountValues.contrasena2) {
+            accountValues["contrasena"] = accountValues.contrasena2; }
+        
+    }
+    
+    if(accountValues.telefono) { 
+        
         path = `empleado/${accountId.value}`;
         accountValues = loadEmployeeData(accountValues);
-    
+        
     }
     
     let response = await sendJSONData(path, "put", accountValues);
@@ -31,14 +41,11 @@ const updateAccount = async (event) => {
         ${accountValues.nombres ? accountValues.nombres : accountValues.usuario.nombres} \
         ${accountValues.apellidos ? accountValues.apellidos : accountValues.usuario.apellidos}`;
         perfilDetails.textContent = accountValues.descripcion ? accountValues.descripcion : accountValues.usuario.descripcion;
-        showNotification(
-            "El perfil se ha actualizado correctamente", "success");
-    
+        showNotification("El perfil se ha actualizado correctamente", "success");
+        
     } else {
-        showNotification(
-            "Ha ocurrido un error al intentar actualizar el perfil", "danger"); }
+        showNotification("Ha ocurrido un error al intentar actualizar el perfil", "danger"); }
     
-
 }
 
 const updateImage = async (event) => {

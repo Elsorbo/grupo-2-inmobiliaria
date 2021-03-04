@@ -39,7 +39,8 @@ public class AccountController {
 	@Transactional
 	public ResponseEntity<?> addNewEmployee(@RequestBody Empleado newUser) {
 
-		return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON)
+		return ResponseEntity.ok()
+			.contentType(MediaType.APPLICATION_JSON)
 			.body(accountService.createEmployeeAccount(newUser));
 
 	}
@@ -48,7 +49,8 @@ public class AccountController {
 	@Transactional
 	public ResponseEntity<?> addNewTenant(@RequestBody Arrendatario newUser) {
 
-		return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON)
+		return ResponseEntity.ok()
+			.contentType(MediaType.APPLICATION_JSON)
 			.body(accountService.createTenantAccount(newUser));
 
 	}

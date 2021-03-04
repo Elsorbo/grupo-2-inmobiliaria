@@ -23,32 +23,48 @@
               <div class="col-md-8">
                 <div class="card">
                   <div class="card-header card-header-danger">
-                    <h4 class="card-title">Editar Perfil</h4>
-                    <p class="card-category">Complete su perfil</p>
+                    <h4 class="card-title">Editar Arrendatario</h4>
+                    <p class="card-category">Verifique la información del arrendatario</p>
                   </div>
                   <div class="card-body">
                     <form method="post">
                       <br>
+                      <input type="hidden" id="account-id" th:value="${account.id}">
+                      <div class="form-group">
+                        <div class="form-check">
+                          <label class="form-check-label">
+                              <input id="account-state"
+                                required class="form-check-input" 
+                                type="checkbox" name="estado"
+                                th:checked="${account.usuario.estado}">
+                              Habilitado
+                              <span class="form-check-sign">
+                                <span class="check"></span>
+                              </span>
+                          </label>
+                        </div>
+                      </div>
+
                       <div class="row">
                         <div class="col-md-4">
                           <div class="form-group">
                             <label class="bmd-label-floating">
-                              Usuario
+                              Usuario (Deshabilitado)
                             </label>
-                            <input id="username-input" type="text" 
+                            <input id="username-input" required type="text" 
                               class="form-control" name="usuario"
-                              disabled th:value="${account.usuario}">
+                              disabled th:value="${account.usuario.usuario}">
                           </div>
                         </div>
                         
-                        <div class="col-md-8">
+                        <div class="col-md-4">
                           <div class="form-group">
                             <label class="bmd-label-floating">
                               No. Cédula
                             </label>
-                            <input type="text" minlength="6" 
+                            <input required type="text" maxlength="10" minlength="10"
                               class="form-control" name="cedula"
-                              th:value="${account.cedula}">
+                              th:value="${account.usuario.cedula}">
                           </div>
                         </div>
                       </div>
@@ -57,16 +73,16 @@
                         <div class="col-md-6">
                           <div class="form-group">
                             <label class="bmd-label-floating">Nombres</label>
-                            <input type="text" name="nombres"
-                              class="form-control" th:value="${account.nombres}">
+                            <input required type="text" name="nombres"
+                              class="form-control" th:value="${account.usuario.nombres}">
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="form-group">
                             <label class="bmd-label-floating">Apellidos</label>
-                            <input type="text" 
+                            <input required type="text" 
                               name="apellidos" class="form-control" 
-                              th:value="${account.apellidos}">
+                              th:value="${account.usuario.apellidos}">
                           </div>
                         </div>
                       </div>
@@ -75,34 +91,47 @@
                         <div class="col-md-12">
                           <div class="form-group">
                             <label class="bmd-label-floating">Correo</label>
-                            <input type="email" 
+                            <input required type="email" 
                               class="form-control" name="correo"
-                              th:value="${account.correo}">
+                              th:value="${account.usuario.correo}">
                           </div>
                         </div>
                       </div>
+                      <br />
+					            <!-- Contraseña -->
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label class="bmd-label-floating">Nueva contraseña</label>
+                            <input required type="password" 
+                              class="form-control" name="contrasena1" value="xxxxx">
+                          </div>
+                        </div>
+                          
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <label class="bmd-label-floating">Repita la contraseña</label>
+                            <input required type="password" 
+                              class="form-control" name="contrasena2" value="yyyyy">
+                          </div>
+                        </div>
+                      </div>
+                      
                       <!-- <br>
                       <div class="row">
                         <div class="col-md-4">
                           <div class="form-group">
                             <label class="bmd-label-floating">City</label>
-                            <input type="text" class="form-control">
+                            <input required type="text" class="form-control">
                           </div>
                         </div>
                         <div class="col-md-4">
                           <div class="form-group">
                             <label class="bmd-label-floating">Country</label>
-                            <input type="text" class="form-control">
+                            <input required type="text" class="form-control">
                           </div>
                         </div>
-                        <div class="col-md-4">
-                          <div class="form-group">
-                            <label class="bmd-label-floating">Postal Code</label>
-                            <input type="text" class="form-control">
-                          </div>
-                        </div>
-                      </div>
-                      <br> -->
+                        <br> -->
                       <div class="row">
                         <div class="col-md-12">
                           <div class="form-group">
@@ -111,12 +140,12 @@
                               <label class="bmd-label-floating">Agregue una breve descripción sobre lo que lo apasiona y motiva</label>
                               <textarea class="form-control" 
                                 rows="3" name="descripcion" 
-                                th:text="${account.descripcion}"></textarea>
+                                th:text="${account.usuario.descripcion}"></textarea>
                             </div>
                           </div>
                         </div>
                       </div>
-                      <button id="updateAccount" type="submit" class="btn btn-danger pull-right">Actualizar perfil</button>
+                      <button id="updateAccount" type="submit" class="btn btn-danger pull-right">Actualizar Arrendatario</button>
                       <div class="clearfix"></div>
                     </form>
                   </div>
@@ -133,21 +162,21 @@
                       <img id="perfil-load" th:src="@{/images/spiner.gif}" 
                         alt="loader" style="visibility: hidden;">
                       <img class="img" id="accountImage" 
-                        th:if = "${account.urlImagenPerfil != null}" 
-                        th:src="${account.urlImagenPerfil}" />
+                        th:if = "${account.usuario.urlImagenPerfil != null}" 
+                        th:src="${account.usuario.urlImagenPerfil}" />
                       <img class="img" id="accountImage" 
-                        th:unless = "${account.urlImagenPerfil != null}" 
+                        th:unless = "${account.usuario.urlImagenPerfil != null}" 
                         th:src="@{http://style.anu.edu.au/_anu/4/images/placeholders/person_8x10.png}" />
                     </a>
                   </div>
                   <div class="card-body">
                     <!-- <h6 class="card-category text-gray">CEO / Co-Founder</h6> -->
                     <h4 class="card-title" 
-                      th:text="${account.nombres + ' ' + account.apellidos}">
+                      th:text="${account.usuario.nombres + ' ' + account.usuario.apellidos}">
                       Alec Thompson
                     </h4>
                     <p id="perfilDetails"
-                      class="card-description" th:text="${account.descripcion}">
+                      class="card-description" th:text="${account.usuario.descripcion}">
                     </p>
                   </div>
                 </div>
