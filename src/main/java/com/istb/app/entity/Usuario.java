@@ -61,7 +61,6 @@ public class Usuario implements Serializable {
 	@Column(name = "nombre_imagen_perfil")
 	private String nombreImagenPerfil;
 	
-	@Column(unique = true)
 	private String usuario;
 	
 	@NotEmpty(message = "El correo electrónico es requerido.")
