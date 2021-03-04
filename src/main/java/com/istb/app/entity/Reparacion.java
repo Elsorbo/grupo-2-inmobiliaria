@@ -73,4 +73,12 @@ public class Reparacion implements Serializable {
 	public void preUpdated () {
 		this.fechaActualizacion = LocalDateTime.now();
 	}
+
+	@Override
+	public String toString() {
+
+		return String.format("[Reparacion: %d]", this.id);
+
+	}
+
 }

@@ -174,7 +174,7 @@ const setTenantDeleteId = (event) => {
         target = target.parentElement; }
     
     tenantDeleteBtn.value = target.parentElement.parentElement.firstElementChild.innerText;
-
+    
 }
 
 const deleteTenant = async (event) => {
@@ -205,12 +205,12 @@ const deleteTenant = async (event) => {
 const newTenantFromTemplate = (tenant) => {
 
     return `
-        <tr th:id="tenant-+${tenant.id}">
+        <tr id="tenant-${tenant.id}">
             <td class="text-center">${tenant.id}</td>\
-            <td th:text="">${tenant.usuario.nombres} ${tenant.usuario.apellidos}</td>
-            <td th:text="">${tenant.usuario.correo}</td>
-            <td th:text="">${tenant.usuario.estado ? 'Activo' : 'Inactivo'}</td>
-            <td class="text-right" th:text="">${tenant.empleado ? 
+            <td>${tenant.usuario.nombres} ${tenant.usuario.apellidos}</td>
+            <td>${tenant.usuario.correo}</td>
+            <td>${tenant.usuario.estado ? 'Activo' : 'Inactivo'}</td>
+            <td class="text-right">${tenant.empleado ? 
                 tenant.empleado.usuario.nombres.concat(' ').concat(tenant.empleado.usuario.apellidos) 
                 : 'No asignado'}
             </td>
