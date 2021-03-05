@@ -27,24 +27,15 @@ public class MainController {
 			return "redirect:/empleados"; }
 		
 		if(AccountUtils.hasRole(account, "EMPLEADO")) {
-			return "redirect:/inmuebles"; }
-		
-		if(AccountUtils.hasRole(account, "ADMINISTRADOR")) {
-			return "redirect:/facturas"; }
+			return "redirect:/arrendatarios"; }
+
+		if(AccountUtils.hasRole(account, "ARRENDATARIO")) {
+			return "redirect:/recibos"; }
 
 		return "dashboard";
 		
 	}
 	
-	@GetMapping("/reparaciones")
-	public String getReparaciones(Model attributes) {
-
-		attributes.addAttribute("sectionTitle", "reparaciones");
-		
-		return "reparacion";
-		
-	}
-
 	@GetMapping("/facturas")
 	public String getFacturas(Model attributes) {
 

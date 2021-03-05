@@ -7,7 +7,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -41,17 +40,18 @@ public class Reparacion implements Serializable {
 	private int id;
 	
 	@Lob
+	@NotNull(message = "Se requiere una descripción")
 	private String descripcion;
 	
 	@Column(name = "monto_estimado")
+	@NotNull(message = "Se requiere una estimación del monto.")
 	private Double montoEstimado;
 	
 	@Enumerated(EnumType.STRING)
-	@NotNull(message = "El estado de la reparación es requerido.")
 	@Column(name = "estado", length = 12)
 	private EstadoReparacion estado;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JsonIgnoreProperties({"reparaciones"})
 	private Arrendatario arrendatario;
 	

@@ -131,7 +131,7 @@
           <img th:src="${inmueble.fotos[0].url_foto}" alt="Norway" style="width:100%">
           <div class="w3-container w3-white card-container">
             <h3 th:text="${inmueble.titulo}">Título</h3>
-            <h6 th:text="'$' + ${inmueble.precio}" class="w3-opacity">$00.00</h6>
+            <h6 th:text="'Desde: $' + ${inmueble.precio}" class="w3-opacity">$00.00</h6>
             <p th:text="${inmueble.localidad}">Locación</p>
             <p th:utext="${inmueble.area} + ' ' + 'm<sup>2</sup>'">0m<sup>2</sup></p>
             <p class="w3-large"><i class="fa fa-bath"></i> <i class="fa fa-phone"></i> <i class="fa fa-wifi"></i></p>

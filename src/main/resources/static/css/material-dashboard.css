@@ -48,9 +48,11 @@ tbody > tr:hover {
 
 }
 
-#reparacion-card-container .card {
+#reparacion-card-container > .card {
 
+  /* height: 200px; */
   margin-left: 20px;
   margin-top: 0px;
+  overflow: hidden;
 
 }
