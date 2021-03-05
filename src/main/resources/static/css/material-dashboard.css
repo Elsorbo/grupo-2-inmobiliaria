@@ -38,3 +38,21 @@ tbody > tr:hover {
   left: 46%;
 
 }
+
+#reparacion-card-container {
+
+  /* align-content: space-around; */
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+
+}
+
+#reparacion-card-container > .card {
+
+  /* height: 200px; */
+  margin-left: 20px;
+  margin-top: 0px;
+  overflow: hidden;
+
+}

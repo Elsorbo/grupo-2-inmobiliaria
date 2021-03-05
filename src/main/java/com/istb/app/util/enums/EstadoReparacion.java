@@ -6,7 +6,7 @@ public enum EstadoReparacion {
 	 * {@enum Sugerida}.
 	 * 
 	 */
-	SUGERIDA("Sugerida"), 
+	SOLICITADA("Solicitada"), 
 	
 	
 	/**

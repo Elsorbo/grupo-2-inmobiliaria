@@ -113,7 +113,7 @@ public class Usuario implements Serializable {
 	@Override
 	public String toString() {
 
-		return this.nombres;
+		return String.format("[Usuario: %s - %s]", this.usuario, this.cedula);
 		
 	}
 

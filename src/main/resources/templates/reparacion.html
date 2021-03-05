@@ -1,38 +1,140 @@
-
 <!DOCTYPE html>
-<html lang="es"
-    xmlns:th="http://www.thymeleaf.org"
-    xmlns:sec="http://www.thymeleaf.org/extras/spring-security" >
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="maintemplate :: head">
 </head>
 
 <body class="">
 
-    <div class="wrapper ">
+  <div class="wrapper ">
 
-        <div th:replace="maintemplate :: sidebar" class="sidebar" data-color="purple" data-background-color="white"
-            data-image="../assets/img/sidebar-1.jpg">
-        </div>
-
-        <div class="main-panel">
-            <!-- Navbar -->
-            <nav th:replace="maintemplate :: navbar"
-                class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
-            </nav>
-
-            <div class="content">
-                Contenido reparación
-            </div>
-
-            <footer th:replace="maintemplate :: footer" class="footer">
-            </footer>
-        </div>
+    <div th:replace="maintemplate :: sidebar" class="sidebar" data-color="purple" data-background-color="white"
+      data-image="../assets/img/sidebar-1.jpg">
     </div>
-    <script>
-        document.querySelector(".reparaciones").classList.add("active")
-    </script>
-    <div th:replace="maintemplate :: scripts"></div>
+
+    <div class="main-panel">
+      <!-- Navbar -->
+      <nav th:replace="maintemplate :: navbar"
+        class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
+      </nav>
+
+      <div class="content">
+
+        <div sec:authorize="hasRole('ARRENDATARIO')" id="repair-content" style="margin-bottom: 20px;">
+          <button class="btn btn-danger" id="show-repair-form">
+            <i class="material-icons">add</i>
+            Solicitar reparación
+          </button>
+          <div class="card" id="repair-form" style="display: none; margin: 10px; width: 63%;">
+            <h4 class="" style="padding: 20px 0px 0px 20px;">Nueva solicitud de reparación</h4>
+            <div class="card-body">
+              <div>
+                <form method="post">
+                  
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Monto estimado</label>
+                          <input required type="number" class="form-control" name="montoEstimado" min="0">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Agregue la descripción de su solicitud</label>
+                          <textarea required class="form-control" 
+                            rows="3" name="descripcion" 
+                            text=""></textarea>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-row flex-row-reverse">
+                    <button id="register-request" type="submit" class="btn btn-danger"
+                      style="margin-right: 0px;">Enviar solicitud</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        
+        </div>
+
+        <div id="reparacion-card-container" class="card-content">
+          
+          <div class="card" style="width: 20rem;" 
+            th:each="repair : ${reparaciones}" 
+            sec:authorize="hasRole('ADMINISTRADOR')">
+            <div class="card-body">
+              <h4 class="card-title"  style="margin-bottom: 10px;"
+                th:utext="'<strong>Arrendatario: </strong>' + ${repair.arrendatario.usuario.nombres} + ' ' + ${repair.arrendatario.usuario.apellidos}">Name Last Name</h4>
+                <h6 class="card-subtitle mb-2 text-muted"
+                th:text="'Monto estimado: $' + ${repair.montoEstimado}">$0.00</h6>
+              <p class="card-text" th:text="${repair.descripcion}">Description</p>
+              <p>
+                <!-- Estado: -->
+                <!-- <span class="badge badge-warning" th:if="${repair.estado.value == 'Solicitada'}">solicitada</span>
+                <span class="badge badge-success" th:if="${repair.estado.value == 'Aceptada'}">aceptada</span> -->
+              </p>
+              <a th:href="@{/infoinmueble/} + ${repair.arrendatario.inmuebles[0].id}" 
+                class="card-link" target="_blank">Detalles del inmueble</a>
+                <a href="/" class="card-link accept-repair">Aceptar petición</a>
+                <input type="hidden" name="repairid" th:value="${repair.id}">
+            </div>
+          </div>
+          
+          <div class="card" style="width: 20rem;" 
+            th:each="repair : ${reparaciones}" 
+            sec:authorize="hasRole('EMPLEADO')">
+            <div class="card-body">
+              <h4 class="card-title"  style="margin-bottom: 10px;"
+                th:utext="'<strong>Arrendatario: </strong>' + ${repair.arrendatario.usuario.nombres} + ' ' + ${repair.arrendatario.usuario.apellidos}">Name Last Name</h4>
+              <h6 class="card-subtitle mb-2 text-muted"
+                th:text="'Monto estimado: $' + ${repair.montoEstimado}">$0.00</h6>
+              <p class="card-text" th:text="${repair.descripcion}">Description</p>
+              <p>Estado:
+                <span class="badge badge-warning" th:if="${repair.estado.value == 'Solicitada'}">solicitada</span>
+                <span class="badge badge-success" th:if="${repair.estado.value == 'Aceptada'}">aceptada</span>
+              </p>
+              <a th:href="@{/infoinmueble/} + ${repair.arrendatario.inmuebles[0].id}" 
+                class="card-link">Detalles del inmueble</a>
+                <a href="#" class="card-link accept-repair">Aceptar petición</a>
+                <input type="hidden" name="repairid" th:value="${repair.id}">
+            </div>
+          </div>
+          
+          <div class="card" style="width: 20rem;" 
+            th:each="repair : ${reparaciones}" 
+            sec:authorize="hasRole('ARRENDATARIO')">
+            <div class="card-body">
+              <h4 class="card-title" style="margin-bottom: 10px;"
+                th:utext="'<strong>Arrendatario: </strong>' + ${repair.arrendatario.usuario.nombres} + ' ' + ${repair.arrendatario.usuario.apellidos}">Name Last Name</h4>
+              <h6 class="card-subtitle mb-2 text-muted"
+                th:text="'Monto estimado: $' + ${repair.montoEstimado}">$0.00</h6>
+              <p class="card-text" th:text="${repair.descripcion}">Description</p>
+              <p>Estado:
+                <span class="badge badge-warning" th:if="${repair.estado.value == 'Solicitada'}">solicitada</span>
+                <span class="badge badge-success" th:if="${repair.estado.value == 'Aceptada'}">aceptada</span>
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <footer th:replace="maintemplate :: footer" class="footer">
+      </footer>
+    </div>
+  </div>
+  <script>
+    document.querySelector(".reparaciones").classList.add("active")
+  </script>
+  <div th:replace="maintemplate :: scripts"></div>
+  <script type="module" th:src="@{/js/dashboard/reparacion.js}"></script>
 </body>
 
 </html>
