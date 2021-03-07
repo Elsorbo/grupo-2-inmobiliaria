@@ -8,6 +8,7 @@ const REPAIR_STATE = {
 	"ACEPTADA": "success"
 }
 
+let noRepairs = document.querySelector("#no-repairs");
 let repairForm = document.querySelector("#repair-form");
 let showFormBtn = document.querySelector("#show-repair-form");
 let registerBtn = document.querySelector("#register-request");
@@ -27,12 +28,15 @@ const acceptRepair = (event) => {
 			
 			showNotification("Se cambio el estado de la reparación", "success"); 
 			target.parentElement.parentElement.remove();
-		
+			
+			if( repairCardContainer.children.length == 1 ) { 
+				noRepairs.style.display = "block"; }
+			
 		} else { 
 			showNotification("No se puedo cambiar el estado de la reparación", "danger"); }
 		
 	});
-
+	
 }
 
 const toggleRepairForm = (event) => {
@@ -101,6 +105,9 @@ window.addEventListener("load", (event) => {
 
 	document.querySelectorAll(".accept-repair").forEach( (a) => { 
 		a.addEventListener("click", acceptRepair); });
+	
+	if( repairCardContainer.children.length == 1 ) { 
+		noRepairs.style.display = "block"; }
 
 });
 

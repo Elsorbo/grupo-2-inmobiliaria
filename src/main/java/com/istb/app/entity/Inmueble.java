@@ -61,15 +61,15 @@ public class Inmueble implements Serializable {
 	private LocalDateTime fechaActualizacion;
 	
 	@ManyToMany(mappedBy = "inmuebles", fetch = FetchType.EAGER)
-	@JsonIgnoreProperties({"inmuebles"})
+	@JsonIgnoreProperties({"inmuebles", "arrendatarios"})
 	private Collection<Empleado> empleados;
 	
-	@ManyToMany(mappedBy = "inmuebles", fetch = FetchType.LAZY)
-	@JsonIgnoreProperties({"inmuebles"})
+	@ManyToMany(mappedBy = "inmuebles")
+	@JsonIgnoreProperties({"inmuebles", "reparaciones", "empleado"})
 	private Collection<Arrendatario> arrendatarios;
 	
 	@NotEmpty(message = "Se necesita al menos una foto para el inmueble")
-	@OneToMany(mappedBy = "inmueble", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "inmueble", cascade = CascadeType.ALL)
 	@JsonIgnoreProperties({"inmueble"})
 	private Collection<Fotos> fotos;
 	

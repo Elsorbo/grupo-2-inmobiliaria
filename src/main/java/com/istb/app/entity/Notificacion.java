@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,13 +13,9 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "notificaciones")
 public class Notificacion implements Serializable {
@@ -42,7 +37,17 @@ public class Notificacion implements Serializable {
 	@Column(name = "fecha_limite")
 	private LocalDate fechaLimite;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JsonIgnoreProperties({"notificaciones"})
 	private Arrendatario arrendatario;
+
+	@Override
+	public String toString() {
+
+		return String.format("[Notificacion: %s - %s]", 
+			this.arrendatario.getUsuario().getUsuario(),
+			this.titulo );
+		
+	}
+
 }

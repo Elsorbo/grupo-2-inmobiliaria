@@ -6,6 +6,7 @@ import java.util.Collection;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -38,23 +39,24 @@ public class Empleado implements Serializable {
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "usuario_id")
-	@JsonIgnoreProperties({"empleado"})
+	@JsonIgnoreProperties({"empleado", "arrendatario"})
 	private Usuario usuario;
 	
-	@OneToMany(mappedBy = "empleado")
-	@JsonIgnoreProperties({"empleado", "inmuebles"})
+	@OneToMany(mappedBy = "empleado", cascade = CascadeType.ALL)
+	@JsonIgnoreProperties({"empleado", "inmuebles", "reparaciones"})
 	@OrderBy("id desc")
 	private Collection<Arrendatario> arrendatarios;
 	
 	@ManyToMany
     @JoinTable(name = "empleado_inmueble", 
-    joinColumns = @JoinColumn(name = "empleado_id", referencedColumnName = "id"), 
-    inverseJoinColumns = @JoinColumn(name = "inmueble_id", referencedColumnName = "id"))
+    	joinColumns = @JoinColumn(name = "empleado_id", referencedColumnName = "id"), 
+    	inverseJoinColumns = @JoinColumn(name = "inmueble_id", referencedColumnName = "id")
+	)
 	@JsonIgnoreProperties({"empleados", "arrendatarios"})
 	private Collection<Inmueble> inmuebles;
 	
 	public Empleado() {}
-
+	
 	public Empleado(Usuario user, String telefono) {
 
 		this.usuario = user;

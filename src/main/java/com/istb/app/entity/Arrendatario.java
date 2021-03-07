@@ -3,10 +3,12 @@ package com.istb.app.entity;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -35,19 +37,20 @@ public class Arrendatario implements Serializable  {
 	
 	@OneToOne
 	@JoinColumn(name = "usuario_id")
-	@JsonIgnoreProperties({"arrendatario"})
+	@JsonIgnoreProperties({"arrendatario", "empleado"})
 	private Usuario usuario;
 	
 	@ManyToOne
-	@JsonIgnoreProperties({"arrendatarios", "inmuebles"})
 	@JoinColumn(name = "empleado_id")
+	@JsonIgnoreProperties({"arrendatarios", "inmuebles", "reparaciones"})
 	private Empleado empleado;
 	
 	@ManyToMany
     @JoinTable(name = "arrendatario_inmueble", 
-    joinColumns = @JoinColumn(name = "arrendatario_id", referencedColumnName = "id"), 
-    inverseJoinColumns = @JoinColumn(name = "inmueble_id", referencedColumnName = "id"))
-	@JsonIgnoreProperties({"arrendatarios", "empleados"})
+    	joinColumns = @JoinColumn(name = "arrendatario_id", referencedColumnName = "id"), 
+    	inverseJoinColumns = @JoinColumn(name = "inmueble_id", referencedColumnName = "id")
+	)
+	@JsonIgnoreProperties({"arrendatarios"})
 	private Set<Inmueble> inmuebles;
 	
 	@OneToMany(mappedBy = "arrendatario", cascade = CascadeType.ALL)

@@ -14,6 +14,7 @@ import com.istb.app.util.ControllerUtils;
 import com.istb.app.util.enums.EstadoReparacion;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -41,13 +42,12 @@ public class ReparacionController {
 		attributes.addAttribute("sectionTitle", "reparaciones");
 		
 		if( !AccountUtils.hasRole(account, "ARRENDATARIO") ) {
-			attributes.addAttribute("reparaciones", 
-				repairRepository.findByEstadoOrderByFechaCreacionDesc(EstadoReparacion.SOLICITADA)); }
+			attributes.addAttribute("reparaciones", repairRepository
+				.findByEstadoOrderByFechaCreacionDesc(EstadoReparacion.SOLICITADA)); }
 		else { 
-			attributes.addAttribute("reparaciones", 
-				repairRepository
-					.findByArrendatario_Usuario_UsuarioOrderByFechaCreacionDesc(
-						account.getName())); }
+			attributes.addAttribute("reparaciones", repairRepository
+				.findByArrendatario_Usuario_UsuarioOrderByFechaCreacionDesc(
+					account.getName())); }
 		
 		return "reparacion";
 		
@@ -74,6 +74,13 @@ public class ReparacionController {
 		return ControllerUtils.getJSONOkResponse( 
 			repairManager.acceptRepair(id) );
 		
+	}
+
+	@GetMapping("/reparacion")
+	public ResponseEntity<?> getRepair() {
+
+		return ControllerUtils.getJSONOkResponse( repairRepository.findAll(PageRequest.of(0, 5)) );
+
 	}
 
 }

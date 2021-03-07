@@ -1,6 +1,8 @@
 
 package com.istb.app.controller;
 
+import java.time.LocalDate;
+
 import com.istb.app.util.AccountUtils;
 
 import org.springframework.security.core.Authentication;
@@ -45,15 +47,6 @@ public class MainController {
 		
 	}
 
-	@GetMapping("/desalojo")
-	public String getNotificacionesDesalojo(Model attributes) {
-
-		attributes.addAttribute("sectionTitle", "notificaiones de desalojo");
-		
-		return "desalojo";
-		
-	}
-
 	@GetMapping("/recibos")
 	public String getRecibosPago(Model attributes) {
 
@@ -62,5 +55,5 @@ public class MainController {
 		return "recibo";
 		
 	}
-	
+		
 }

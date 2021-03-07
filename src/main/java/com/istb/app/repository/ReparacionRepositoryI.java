@@ -11,12 +11,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface ReparacionRepositoryI 
 	extends JpaRepository<Reparacion, Integer> {
 
-	public List<Reparacion> findAllByOrderByFechaCreacionDesc();
+	List<Reparacion> findAllByOrderByFechaCreacionDesc();
 	
-	public List<Reparacion> findByEstadoOrderByFechaCreacionDesc(EstadoReparacion estado);
+	List<Reparacion> findByEstadoOrderByFechaCreacionDesc(EstadoReparacion estado);
 
-	public List<Reparacion> findByArrendatario_Usuario_Usuario(String usuario);
+	List<Reparacion> findByArrendatario_Usuario_Usuario(String usuario);
 
-	public List<Reparacion> findByArrendatario_Usuario_UsuarioOrderByFechaCreacionDesc(String usuario);
+	List<Reparacion> findByArrendatario_Usuario_UsuarioOrderByFechaCreacionDesc(String usuario);
 	
 }

@@ -34,7 +34,7 @@ public class Servicio implements Serializable {
 	@NotEmpty(message = "Necesita otorgar un nombre al servicio")
 	private String nombre;
 
-	@ManyToMany(mappedBy = "servicios", fetch = FetchType.LAZY)
+	@ManyToMany(mappedBy = "servicios")
 	@JsonIgnoreProperties({"servicios"})
 	private Collection<Inmueble> inmuebles;
 

@@ -46,7 +46,7 @@ public class ReciboPago implements Serializable {
 	@Column(name = "periodo_pago")
 	private String periodoPago;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JsonIgnoreProperties({"recibos"})
 	private Arrendatario arrendatario;
 	

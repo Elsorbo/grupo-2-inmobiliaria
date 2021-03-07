@@ -14,7 +14,7 @@ import com.istb.app.entity.Fotos;
 import com.istb.app.entity.Inmueble;
 import com.istb.app.models.FileUpload;
 import com.istb.app.repository.EmpleadoRepositoryI;
-import com.istb.app.repository.FotosRepository;
+import com.istb.app.repository.FotosRepositoryI;
 import com.istb.app.repository.InmuebleRepositoryI;
 import com.istb.app.repository.ServicioRepositoryI;
 import com.istb.app.services.dashboard.InmuebleService;
@@ -43,7 +43,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class InmuebleController {
 
 	@Autowired
-	private FotosRepository fotosRepository;
+	private FotosRepositoryI fotosRepository;
 
 	@Autowired
 	private FirebaseStrategyService fbManager;

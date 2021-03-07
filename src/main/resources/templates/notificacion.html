@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="maintemplate :: head">
+</head>
+
+<body class="">
+
+    <div class="wrapper ">
+
+        <div th:replace="maintemplate :: sidebar" class="sidebar" data-color="purple" data-background-color="white"
+            data-image="../assets/img/sidebar-1.jpg">
+        </div>
+
+        <div class="main-panel">
+            <!-- Navbar -->
+            <nav th:replace="maintemplate :: navbar"
+                class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
+            </nav>
+
+            <div class="content">
+
+                <div sec:authorize="!hasRole('ARRENDATARIO')" id="repair-content" style="margin-bottom: 20px;">
+                    <div class="card" id="repair-form" style="display: block; margin: 10px auto; width: 70%">
+                        <div class="card-header card-header-danger">
+                            <h4 class="card-title">Generar una nueva notificación</h4>
+                            <p class="card-category">Pago, adeudamiento, desalojo, etc </p>
+                        </div>
+                        <div class="card-body">
+                            <div>
+                                <form method="post">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <div class="form-group">
+                                                    <label class="bmd-label-floating">Título</label>
+                                                    <input required type="text" class="form-control" name="titulo"
+                                                        maxlength="37">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <div class="form-group">
+                                                    <select required class="form-control" name="arrendatario"
+                                                        id="tenant">
+                                                        <option th:each="arrendatario : ${arrendatarios}" 
+                                                            th:value="${arrendatario.id}" 
+                                                            th:text="${arrendatario.usuario.nombres + ' ' + arrendatario.usuario.apellidos}">
+                                                            Arrendatario</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <div class="form-group">
+                                                    <input type="date" class="form-control" name="fechaLimite"
+                                                        id="fecha-limite" th:min="${fechaActual}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <div class="form-group">
+                                                    <label class="bmd-label-floating">Agregue la descripción de su
+                                                        solicitud</label>
+                                                    <textarea required class="form-control" rows="3" name="descripcion"
+                                                        text=""></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row flex-row-reverse">
+                                        <button id="register-request" type="submit" class="btn btn-danger"
+                                            style="margin-right: 0px;">Enviar Notificación</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div id="reparacion-card-container" class="card-content">
+                    <div class="card" style="width: 20rem;" th:each="notificacion : ${notificaciones}"
+                        sec:authorize="hasRole('ARRENDATARIO')">
+                        <div class="card-body">
+                            <h4 class="card-title" style="margin-bottom: 10px;"
+                                th:text="${notificacion.titulo}">Title</h4>
+                            <h6 class="card-subtitle mb-2 text-muted"
+                                th:text="${'Arrendatario: ' + notificacion.arrendatario.usuario.nombres + ' ' + notificacion.arrendatario.usuario.apellidos}">
+                                Arrendatario: Nombres Apellidos</h6>
+                            <p class="card-text" th:text="${notificacion.detalles}">Detalles</p>
+                            <p></p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <footer th:replace="maintemplate :: footer" class="footer">
+                </footer>
+            </div>
+        </div>
+        <script>
+            document.querySelector(".desalojo").classList.add("active")
+        </script>
+        <div th:replace="maintemplate :: scripts"></div>
+        <script type="module" th:src="@{/js/dashboard/notificacion.js}"></script>
+</body>
+
+</html>

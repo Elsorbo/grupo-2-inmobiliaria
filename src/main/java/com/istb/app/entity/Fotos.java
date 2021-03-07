@@ -36,7 +36,7 @@ public class Fotos implements Serializable {
 	
 	private String nombre_foto;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JsonIgnoreProperties({"fotos"})
 	private Inmueble inmueble;
 	

@@ -60,14 +60,19 @@
               </div>
             </div>
           </div>
-        
-        </div>
-
-        <div id="reparacion-card-container" class="card-content">
           
+        </div>
+        
+        <div id="reparacion-card-container" class="card-content">	
+          <div id="no-repairs" sec:authorize="!hasRole('ARRENDATARIO')" style="display: none;">
+            <i class="material-icons" style="font-size: 24em;">assignment</i> 
+            <span style="font-size: 1.6em; position: absolute; top: 30%">
+              No hay peticiones de reparacion por el momento.
+            </span>
+          </div>
           <div class="card" style="width: 20rem;" 
             th:each="repair : ${reparaciones}" 
-            sec:authorize="hasRole('ADMINISTRADOR')">
+            sec:authorize="!hasRole('ARRENDATARIO')">
             <div class="card-body">
               <h4 class="card-title"  style="margin-bottom: 10px;"
                 th:utext="'<strong>Arrendatario: </strong>' + ${repair.arrendatario.usuario.nombres} + ' ' + ${repair.arrendatario.usuario.apellidos}">Name Last Name</h4>
@@ -82,26 +87,6 @@
               <a th:href="@{/infoinmueble/} + ${repair.arrendatario.inmuebles[0].id}" 
                 class="card-link" target="_blank">Detalles del inmueble</a>
                 <a href="/" class="card-link accept-repair">Aceptar petición</a>
-                <input type="hidden" name="repairid" th:value="${repair.id}">
-            </div>
-          </div>
-          
-          <div class="card" style="width: 20rem;" 
-            th:each="repair : ${reparaciones}" 
-            sec:authorize="hasRole('EMPLEADO')">
-            <div class="card-body">
-              <h4 class="card-title"  style="margin-bottom: 10px;"
-                th:utext="'<strong>Arrendatario: </strong>' + ${repair.arrendatario.usuario.nombres} + ' ' + ${repair.arrendatario.usuario.apellidos}">Name Last Name</h4>
-              <h6 class="card-subtitle mb-2 text-muted"
-                th:text="'Monto estimado: $' + ${repair.montoEstimado}">$0.00</h6>
-              <p class="card-text" th:text="${repair.descripcion}">Description</p>
-              <p>Estado:
-                <span class="badge badge-warning" th:if="${repair.estado.value == 'Solicitada'}">solicitada</span>
-                <span class="badge badge-success" th:if="${repair.estado.value == 'Aceptada'}">aceptada</span>
-              </p>
-              <a th:href="@{/infoinmueble/} + ${repair.arrendatario.inmuebles[0].id}" 
-                class="card-link">Detalles del inmueble</a>
-                <a href="#" class="card-link accept-repair">Aceptar petición</a>
                 <input type="hidden" name="repairid" th:value="${repair.id}">
             </div>
           </div>

@@ -44,8 +44,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		throws Exception {
 	
 		auth.userDetailsService(authService)
-			.passwordEncoder(
-				PasswordEncoderFactories.createDelegatingPasswordEncoder() );
+			.passwordEncoder( 
+				PasswordEncoderFactories.createDelegatingPasswordEncoder() 
+			);
 	
 	}
 
