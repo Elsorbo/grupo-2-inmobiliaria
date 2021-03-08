@@ -43,8 +43,11 @@ import org.springframework.web.multipart.MultipartFile;
 public class InmuebleController {
 
 	@Autowired
+	private InmuebleService inmuebleManager;
+	
+	@Autowired
 	private FotosRepositoryI fotosRepository;
-
+	
 	@Autowired
 	private FirebaseStrategyService fbManager;
 	
@@ -57,9 +60,6 @@ public class InmuebleController {
 	@Autowired
 	private ServicioRepositoryI servicioRepository;
 
-	@Autowired
-	private InmuebleService inmuebleManager;
-	
 	@GetMapping("/inmuebles")
 	@Transactional
 	public String getInmueble(Model attributes, Authentication account) {

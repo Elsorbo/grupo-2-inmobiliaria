@@ -64,13 +64,10 @@ public class FirebaseStrategyService implements FirebaseStrategy {
 	Logger log = LoggerFactory.getLogger(FirebaseStrategyService.class);
 
 	private final static String FOLDER = "inmobiliaria";
-
-	private String path;
 	
 	@PostConstruct
 	private void initializeFirebase() throws Exception {
 		
-		this.path = "/";
 		this.options = StorageOptions.newBuilder()
 			.setProjectId(this.projectId)
 			.setCredentials(GoogleCredentials.fromStream(getFirebaseCredential()))
@@ -82,38 +79,25 @@ public class FirebaseStrategyService implements FirebaseStrategy {
 	public List<FileUpload> uploadFiles(MultipartFile[] multipartFiles, String path) 
 		throws Exception {
 	
-		this.path = String.format("/%s/", path);
-		List<FileUpload> files = uploadFiles(multipartFiles);
-		this.path = "/";
+		List<FileUpload> filesUploads = new ArrayList<>();
+		
+		Arrays.asList(multipartFiles).forEach(file -> {
+			try {
+				filesUploads.add(this.uploadFile(file, path));
+			} catch (Exception e) {
+				log.error("Error: " + e.getMessage());
+			}
+		});
 
-		return files;
+		return filesUploads;
 	
 	}
 
 	@Override
 	public FileUpload uploadFile(MultipartFile multipartFile) throws Exception {
-		File file = convertMultiPartToFile(multipartFile);
-	    Path filePath = file.toPath();
-	    String objectName = generateFileName(multipartFile);
-	    
-	    Storage storage = this.options.getService();
-	    BlobId blobId = BlobId.of(this.bucket, FOLDER.concat(this.path).concat(objectName));
-	    	    
-	    BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
-			.setContentType(multipartFile.getContentType())
-			.setAcl(Arrays.asList( Acl.of(Acl.User.ofAllUsers(), Acl.Role.READER) ))
-			.build();
-	    
-	    Blob blob = storage.create(blobInfo, Files.readAllBytes(filePath));
-	    
-	    log.info("Resp: " + blob);
-	    
-	    return new FileUpload(blob.getBucket(), 
-			blob.getName(), 
-			blob.getGeneration(), 
-			blob.getSize(), 
-			blob.getContentType(),
-			this.getURL(blob.getName()));
+		
+		return uploadFile(multipartFile, "/");
+	
 	}
 
 	@Override
@@ -122,7 +106,7 @@ public class FirebaseStrategyService implements FirebaseStrategy {
 		
 		Arrays.asList(files).forEach(file -> {
 			try {
-				filesUploads.add(this.uploadFile(file));
+				filesUploads.add(this.uploadFile(file, "/"));
 			} catch (Exception e) {
 				log.error("Error: " + e.getMessage());
 			}
@@ -143,6 +127,38 @@ public class FirebaseStrategyService implements FirebaseStrategy {
 	
 		return deleted;
 	
+	}
+
+	private FileUpload uploadFile(MultipartFile multipartFile, String path) 
+		throws Exception {
+
+		String subPath = "/";
+		File file = convertMultiPartToFile(multipartFile);
+	    Path filePath = file.toPath();
+	    String objectName = generateFileName(multipartFile);
+	    
+		if(!path.equals(subPath)) { 
+			subPath = String.format("/%s/", path); }
+
+	    Storage storage = this.options.getService();
+	    BlobId blobId = BlobId.of(this.bucket, FOLDER.concat(subPath).concat(objectName));
+	    	    
+	    BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
+			.setContentType(multipartFile.getContentType())
+			.setAcl(Arrays.asList( Acl.of(Acl.User.ofAllUsers(), Acl.Role.READER) ))
+			.build();
+	    
+	    Blob blob = storage.create(blobInfo, Files.readAllBytes(filePath));
+	    
+	    log.info("Resp: " + blob);
+	    
+	    return new FileUpload(blob.getBucket(), 
+			blob.getName(), 
+			blob.getGeneration(), 
+			blob.getSize(), 
+			blob.getContentType(),
+			this.getURL(blob.getName()));
+
 	}
 
 	private String generateFileName(MultipartFile multiPart) {

@@ -27,12 +27,7 @@ const updateInmueble = async (event) => {
 			"fotos": [{"id": -1}]
 
 		}
-
-		// if(formValues.idEmpleado) { 
-		// 	inmuebleValues["empleados"] = [ {"id": formValues.idEmpleado} ]; }
-		// else { 
-		// 	inmuebleValues["empleados"] = [ {"id": -1} ]; }
-		
+				
 		let response = await sendJSONData("inmueble", "put", inmuebleValues);
 
 		if(response.ok) { 

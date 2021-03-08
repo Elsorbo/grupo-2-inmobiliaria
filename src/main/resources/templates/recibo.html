@@ -1,8 +1,5 @@
-
 <!DOCTYPE html>
-<html lang="es"
-    xmlns:th="http://www.thymeleaf.org"
-    xmlns:sec="http://www.thymeleaf.org/extras/spring-security" >
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="maintemplate :: head">
 </head>
@@ -22,17 +19,97 @@
             </nav>
 
             <div class="content">
-                Contenido recibos de pago
+
+                <div id="receipt-content" style="margin-bottom: 20px;">
+                    <button class="btn btn-danger" id="show-receipt-form">
+                        <i class="material-icons">add</i>
+                        Añadir un recibo de pago
+                    </button>
+                    <div class="card" id="receipt-form" style="display: none; margin: 10px; width: 63%;">
+                        <h4 class="" style="padding: 20px 0px 0px 20px;">Nuevo recibo</h4>
+                        <div class="card-body">
+                            <div>
+                                <form method="post">
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <div class="form-group">
+                                                    <select required class="form-control" name="periodoPago" id="pago">
+                                                        <option th:each="mes : ${meses}"
+                                                            th:text="${#strings.capitalize(mes)}">Mes</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <img id="receipt-loader" style="display: none; position: absolute; top: -110px; right: 100px;" th:src="@{/images/loader.gif}" alt="loader">
+                                            <div class="form-group form-file-upload form-file-multiple">
+                                                <input required id="receipt-input-file" type="file" multiple=""
+                                                    class="inputFileHidden">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control inputFileVisible"
+                                                        placeholder="Imagen del recibo">
+                                                    <span class="input-group-btn">
+                                                        <button id="receipt-input-file-btn" type="button"
+                                                            class="btn btn-fab btn-round btn-primary">
+                                                            <i class="material-icons">attach_file</i>
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row flex-row-reverse">
+                                        <button id="register-receipt" type="submit" class="btn btn-danger"
+                                            style="margin-right: 0px;">Registrar recibo</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div id="recibo-card-container" class="card-content" style="display: flex; flex-wrap: wrap;">
+                    
+                    <div id="no-receipts" style="display: none;">
+                        <i class="material-icons" style="font-size: 24em;">receipt</i>
+                        <span style="font-size: 1.6em; position: absolute; top: 30%">
+                            Aún no posee recibos de pago
+                        </span>
+                    </div>
+
+                    <div class="card" style="width: 20rem; margin: 12px;" th:each="recibo : ${recibos}">
+                        <img class="card-img-top"
+                            th:src="${recibo.urlImagen}" 
+                            rel="nofollow" alt="Card image cap"
+                            style="height: 260px;">
+                        <div class="card-body">
+                            <!-- th:utext="${notificacion.fechaLimite}" -->
+                            <p class="card-text" 
+                                th:utext="'<strong>Periodo: </strong>' + ${recibo.periodoPago}">
+                                <strong>Periodo: </strong>Abril 2021
+                            </p>
+                            <a th:href="@{/recibos}" class="card-link" target="_blank">Editar el recibo</a>
+                            <input type="hidden" name="repairid" th:value="${recibo.id}">
+                        </div>
+                    </div>
+
+                </div>
+
+                <footer th:replace="maintemplate :: footer" class="footer">
+                </footer>
             </div>
 
-            <footer th:replace="maintemplate :: footer" class="footer">
-            </footer>
         </div>
     </div>
     <script>
         document.querySelector(".recibos").classList.add("active")
     </script>
     <div th:replace="maintemplate :: scripts"></div>
+    <script type="module" th:src="@{/js/dashboard/recibo.js}"></script>
 </body>
 
 </html>

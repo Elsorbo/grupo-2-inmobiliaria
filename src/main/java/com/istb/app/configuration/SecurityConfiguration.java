@@ -27,6 +27,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.antMatchers("/inmuebles", "/inmueble/**", "/inmueblepics", 
 				"/arrendatarios", "/arrendatario/**", 
 				"/reparacion", "/notificacion").hasAnyRole("EMPLEADO", "ADMINISTRADOR")
+			.antMatchers("/recibos").hasRole("ARRENDATARIO")
 			.anyRequest().authenticated();
 		
 		http.formLogin()
