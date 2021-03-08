@@ -7,10 +7,10 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import com.istb.app.entity.Arrendatario;
 import com.istb.app.entity.Reparacion;
-import com.istb.app.entity.Usuario;
+import com.istb.app.repository.ArrendatarioRepositoryI;
 import com.istb.app.repository.ReparacionRepositoryI;
-import com.istb.app.repository.UsuarioRepositoryI;
 import com.istb.app.util.enums.EstadoReparacion;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,23 +20,22 @@ import org.springframework.stereotype.Service;
 public class ReparacionService {
 
 	@Autowired
-	private UsuarioRepositoryI userRepository;
+	private ReparacionRepositoryI repairRepository;
 
 	@Autowired
-	private ReparacionRepositoryI repairRepository;
+	private ArrendatarioRepositoryI arrendatarioRepository;
 
 	@Transactional
 	public Map<String, Object> addRepair(Reparacion repair) {
 
 		Map<String, Object> data = new HashMap<>();
+		Arrendatario storedTenant = arrendatarioRepository.findByUsuario_Usuario(
+			repair.getArrendatario().getUsuario().getUsuario() ).get();
 		
-		Usuario storedUser = userRepository.findByUsuario(
-			repair.getArrendatario().getUsuario().getUsuario() );
-		
-		repair.setArrendatario(storedUser.getArrendatario());
+		repair.setArrendatario(storedTenant);
 		repair.setEstado(EstadoReparacion.SOLICITADA);
 
-		repairRepository.save(repair);
+		repairRepository.save(repair);		
 		data.put("reparacion", repair);
 		
 		return data;

@@ -5,7 +5,6 @@ import java.io.Serializable;
 import java.util.Collection;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -34,7 +33,7 @@ public class Servicio implements Serializable {
 	@NotEmpty(message = "Necesita otorgar un nombre al servicio")
 	private String nombre;
 
-	@ManyToMany(mappedBy = "servicios", fetch = FetchType.LAZY)
+	@ManyToMany(mappedBy = "servicios")
 	@JsonIgnoreProperties({"servicios"})
 	private Collection<Inmueble> inmuebles;
 

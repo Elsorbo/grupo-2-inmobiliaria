@@ -13,7 +13,7 @@ import javax.transaction.Transactional;
 import com.istb.app.entity.Empleado;
 import com.istb.app.entity.Inmueble;
 import com.istb.app.repository.EmpleadoRepositoryI;
-import com.istb.app.repository.FotosRepository;
+import com.istb.app.repository.FotosRepositoryI;
 import com.istb.app.repository.InmuebleRepositoryI;
 import com.istb.app.repository.ServicioRepositoryI;
 import com.istb.app.services.firebase.FirebaseStrategy;
@@ -30,7 +30,7 @@ public class InmuebleService {
 	private FirebaseStrategy fbManager;
 	
 	@Autowired
-	private FotosRepository fotosRepository;
+	private FotosRepositoryI fotosRepository;
 
 	@Autowired
 	private EmpleadoRepositoryI empleadoRepository;

@@ -63,7 +63,7 @@ public class ArrendatarioController {
 
 		return ControllerUtils.getJSONOkResponse(
 			arrendatarioRepository.findAll( PageRequest.of(pageNumber, 5) ));
-
+		
 	}
 	
 	@GetMapping("/arrendatario/{id}")

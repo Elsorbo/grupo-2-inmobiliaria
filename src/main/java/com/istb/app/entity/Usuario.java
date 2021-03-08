@@ -26,6 +26,9 @@ import javax.validation.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
 import lombok.Data;
 
 @Data
@@ -68,6 +71,7 @@ public class Usuario implements Serializable {
 	private String correo;
 	
 	@NotEmpty(message = "La contraseña es requerida.")
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private String contrasena;
 	
 	private Boolean estado;

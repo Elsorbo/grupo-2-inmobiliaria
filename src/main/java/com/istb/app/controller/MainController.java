@@ -45,15 +45,6 @@ public class MainController {
 		
 	}
 
-	@GetMapping("/desalojo")
-	public String getNotificacionesDesalojo(Model attributes) {
-
-		attributes.addAttribute("sectionTitle", "notificaiones de desalojo");
-		
-		return "desalojo";
-		
-	}
-
 	@GetMapping("/recibos")
 	public String getRecibosPago(Model attributes) {
 
@@ -62,5 +53,5 @@ public class MainController {
 		return "recibo";
 		
 	}
-	
+		
 }
