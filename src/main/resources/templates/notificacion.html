@@ -58,7 +58,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <div class="form-group">
-                                                    <input type="date" class="form-control" name="fechaLimite"
+                                                    <input required type="date" class="form-control" name="fechaLimite"
                                                         id="fecha-limite" th:min="${fechaActual}">
                                                 </div>
                                             </div>
@@ -69,9 +69,9 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <div class="form-group">
-                                                    <label class="bmd-label-floating">Agregue la descripción de su
-                                                        solicitud</label>
-                                                    <textarea required class="form-control" rows="3" name="descripcion"
+                                                    <label class="bmd-label-floating">
+                                                        Agregue los detalles de su notificación</label>
+                                                    <textarea required class="form-control" rows="3" name="detalles"
                                                         text=""></textarea>
                                                 </div>
                                             </div>
@@ -87,18 +87,27 @@
                     </div>
 
                 </div>
-
                 <div id="reparacion-card-container" class="card-content">
-                    <div class="card" style="width: 20rem;" th:each="notificacion : ${notificaciones}"
+                    <div class="card" style="width: 96%;" 
+                        th:each="notificacion : ${notificaciones}"
                         sec:authorize="hasRole('ARRENDATARIO')">
                         <div class="card-body">
                             <h4 class="card-title" style="margin-bottom: 10px;"
                                 th:text="${notificacion.titulo}">Title</h4>
                             <h6 class="card-subtitle mb-2 text-muted"
-                                th:text="${'Arrendatario: ' + notificacion.arrendatario.usuario.nombres + ' ' + notificacion.arrendatario.usuario.apellidos}">
-                                Arrendatario: Nombres Apellidos</h6>
+                                th:text="${'Asesor de arrendamiento: ' + notificacion.arrendatario.empleado.usuario.nombres + ' ' + notificacion.arrendatario.empleado.usuario.apellidos}">
+                                Asesor de arrendamiento: Nombres Apellidos
+                            </h6>
                             <p class="card-text" th:text="${notificacion.detalles}">Detalles</p>
-                            <p></p>
+                            <p>
+                            <a class="card-link accept-repair text-success" 
+                                th:attr="href='https://api.whatsapp.com/send/?phone=+593' + ${#strings.substringAfter(notificacion.arrendatario.empleado.telefono, 0)} + '&text=Hola+me+comunico+con+usted+por+la+notificacion+*' + ${notificacion.titulo} + '*'"
+                                target="_blank">
+                                <i class="material-icons">speaker_notes</i> Contactar con el asesor
+                            </a>
+                            <strong style="margin-left: 20px;">Fecha Limite: </strong>
+                            <span class="badge badge-danger" th:utext="${notificacion.fechaLimite}">Fecha limite</span>
+                            </p>
                         </div>
                     </div>
 

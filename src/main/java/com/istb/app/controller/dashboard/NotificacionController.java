@@ -1,11 +1,15 @@
 
 package com.istb.app.controller.dashboard;
 
-import java.util.HashMap;
+import javax.transaction.Transactional;
+import javax.validation.Valid;
+
 import java.time.LocalDate;
 
+import com.istb.app.entity.Notificacion;
 import com.istb.app.repository.ArrendatarioRepositoryI;
 import com.istb.app.repository.NotificacionesRepositoryI;
+import com.istb.app.services.dashboard.NotificacionService;
 import com.istb.app.util.AccountUtils;
 import com.istb.app.util.ControllerUtils;
 
@@ -14,11 +18,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 public class NotificacionController {
+
+	@Autowired
+	public NotificacionService notificacionManager;
 
 	@Autowired
 	private ArrendatarioRepositoryI arrendatarioRepository;
@@ -27,8 +36,9 @@ public class NotificacionController {
 	public NotificacionesRepositoryI notificationRepository;
 	
 	@GetMapping("/notificaciones")
-	public String getNotificacionesDesalojo(Model attributes, 
-		Authentication account) {
+	@Transactional
+	public String getNotificacionesDesalojo(
+		Model attributes, Authentication account) {
 
 		if( !AccountUtils.hasRole(account, "ARRENDATARIO") ) {
 		
@@ -40,7 +50,7 @@ public class NotificacionController {
 			
 			attributes.addAttribute("sectionTitle", "notificaciones");
 			attributes.addAttribute("notificaciones", notificationRepository
-				.findByArrendatario_Usuario_Usuario(account.getName()));
+				.findAllByArrendatario_Usuario_Usuario(account.getName()));
 			
 		}
 		
@@ -49,6 +59,7 @@ public class NotificacionController {
 	}
 
 	@GetMapping("/notificacion")
+	@Transactional
 	public ResponseEntity<?> getNotifications() {
 	
 		return ControllerUtils.getJSONOkResponse( notificationRepository.findAll() );
@@ -56,9 +67,15 @@ public class NotificacionController {
 	}
 
 	@PostMapping("/notificacion")
-	public ResponseEntity<?> addNotification() {
+	@Transactional
+	public ResponseEntity<?> addNotification(
+		@Valid @RequestBody Notificacion notification, BindingResult bindObjt) {
 	
-		return ControllerUtils.getJSONOkResponse( new HashMap<>() );
+		if( bindObjt.hasErrors() ) { 
+			return ControllerUtils.getJSONBindErrors(bindObjt); }
+
+		return ControllerUtils.getJSONOkResponse( 
+			notificacionManager.addNotification(notification) );
 	
 	}
 

@@ -12,7 +12,6 @@ import com.istb.app.entity.Arrendatario;
 import com.istb.app.entity.Inmueble;
 import com.istb.app.entity.Usuario;
 import com.istb.app.repository.ArrendatarioRepositoryI;
-import com.istb.app.repository.EmpleadoRepositoryI;
 import com.istb.app.repository.InmuebleRepositoryI;
 import com.istb.app.repository.UsuarioRepositoryI;
 import com.istb.app.services.accounts.AccountsServiceI;
@@ -36,9 +35,6 @@ public class ArrendatarioService {
 
 	@Autowired
 	private UsuarioRepositoryI usuarioRepository;
-
-	@Autowired
-	private EmpleadoRepositoryI empleadoRepository;
 	
 	@Autowired
 	private InmuebleRepositoryI inmuebleRepository;

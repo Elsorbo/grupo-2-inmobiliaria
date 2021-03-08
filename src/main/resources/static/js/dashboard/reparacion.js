@@ -46,11 +46,13 @@ const toggleRepairForm = (event) => {
     if(repairForm.style.display != "none") {
     
         repairForm.style.display = "none";
+		target.innerHTML = "";
         target.innerHTML = "<i class='material-icons'>add</i> Solicitar reparación";
     
     } else {
 
         repairForm.style.display = "block";
+		target.innerHTML = "";
         target.innerHTML = "<i class='material-icons'>remove</i> Ocultar panel";
 
     }

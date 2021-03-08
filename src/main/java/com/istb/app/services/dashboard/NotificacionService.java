@@ -28,8 +28,18 @@ public class NotificacionService {
 	public Map<String, Object> addNotification(Notificacion notification) {
 
 		Map<String, Object> data = new HashMap<>();
-		// Optional<Arrendatario> storedTenant = arrendatarioRepository.find(
-		// 	notification.getArrendatario().getUsuario().getUsuario() );
+		Optional<Arrendatario> storedTenant = arrendatarioRepository.findById(
+			notification.getArrendatario().getId() );
+
+		if( storedTenant.isPresent() ) {
+		
+			notification.setArrendatario( storedTenant.get() );
+
+			notificationRepository.save(notification);
+			data.put("notificacion", notification);
+		
+		} else {
+			data.put("error", "No se pudo enviar la notificación"); }
 
 		return data;
 

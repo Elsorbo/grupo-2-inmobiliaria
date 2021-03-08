@@ -9,10 +9,8 @@ import javax.transaction.Transactional;
 
 import com.istb.app.entity.Arrendatario;
 import com.istb.app.entity.Reparacion;
-import com.istb.app.entity.Usuario;
 import com.istb.app.repository.ArrendatarioRepositoryI;
 import com.istb.app.repository.ReparacionRepositoryI;
-import com.istb.app.repository.UsuarioRepositoryI;
 import com.istb.app.util.enums.EstadoReparacion;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +18,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ReparacionService {
-
-	@Autowired
-	private UsuarioRepositoryI userRepository;
 
 	@Autowired
 	private ReparacionRepositoryI repairRepository;
