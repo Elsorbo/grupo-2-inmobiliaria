@@ -97,12 +97,12 @@ public class ArrendatarioController {
 		return "editarArrendatario";
 
 	}
-	
+
 	@PostMapping("/arrendatario")
 	@Transactional
 	public ResponseEntity<?> nuevoArrendatario(
 		@Valid @RequestBody Arrendatario tenant, BindingResult bindObjt) {
-
+		
 		if( bindObjt.hasErrors() ) { 
 			return ControllerUtils.getJSONBindErrors(bindObjt); }
 

@@ -80,7 +80,7 @@ public class Usuario implements Serializable {
 	private Empleado empleado;
 	
 	@OneToOne(mappedBy = "usuario")
-	@JsonIgnoreProperties({"usuario"})
+	@JsonIgnoreProperties({"usuario", "empleado", "inmuebles", "reparaciones"})
 	private Arrendatario arrendatario;
 	
 	@Column(name = "fecha_creacion", updatable = false)
