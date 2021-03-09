@@ -97,7 +97,7 @@ public class ArrendatarioController {
 		return "editarArrendatario";
 
 	}
-
+	
 	@PostMapping("/arrendatario")
 	@Transactional
 	public ResponseEntity<?> nuevoArrendatario(
