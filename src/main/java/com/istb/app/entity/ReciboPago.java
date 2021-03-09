@@ -10,18 +10,15 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "recibo_pagos")
 public class ReciboPago implements Serializable {
@@ -31,10 +28,12 @@ public class ReciboPago implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
+
+	@NotEmpty(message = "Se requiere la imagen")
 	@Column(name = "url_imagen")
 	private String urlImagen;
 	
+	@NotEmpty(message = "Por favor seleccione una imagen")
 	@Column(name = "nombre_imagen")
 	private String nombreImagen;
 	
@@ -42,6 +41,7 @@ public class ReciboPago implements Serializable {
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime fechaCreacion;
 	
+	@NotEmpty(message = "Se requiere el periodo de pago")
 	@Column(name = "periodo_pago")
 	private String periodoPago;
 	
@@ -51,6 +51,18 @@ public class ReciboPago implements Serializable {
 	
 	@PrePersist
 	public void preCreated () {
+		
 		this.fechaCreacion = LocalDateTime.now();
+		this.periodoPago = String.format("%s del %s", 
+			this.periodoPago, this.fechaCreacion.getYear());
+
 	}
+
+	@Override
+	public String toString() {
+
+		return String.format("[Recibo de pago: %s]", 
+			this.arrendatario.getUsuario().getApellidos());
+	}
+
 }

@@ -96,7 +96,7 @@ public class Inmueble implements Serializable {
 	@Override
 	public String toString() {
 
-		return String.format("[Inmueble: %]", this.titulo);
+		return String.format("[Inmueble: %s]", this.titulo);
 
 	}
 

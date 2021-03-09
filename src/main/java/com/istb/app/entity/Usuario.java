@@ -14,7 +14,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
@@ -81,7 +80,7 @@ public class Usuario implements Serializable {
 	private Empleado empleado;
 	
 	@OneToOne(mappedBy = "usuario")
-	@JsonIgnoreProperties({"usuario"})
+	@JsonIgnoreProperties({"usuario", "empleado", "inmuebles", "reparaciones"})
 	private Arrendatario arrendatario;
 	
 	@Column(name = "fecha_creacion", updatable = false)
@@ -92,7 +91,6 @@ public class Usuario implements Serializable {
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime fechaActualizacion;
 	
-	@Lob
 	private String descripcion;
 
 	public Usuario(){}

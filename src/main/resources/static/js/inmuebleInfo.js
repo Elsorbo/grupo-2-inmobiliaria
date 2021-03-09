@@ -13,20 +13,17 @@ const getImueblesByZone = async (event) => {
 
 }
 
-window.addEventListener("load", (event) => {
+let index = location.href.indexOf("?")
 
-    let index = location.href.indexOf("?")
+if (index > 0) {
 
-    if(index > 0) {
-    
-        zona = location.href.substr(index + 6).replaceAll("+", " ");
-            
-        let label = [...checkBoxsLabels].filter(l => l.innerText == zona)[0];
-        label ? label.previousElementSibling.checked = true : '';
+    zona = location.href.substr(index + 6).replaceAll("+", " ");
 
-    }
+    let label = [...checkBoxsLabels].filter(l => l.innerText == zona)[0];
+    label ? label.previousElementSibling.checked = true : '';
 
-    checkBoxsLabels.forEach( label => {
-        label.previousElementSibling.addEventListener("click", getImueblesByZone)});
+}
 
+checkBoxsLabels.forEach(label => {
+    label.previousElementSibling.addEventListener("click", getImueblesByZone)
 });

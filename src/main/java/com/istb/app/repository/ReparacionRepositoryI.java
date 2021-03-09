@@ -15,6 +15,9 @@ public interface ReparacionRepositoryI
 	
 	List<Reparacion> findByEstadoOrderByFechaCreacionDesc(EstadoReparacion estado);
 
+	List<Reparacion> findByEstadoAndArrendatario_Empleado_Usuario_UsuarioOrderByFechaCreacionDesc(
+		EstadoReparacion estado, String empleado);
+
 	List<Reparacion> findByArrendatario_Usuario_Usuario(String usuario);
 
 	List<Reparacion> findByArrendatario_Usuario_UsuarioOrderByFechaCreacionDesc(String usuario);

@@ -146,6 +146,8 @@ public class EmployeeController {
 			fbmanager.deleteFile(
 				empleado.getUsuario().getNombreImagenPerfil()); }
 		
+		empleado.getInmuebles().forEach( inmueble -> inmueble.setAlquilado(true) );
+
 		storedUser = empleado.getUsuario();
 		empleadoManager.deleteById(id);
 		usuarioRepository.delete(storedUser);

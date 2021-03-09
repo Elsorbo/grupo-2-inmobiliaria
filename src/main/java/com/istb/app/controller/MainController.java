@@ -45,13 +45,4 @@ public class MainController {
 		
 	}
 
-	@GetMapping("/recibos")
-	public String getRecibosPago(Model attributes) {
-
-		attributes.addAttribute("sectionTitle", "recibos");
-		
-		return "recibo";
-		
-	}
-		
 }
