@@ -42,9 +42,17 @@ public class NotificacionController {
 
 		if( !AccountUtils.hasRole(account, "ARRENDATARIO") ) {
 		
-			attributes.addAttribute("sectionTitle", "notificaciones para arrendatarios"); 
+			attributes.addAttribute("sectionTitle", 
+				"notificaciones para arrendatarios"); 
 			attributes.addAttribute("fechaActual", LocalDate.now());
-			attributes.addAttribute("arrendatarios", arrendatarioRepository.findAll());
+			
+			if( AccountUtils.hasRole(account, "ADMINISTRADOR") ) {
+				attributes.addAttribute("arrendatarios", 
+					arrendatarioRepository.findAll()); }
+			else { 
+				attributes.addAttribute("arrendatarios", 
+					arrendatarioRepository.findAllByEmpleado_Usuario_Usuario(
+						account.getName())); }
 			
 		} else {
 			

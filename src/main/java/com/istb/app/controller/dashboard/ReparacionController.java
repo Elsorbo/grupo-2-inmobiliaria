@@ -42,9 +42,18 @@ public class ReparacionController {
 		attributes.addAttribute("sectionTitle", "reparaciones");
 		
 		if( !AccountUtils.hasRole(account, "ARRENDATARIO") ) {
-			attributes.addAttribute("reparaciones", repairRepository
-				.findByEstadoOrderByFechaCreacionDesc(EstadoReparacion.SOLICITADA)); }
-		else { 
+		
+			if( AccountUtils.hasRole(account, "ADMINISTRADOR")) {
+				attributes.addAttribute("reparaciones", repairRepository
+					.findByEstadoOrderByFechaCreacionDesc(EstadoReparacion.SOLICITADA)); }
+			else { 
+				attributes.addAttribute("reparaciones", repairRepository.
+					findByEstadoAndArrendatario_Empleado_Usuario_UsuarioOrderByFechaCreacionDesc(
+						EstadoReparacion.SOLICITADA, account.getName()
+					)
+				); }
+			
+		} else { 
 			attributes.addAttribute("reparaciones", repairRepository
 				.findByArrendatario_Usuario_UsuarioOrderByFechaCreacionDesc(
 					account.getName())); }
@@ -52,7 +61,7 @@ public class ReparacionController {
 		return "reparacion";
 		
 	}
-
+	
 	@PostMapping("/reparacion")
 	public ResponseEntity<?> addRepair(@Valid @RequestBody Reparacion repair, 
 		BindingResult bindObjt, Authentication account) {

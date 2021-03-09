@@ -5,9 +5,8 @@
 </head>
 
 <body class="">
-
 	<div class="wrapper ">
-
+		
 		<div th:replace="maintemplate :: sidebar" class="sidebar" data-color="purple" data-background-color="white"
 			data-image="../assets/img/sidebar-1.jpg">
 		</div>
@@ -19,7 +18,6 @@
 			</nav>
 
 			<div class="content">
-
 				<button class="btn btn-danger" id="showAddTenant">
 					<i class="material-icons">add</i>
 					Añadir arrendatario
@@ -62,24 +60,16 @@
 										<input required minlength="8" type="text" class="form-control" name="contrasena"
 											id="userPassword" placeholder="Contraseña">
 									</div>
-									<div sec:authorize="hasRole('ADMINISTRADOR')" class="form-group col-md-6 label-floating has-success">
+									<div class="form-group col-md-6 label-floating has-success">
 										<select class="form-control" name="idInmueble" id="inmueble-id" required>
 											<option th:each="inmueble : ${inmuebles}"
+												th:if="${inmueble.empleados.size > 0}"
 												th:text="${inmueble.id} + ' - ' + ${inmueble.titulo} + ' / Encargad@: '
 												+ ${inmueble.empleados[0].usuario.nombres} + ' ' 
 												+ ${inmueble.empleados[0].usuario.apellidos}"
 												th:value="${inmueble.id}">Título - Encargado</option>
 										</select>
 									</div>
-									<div sec:authorize="hasRole('EMPLEADO')" class="form-group col-md-6 label-floating has-success">
-										<select class="form-control" name="idInmueble" id="inmueble-id" required>
-											<option th:each="inmueble : ${inmuebles}"
-												th:if="${inmueble.empleados[0].usuario.usuario} == ${username}"
-												th:text="${inmueble.id} + ' - ' + ${inmueble.titulo}"
-												th:value="${inmueble.id}">Título - Encargado</option>
-										</select>
-									</div>
-									
 								</div>
 								<div class="form-row flex-row-reverse">
 									<button id="registerTenant" type="submit" class="btn btn-danger"

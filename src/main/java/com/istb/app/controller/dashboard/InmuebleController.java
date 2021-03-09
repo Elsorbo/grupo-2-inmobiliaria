@@ -67,11 +67,16 @@ public class InmuebleController {
 		attributes.addAttribute("sectionTitle", "inmuebles");
 		attributes.addAttribute("servicios", servicioRepository.findAll());
 
-		if(AccountUtils.hasRole(account, "ADMINISTRADOR")) {
-			attributes.addAttribute("empleados", empleadoRepository.findAll()); }
-		
-		attributes.addAttribute("paginator", 
-			inmuebleRepository.findAll( PageRequest.of(0, 5) ));
+		if( AccountUtils.hasRole(account, "ADMINISTRADOR") ) {
+			
+			attributes.addAttribute("empleados", empleadoRepository.findAll()); 
+			attributes.addAttribute("paginator", 
+				inmuebleRepository.findAll( PageRequest.of(0, 5) ));
+			
+		} else {
+			attributes.addAttribute("paginator", 
+				inmuebleRepository.findByEmpleados_Usuario_Usuario(
+					account.getName(), PageRequest.of(0, 5)) ); }
 		
 		return "inmueble";
 		

@@ -12,6 +12,7 @@ import com.istb.app.entity.Arrendatario;
 import com.istb.app.repository.ArrendatarioRepositoryI;
 import com.istb.app.repository.InmuebleRepositoryI;
 import com.istb.app.services.dashboard.ArrendatarioService;
+import com.istb.app.util.AccountUtils;
 import com.istb.app.util.ControllerUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,11 +47,27 @@ public class ArrendatarioController {
 	public String getArrendatarios(Model attributes, Authentication account) {
 
 		attributes.addAttribute("sectionTitle", "arrendatarios");
-		attributes.addAttribute("username", account.getName());
-		attributes.addAttribute("inmuebles", 
-			inmuebleRepository.findByAlquiladoOrderByIdAsc(true));
-		attributes.addAttribute("paginator", 
-			arrendatarioRepository.findAll( PageRequest.of(0, 5) ));
+		if(AccountUtils.hasRole(account, "ADMINISTRADOR")) {
+		
+			attributes.addAttribute("inmuebles", 
+				inmuebleRepository.findByAlquiladoOrderByIdAsc(true));
+			attributes.addAttribute("paginator", 
+				arrendatarioRepository.findAll( PageRequest.of(0, 5) ));
+
+		} else {
+			
+			attributes.addAttribute("inmuebles", inmuebleRepository
+				.findByAlquiladoAndEmpleados_Usuario_UsuarioOrderByIdAsc(
+					true, account.getName()
+				) 
+			);
+			attributes.addAttribute("paginator", 
+				arrendatarioRepository.findByEmpleado_Usuario_Usuario(
+					account.getName(), PageRequest.of(0, 5) 
+				)
+			);
+		
+		}
 		
 		return "arrendatario";
 		
