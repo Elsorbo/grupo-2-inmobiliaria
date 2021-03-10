@@ -4,6 +4,7 @@ package com.istb.app.entity;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -62,7 +63,7 @@ public class Inmueble implements Serializable {
 	
 	@ManyToMany(mappedBy = "inmuebles", fetch = FetchType.EAGER)
 	@JsonIgnoreProperties({"inmuebles", "arrendatarios"})
-	private Collection<Empleado> empleados;
+	private Set<Empleado> empleados;
 	
 	@ManyToMany(mappedBy = "inmuebles")
 	@JsonIgnoreProperties({"inmuebles", "reparaciones", "empleado"})

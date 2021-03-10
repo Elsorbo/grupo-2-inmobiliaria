@@ -20,9 +20,11 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "empleados")
 public class Empleado implements Serializable {
@@ -38,7 +40,7 @@ public class Empleado implements Serializable {
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "usuario_id")
-	@JsonIgnoreProperties({"empleado", "arrendatario"})
+	@JsonIgnoreProperties(value = {"empleado", "arrendatario"}, allowSetters = true)
 	private Usuario usuario;
 	
 	@OneToMany(mappedBy = "empleado", cascade = CascadeType.ALL)

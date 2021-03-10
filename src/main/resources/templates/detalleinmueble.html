@@ -92,7 +92,7 @@
 		<hr>
 		
 		<!-- Contact -->
-		<div class="w3-container" id="contact">
+		<div class="w3-container" id="contact" th:if="${inmueble.empleados.size > 0}">
 			<h2>Contacto por Email</h2>
 			<i class="fa fa-phone" style="width:30px"></i> <span
 				th:text="'Teléfono: ' + ${inmueble.empleados[0].telefono} ? ${inmueble.empleados[0].telefono} : 'Teléfono: No disponible'">Phone:

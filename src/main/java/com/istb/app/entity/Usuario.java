@@ -76,11 +76,11 @@ public class Usuario implements Serializable {
 	private Boolean estado;
 	
 	@OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
-	@JsonIgnoreProperties({"usuario"})
+	@JsonIgnoreProperties(value = {"usuario"}, allowSetters = true)
 	private Empleado empleado;
 	
 	@OneToOne(mappedBy = "usuario")
-	@JsonIgnoreProperties({"usuario", "empleado", "inmuebles", "reparaciones"})
+	@JsonIgnoreProperties(value = {"usuario", "empleado", "inmuebles", "reparaciones"}, allowSetters = true)
 	private Arrendatario arrendatario;
 	
 	@Column(name = "fecha_creacion", updatable = false)

@@ -101,7 +101,7 @@
                             <p class="card-text" th:text="${notificacion.detalles}">Detalles</p>
                             <p>
                             <a class="card-link accept-repair text-success" 
-                                th:attr="href='https://api.whatsapp.com/send/?phone=+593' + ${#strings.substringAfter(notificacion.arrendatario.empleado.telefono, 0)} + '&text=Hola+me+comunico+con+usted+por+la+notificacion+*' + ${notificacion.titulo} + '*'"
+                                th:attr="href='https://api.whatsapp.com/send/?phone=+593' + ${#strings.substringAfter(notificacion.arrendatario.empleado.telefono, 0)} + '&text=Hola+me+comunico+con+usted+por+la+notificacion+*' + ${notificacion.titulo} + '* Mi usuario es: *' + ${notificacion.arrendatario.usuario.usuario} + '*'"
                                 target="_blank">
                                 <i class="material-icons">speaker_notes</i> Contactar con el asesor
                             </a>

@@ -45,8 +45,11 @@ public class ReciboPago implements Serializable {
 	@Column(name = "periodo_pago")
 	private String periodoPago;
 	
+	@Column(name = "facturado")
+	boolean facturado;
+
 	@ManyToOne
-	@JsonIgnoreProperties({"recibos"})
+	@JsonIgnoreProperties({"recibos", "reparaciones", "notificaciones"})
 	private Arrendatario arrendatario;
 	
 	@PrePersist

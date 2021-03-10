@@ -36,13 +36,4 @@ public class MainController {
 		
 	}
 	
-	@GetMapping("/facturas")
-	public String getFacturas(Model attributes) {
-
-		attributes.addAttribute("sectionTitle", "facturas");
-		
-		return "factura";
-		
-	}
-
 }

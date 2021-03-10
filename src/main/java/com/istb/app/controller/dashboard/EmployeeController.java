@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import com.istb.app.entity.Empleado;
 import com.istb.app.entity.Usuario;
 import com.istb.app.repository.EmpleadoRepositoryI;
+import com.istb.app.repository.InmuebleRepositoryI;
 import com.istb.app.repository.UsuarioRepositoryI;
 import com.istb.app.services.accounts.AccountsServiceI;
 import com.istb.app.services.firebase.FirebaseStrategy;
@@ -42,6 +43,9 @@ public class EmployeeController {
 
 	@Autowired
 	private AccountsServiceI accountsManager;
+
+	@Autowired
+	private InmuebleRepositoryI inmuebleRepository;
 
 	@Autowired
 	private EmpleadoRepositoryI empleadoManager;
@@ -146,7 +150,12 @@ public class EmployeeController {
 			fbmanager.deleteFile(
 				empleado.getUsuario().getNombreImagenPerfil()); }
 		
-		empleado.getInmuebles().forEach( inmueble -> inmueble.setAlquilado(true) );
+		empleado.getInmuebles().forEach( (inmueble) -> {
+		
+			inmueble.setAlquilado(true);
+			inmuebleRepository.save(inmueble);
+		
+		});
 
 		storedUser = empleado.getUsuario();
 		empleadoManager.deleteById(id);

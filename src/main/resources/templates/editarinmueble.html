@@ -51,11 +51,11 @@
                                     </div>
                                     <div class="form-group col-md-6 label-floating has-success"
                                         sec:authorize="hasRole('ADMINISTRADOR')">
-                                    <select disabled class="form-control" name="idEmpleado" id="empleado-id">
+                                    <select th:attr="disabled=${inmueble.empleados.size} > 0 ? 'true' : 'false'" class="form-control" name="idEmpleado" id="empleado-id">
                                         <option th:each="empleado : ${empleados}"
-                                        th:text="${empleado.usuario.nombres} + ' - ' + ${empleado.usuario.apellidos}"
-                                        th:value="${empleado.id}"
-                                        th:selected="${inmueble.empleados[0].id == empleado.id} ? 'true': 'false'"
+                                            th:text="${empleado.usuario.nombres} + ' - ' + ${empleado.usuario.apellidos}"
+                                            th:value="${empleado.id}"
+                                            th:selected="${inmueble.empleados.size > 0 && inmueble.empleados[0].id == empleado.id} ? 'true': 'false'"
                                         >
                                             Nombre - Apellido</option>
                                         </select>

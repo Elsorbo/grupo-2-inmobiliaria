@@ -27,7 +27,9 @@ const updateInmueble = async (event) => {
 			"fotos": [{"id": -1}]
 
 		}
-				
+		if(formValues.hasOwnProperty("idEmpleado")) { 
+			inmuebleValues["empleados"] = [{"id": formValues.idEmpleado}]; }
+		
 		let response = await sendJSONData("inmueble", "put", inmuebleValues);
 
 		if(response.ok) { 

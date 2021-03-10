@@ -1,3 +1,4 @@
+
 package com.istb.app.entity;
 
 import java.io.Serializable;
@@ -7,7 +8,6 @@ import java.util.Collection;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -40,11 +40,20 @@ public class Factura implements Serializable {
 	
 	private String descripcion;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JsonIgnoreProperties({"facturas"})
+	@ManyToOne
+	@JsonIgnoreProperties({"facturas", "reparaciones", "notificaciones"})
 	private Arrendatario arrendatario;
 	
-	@OneToMany(mappedBy = "factura", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "factura", cascade = CascadeType.ALL)
 	@JsonIgnoreProperties({"factura"})
 	private Collection<DetalleFactura> detalles;
+
+	@Override
+	public String toString() {
+		
+		return String.format("[Factura: %s]", 
+			this.arrendatario.getUsuario().getUsuario());
+
+	}
+
 }
