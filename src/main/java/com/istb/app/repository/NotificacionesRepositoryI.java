@@ -12,7 +12,8 @@ public interface NotificacionesRepositoryI
 	extends JpaRepository<Notificacion, Integer> {
 	
 	List<Notificacion> findAllByOrderByFechaGeneracionDesc();
-	List<Notificacion> findAllByArrendatario_Usuario_Usuario(String usuario);
 	Optional<Notificacion> findByArrendatario_Usuario_Usuario(String usuario);
+	List<Notificacion> findAllByArrendatario_Usuario_UsuarioOrderByFechaGeneracionDesc(
+		String usuario);
 	
 }

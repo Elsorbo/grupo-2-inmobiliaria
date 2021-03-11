@@ -57,7 +57,7 @@ public class ReciboPago implements Serializable {
 		
 		this.fechaCreacion = LocalDateTime.now();
 		this.periodoPago = String.format("%s del %s", 
-			this.periodoPago, this.fechaCreacion.getYear());
+		this.periodoPago, this.fechaCreacion.getYear());
 
 	}
 

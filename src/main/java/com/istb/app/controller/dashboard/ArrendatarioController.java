@@ -101,7 +101,7 @@ public class ArrendatarioController {
 	@PostMapping("/arrendatario")
 	@Transactional
 	public ResponseEntity<?> nuevoArrendatario(
-		@RequestBody Arrendatario tenant, BindingResult bindObjt) {
+		@Valid @RequestBody Arrendatario tenant, BindingResult bindObjt) {
 		
 		if( bindObjt.hasErrors() ) { 
 			return ControllerUtils.getJSONBindErrors(bindObjt); }

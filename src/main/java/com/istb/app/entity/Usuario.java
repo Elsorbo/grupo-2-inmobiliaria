@@ -21,6 +21,7 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -48,7 +49,9 @@ public class Usuario implements Serializable {
 	@JsonIgnoreProperties({"usuarios"})
 	private Collection<Role> roles;
 	
-	@NotEmpty(message = "El campo cédula es requerido.")
+	@Pattern(
+		regexp="^([0-1][0-9]|2[0-4])([0-5])([0-9]{6})([0-9])$", 
+		message="El campo cédula es invalido.")
 	private String cedula;
 	
 	@NotEmpty(message = "Los nombres son requeridos.")
@@ -69,7 +72,7 @@ public class Usuario implements Serializable {
 	@Email(message = "El correo no tiene un formato válido.")
 	private String correo;
 	
-	@NotEmpty(message = "La contraseña es requerida.")
+	// @NotEmpty(message = "La contraseña es requerida.")
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String contrasena;
 	

@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.Valid;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -33,11 +34,13 @@ public class Arrendatario implements Serializable  {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
+	@Valid
 	@OneToOne
 	@JoinColumn(name = "usuario_id")
 	@JsonIgnoreProperties(value = {"arrendatario", "empleado"}, allowSetters = true)
 	private Usuario usuario;
 	
+	@Valid
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "empleado_id")
 	@JsonIgnoreProperties({"arrendatarios", "inmuebles", "reparaciones"})

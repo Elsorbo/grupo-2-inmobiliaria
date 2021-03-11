@@ -46,13 +46,17 @@
 								Aún no posee recibos de pago
 							</span>
 						</div> -->
-	
+						
 						<div class="card" style="width: 20rem; margin: 12px;" th:each="recibo : ${recibos}">
 							<img class="card-img-top"
 								th:src="${recibo.urlImagen}" 
 								rel="nofollow" alt="Card image cap"
 								style="height: 260px;">
 							<div class="card-body">
+								<p class="card-text" 
+									th:utext="'<strong>Arrendatario: </strong>' + ${recibo.arrendatario.usuario.nombres + ' ' + recibo.arrendatario.usuario.apellidos}">
+									<strong>Arrendatario: </strong>Nombres Apellidos
+								</p>
 								<p class="card-text" 
 									th:utext="'<strong>Periodo: </strong>' + ${recibo.periodoPago}">
 									<strong>Periodo: </strong>Abril 2021
@@ -67,7 +71,27 @@
                 </div>
 
                 <div id="tenant-container" sec:authorize="hasRole('ARRENDATARIO')">
-                    <div th:text="${facturas.size}">Size</div>
+                    
+					<div id="recibo-card-container" class="card-content" style="display: flex; flex-wrap: wrap;">
+                    
+						<div th:if="${facturas.size == 0}" id="no-receipts" style="display: block;">
+							<i class="material-icons" style="font-size: 24em;">receipt_long</i>
+							<span style="font-size: 1.6em; position: absolute; top: 30%">
+								Aún no posee recibos facturados
+							</span>
+						</div>
+						
+						<div class="card" style="width: 18rem; margin: 12px;" th:each="factura : ${facturas}">
+							<div class="card-body">
+								<h5 class="card-title"><strong>Detalles de la factura</strong> </h5>
+								<p th:text="${factura.descripcion}" class="card-text">Detalles</p>
+								<p th:utext="${'<strong>Total: </strong>$' + factura.total}" class="card-link">Total</p>
+								<h5 th:utext="${'<strong>Fecha de pago: </strong>' + factura.fechaAdmision}" class="card-title"><strong>Fecha de pago</strong> </h5>
+							</div>
+						  </div>
+						  
+					</div>
+					
                 </div>
 
                 <footer th:replace="maintemplate :: footer" class="footer">

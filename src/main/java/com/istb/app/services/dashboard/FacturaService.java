@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.transaction.Transactional;
 
+import com.istb.app.entity.Arrendatario;
 import com.istb.app.entity.Factura;
 import com.istb.app.repository.ArrendatarioRepositoryI;
 import com.istb.app.repository.DetalleFacturaRepositoryI;
@@ -36,18 +37,29 @@ public class FacturaService {
 	
 	@Transactional
 	public Map<String, Object> addFactura(Factura bill) {
-
+		
 		Map<String, Object> data = new HashMap<>();
-
+		
+		Arrendatario storedTenant = arrendatarioRepository.findById(
+			bill.getArrendatario().getId()).get();
+		
+		bill.setArrendatario(storedTenant);
 		bill.getDetalles().forEach( detail -> detalleRepository.save(detail) );
+		
 		facturaRepository.save(bill);
+		bill.getDetalles().forEach( (storedDetail) -> {
+			
+			storedDetail.setFactura(bill);
+			detalleRepository.save(storedDetail);
+
+		});
 
 		data.put("factura", bill);
 
 		return data;
 		
 	}
-
+	
 	@Transactional
 	public Model setAdminAttributes(Model adminAttributes) {
 
@@ -65,7 +77,7 @@ public class FacturaService {
 		return adminAttributes;
 
 	}
-
+	
 	@Transactional
 	public Model setEmployeeAttributes(
 		String employee, Model employeeAttributes) {

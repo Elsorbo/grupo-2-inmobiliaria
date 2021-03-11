@@ -58,7 +58,7 @@ const agregarReciboPago = async (event) => {
 }
 
 const reciboDesdePlantilla = (recibo) => {
-
+    
     return `
     <div class="card" style="width: 20rem; margin: 12px;">
         <img class="card-img-top" src="${recibo.urlImagen}" 
@@ -67,8 +67,6 @@ const reciboDesdePlantilla = (recibo) => {
             <p class="card-text">
                 <strong>Periodo: </strong>${recibo.periodoPago}
             </p>
-            <a href="/recibos" class="card-link" target="_blank">Editar el recibo</a>
-            <input type="hidden" name="repairid" value="${recibo.id}">
         </div>
     </div>`;
 

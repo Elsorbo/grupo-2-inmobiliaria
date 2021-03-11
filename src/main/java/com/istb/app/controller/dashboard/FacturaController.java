@@ -1,8 +1,14 @@
 
 package com.istb.app.controller.dashboard;
 
+import java.util.Map;
+import java.util.Optional;
+
+import javax.transaction.Transactional;
+import javax.validation.Valid;
+
 import com.istb.app.entity.Factura;
-import com.istb.app.repository.ArrendatarioRepositoryI;
+import com.istb.app.entity.ReciboPago;
 import com.istb.app.repository.FacturaRepositoryI;
 import com.istb.app.repository.ReciboPagoRepositoryI;
 import com.istb.app.services.dashboard.FacturaService;
@@ -15,9 +21,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class FacturaController {
@@ -27,8 +36,12 @@ public class FacturaController {
 	
 	@Autowired
 	private FacturaRepositoryI billRepository;
+
+	@Autowired
+	private ReciboPagoRepositoryI receiptRepository;
 	
 	@GetMapping("/facturas")
+	@Transactional
 	public String getFacturas(Model attributes, Authentication account) {
 
 		attributes.addAttribute("sectionTitle", "facturas");
@@ -47,7 +60,8 @@ public class FacturaController {
 		
 	}
 
-	@GetMapping(value="/factura")
+	@GetMapping("/factura")
+	@Transactional
 	public ResponseEntity<?> getFactura(
 		Model attributes, Authentication account) {
 		
@@ -56,10 +70,36 @@ public class FacturaController {
 		
 	}
 
-	@PostMapping(value="/factura")
-	public ResponseEntity<?> addBilling(@RequestBody Factura bill) {
+	@PostMapping("/factura")
+	@Transactional
+	public ResponseEntity<?> addBilling(@RequestParam int reciboID,
+		@Valid @RequestBody Factura bill, BindingResult bindObjt) {
 		
-		return ControllerUtils.getJSONOkResponse(billManager.addFactura(bill));
+		if( bindObjt.hasErrors() ) { 
+			return ControllerUtils.getJSONBindErrors(bindObjt); }
+		
+		Map<String, Object> data = billManager.addFactura(bill);
+		if( data.containsKey("factura") ) { 
+			receiptRepository.findById(reciboID).get().setFacturado(true); }
+
+		return ControllerUtils.getJSONOkResponse(data.get("factura"));
+		
+	}
+
+	@GetMapping("/recibo/{id}")
+	@Transactional
+	public String generateFactura(
+		@PathVariable(name = "id") int receiptId, Model attributes) {
+
+		attributes.addAttribute("sectionTitle", "factura");
+		Optional<ReciboPago> storedReceipt = receiptRepository.findById(receiptId);
+
+		if( storedReceipt.isEmpty() ) { 
+			return "redirect:/facturas"; }
+		
+		attributes.addAttribute("recibo", storedReceipt.get());
+
+		return "generatebilling";
 
 	}
 	

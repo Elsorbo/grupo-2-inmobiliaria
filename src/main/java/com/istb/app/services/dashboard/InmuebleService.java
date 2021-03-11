@@ -11,7 +11,6 @@ import javax.transaction.Transactional;
 
 import com.istb.app.entity.Empleado;
 import com.istb.app.entity.Inmueble;
-import com.istb.app.repository.ArrendatarioRepositoryI;
 import com.istb.app.repository.EmpleadoRepositoryI;
 import com.istb.app.repository.FotosRepositoryI;
 import com.istb.app.repository.InmuebleRepositoryI;
@@ -40,9 +39,6 @@ public class InmuebleService {
 
 	@Autowired
 	private InmuebleRepositoryI inmuebleRepository;
-
-	@Autowired
-	private ArrendatarioRepositoryI arrendatarioRepository;
 
 	@Transactional
 	public Map<String, Object> crearInmueble(Inmueble inmueble) {

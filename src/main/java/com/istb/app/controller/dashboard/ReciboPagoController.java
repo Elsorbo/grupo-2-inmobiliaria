@@ -22,7 +22,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -61,14 +60,16 @@ public class ReciboPagoController {
 		
 	}
 	
-	@RequestMapping("/recibo")
+	@GetMapping("/recibo")
 	@Transactional
 	public ResponseEntity<?> getReceipts(
-		@RequestParam(defaultValue = "0") int userId) {
+		@RequestParam(name = "tenantid", defaultValue = "0") int arrendatarioId) {
 
-		if( userId > 0 ) {
+		if( arrendatarioId > 0 ) {
 			return ControllerUtils.getJSONOkResponse(
-				receiptRepository.findByArrendatario_Usuario_Id(userId)); }
+				receiptRepository
+					.findByFacturadoAndArrendatario_IdOrderByFechaCreacionDesc(
+						false, arrendatarioId)); }
 		else { 
 			return ControllerUtils.getJSONOkResponse( 
 				receiptRepository.findAll(

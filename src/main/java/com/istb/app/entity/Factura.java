@@ -13,9 +13,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,9 +40,11 @@ public class Factura implements Serializable {
 	
 	private Double total;
 	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "fecha_admision")
 	private LocalDate fechaAdmision;
 	
+	@NotEmpty(message = "Se necesita la descripción de la factura")
 	private String descripcion;
 	
 	@ManyToOne
@@ -47,6 +54,13 @@ public class Factura implements Serializable {
 	@OneToMany(mappedBy = "factura", cascade = CascadeType.ALL)
 	@JsonIgnoreProperties({"factura"})
 	private Collection<DetalleFactura> detalles;
+
+	@PrePersist
+	public void preCreated () {
+		
+		this.fechaAdmision = LocalDate.now();
+
+	}
 
 	@Override
 	public String toString() {

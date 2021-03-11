@@ -11,8 +11,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ReciboPagoRepositoryI 
 	extends JpaRepository<ReciboPago, Integer> {
-
-	List<ReciboPago> findByArrendatario_Usuario_Id(int id);
+	
+	List<ReciboPago> findByArrendatario_IdOrderByFechaCreacionDesc(int id);
+	
+	List<ReciboPago> findByFacturadoAndArrendatario_IdOrderByFechaCreacionDesc(
+		boolean estaFacturado, int id);
 
 	List<ReciboPago> findAllByOrderByFechaCreacionDesc();
 

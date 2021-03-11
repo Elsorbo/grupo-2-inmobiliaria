@@ -16,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -37,7 +38,8 @@ public class Empleado implements Serializable {
 	
 	@Size(min = 0, max = 10, message = "El teléfonon no debe tener más de 10 dígitos.")
 	private String telefono;
-	
+
+	@Valid
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "usuario_id")
 	@JsonIgnoreProperties(value = {"empleado", "arrendatario"}, allowSetters = true)
