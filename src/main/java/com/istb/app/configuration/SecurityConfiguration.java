@@ -25,8 +25,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				"/images/**", "/css/**", "/js/**").permitAll()
 			.antMatchers("/empleados", "/empleado/**").hasRole("ADMINISTRADOR")
 			.antMatchers("/inmuebles", "/inmueble/**", "/inmueblepics", 
-				"/arrendatarios", "/arrendatario/**",
-				"/recibo/**").hasAnyRole("EMPLEADO", "ADMINISTRADOR")
+				"/arrendatarios", "/arrendatario/**").hasAnyRole("EMPLEADO", "ADMINISTRADOR")
 			.antMatchers("/recibos").hasRole("ARRENDATARIO")
 			.anyRequest().authenticated();
 		
