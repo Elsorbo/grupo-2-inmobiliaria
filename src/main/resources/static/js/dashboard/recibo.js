@@ -67,6 +67,11 @@ const reciboDesdePlantilla = (recibo) => {
             <p class="card-text">
                 <strong>Periodo: </strong>${recibo.periodoPago}
             </p>
+            <p class="card-text">
+                <span class="badge badge-${recibo.facturado ? 'success' : 'danger'}">
+                    ${recibo.facturado ? '' : 'No '}Facturado
+                </span>
+            </p>
         </div>
     </div>`;
 
