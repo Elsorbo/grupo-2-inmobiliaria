@@ -102,5 +102,19 @@ public class FacturaController {
 		return "generatebilling";
 
 	}
-	
+
+	@GetMapping("/factura/{id}")
+	public String getMethodName(@PathVariable int id, Model attributes) {
+		
+		Optional<Factura> bill = billRepository.findById(id);
+
+		if(bill.isPresent()) {
+			attributes.addAttribute("factura", bill.get()); }
+		else {
+			return "redirect:/lostbill"; }
+
+		return "detallefactura";
+
+	}
+		
 }

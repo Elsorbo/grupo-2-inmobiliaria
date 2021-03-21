@@ -117,7 +117,12 @@ public class ArrendatarioService {
 			if( !storedUser.getNombreImagenPerfil().equals("default") ) {
 				fbmanager.deleteFile( storedUser.getNombreImagenPerfil() ); }
 			
-			storedTenant.getInmuebles().forEach( i -> i.setAlquilado(true) );
+			storedTenant.getInmuebles().forEach( (i) -> {
+				
+				i.setAlquilado(true);
+				inmuebleRepository.save(i);
+			
+			});
 			arrendatarioRepository.delete(storedTenant);
 			usuarioRepository.delete(storedUser);
 		
