@@ -44,6 +44,8 @@ const updateAccount = async (event) => {
         showNotification("El perfil se ha actualizado correctamente", "success");
         
     } else {
+        let errors = await response.json();
+        errors.map( error => showNotification(error.defaultMessage, "danger") );
         showNotification("Ha ocurrido un error al intentar actualizar el perfil", "danger"); }
     
 }

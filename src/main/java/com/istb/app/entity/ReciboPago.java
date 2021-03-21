@@ -45,8 +45,11 @@ public class ReciboPago implements Serializable {
 	@Column(name = "periodo_pago")
 	private String periodoPago;
 	
+	@Column(name = "facturado")
+	boolean facturado;
+
 	@ManyToOne
-	@JsonIgnoreProperties({"recibos"})
+	@JsonIgnoreProperties({"recibos", "reparaciones", "notificaciones"})
 	private Arrendatario arrendatario;
 	
 	@PrePersist
@@ -54,7 +57,7 @@ public class ReciboPago implements Serializable {
 		
 		this.fechaCreacion = LocalDateTime.now();
 		this.periodoPago = String.format("%s del %s", 
-			this.periodoPago, this.fechaCreacion.getYear());
+		this.periodoPago, this.fechaCreacion.getYear());
 
 	}
 

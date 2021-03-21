@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="maintemplate :: head">
+</head>
+
+<body class="">
+
+    <div class="wrapper ">
+
+        <div th:replace="maintemplate :: sidebar" class="sidebar" data-color="purple" data-background-color="white"
+            data-image="../assets/img/sidebar-1.jpg">
+        </div>
+
+        <div class="main-panel">
+            <!-- Navbar -->
+            <nav th:replace="maintemplate :: navbar"
+                class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
+            </nav>
+
+            <div class="content">
+
+                <!--Section: Block Content-->
+                <section class="mb-5">
+
+                    <div class="row">
+                        <div class="col-md-6 mb-4 mb-md-0">
+
+                            <div id="mdb-lightbox-ui"></div>
+
+                            <div class="mdb-lightbox">
+
+                                <div class="row product-gallery mx-1">
+
+                                    <div class="col-12 mb-0">
+                                        <figure class="view overlay rounded z-depth-1 main-img">
+											<img th:src="${recibo.urlImagen}"
+												class="img-fluid z-depth-1">
+                                        </figure>
+                                    </div>
+                                    
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+
+                            <h4 style="font-weight: bold;">Generar factura</h5>
+                            <p class="mb-2 text-muted text-uppercase small"
+								th:utext="${'<strong>Arrendatario: </strong>' + recibo.arrendatario.usuario.nombres + ' ' + recibo.arrendatario.usuario.apellidos}">Arrendatario</p>
+							<form method="post">
+								<input type="hidden" name="recibo" th:value="${recibo.id}">
+								<input type="hidden" name="arrendatario" th:value="${recibo.arrendatario.id}">
+								<h5><strong>Detalles: </strong></h5>
+								<button id="add-detail" 
+									class="btn btn-sm btn-social btn-just-icon btn-round btn-danger" 
+									style="position: absolute; right: 40px; top: 55px;">
+									<i class="material-icons">add</i>
+									<div class="ripple-container"></div>
+								</button>
+								<div id="details-content">
+									<div class="form-row detail" style="margin-bottom: 12px;">
+										<div class="col-md-9">
+										<input required type="text" name="concepto" class="form-control" placeholder="Concepto">
+										</div>
+										<div class="col-md-3">
+											<input required type="text" name="monto" class="form-control" placeholder="$$ monto" pattern="^[1-9][0-9]{1,6}$">
+										</div>
+									</div>
+								</div>
+								<br />
+								<h5><strong>Descripción: </strong></h5>	
+								<div class="row">
+								  <div class="col-md-12">
+									<div class="form-group">
+									  <div class="form-group">
+										<label class="bmd-label-floating">Agregue una breve descripción para la factura</label>
+										<textarea required class="form-control" 
+										  rows="3" name="descripcion"></textarea>
+									  </div>
+									</div>
+								  </div>
+								</div>
+								<br />
+								<button id="generate-billing" type="submit" class="btn btn-danger pull-right">Generar factura</button>
+								<div class="clearfix"></div>
+							  </form>
+							  
+                        </div>
+                    </div>
+
+                </section>
+
+                <!--Section: Block Content-->
+
+                <footer th:replace="maintemplate :: footer" class="footer">
+                </footer>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.querySelector(".facturas").classList.add("active")
+    </script>
+    <div th:replace="maintemplate :: scripts"></div>
+    <script type="module" th:src="@{/js/dashboard/generarfactura.js}"></script>
+</body>
+
+</html>

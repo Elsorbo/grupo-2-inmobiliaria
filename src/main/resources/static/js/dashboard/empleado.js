@@ -50,10 +50,10 @@ const newEmployee = async (event) => {
             let employee = await response.json()
             
             if(tbodyEmployees.children.length < 5) {
-            
+                
                 tbodyEmployees.innerHTML += newEmployeeFromTemplate(employee);
                 addEmployeeListeners(tbodyEmployees.lastElementChild);
-            
+                
             } else {
                 addEmployees( await paginador.lastPage() ); }
             
@@ -113,7 +113,7 @@ const nextEmployeePage = async (event) => {
 
     if(!target.classList.contains("disabled")) {
         addEmployees( await paginador.nextPage() ); }
-
+    
 }
 
 const toggleAddEmployee = (event) => {

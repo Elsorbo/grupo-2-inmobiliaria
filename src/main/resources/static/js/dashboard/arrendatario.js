@@ -39,7 +39,7 @@ const nuevoArrendatario = async (event) => {
 
             },
             "inmuebles": [{"id": formValues.idInmueble}]
-        
+            
         };
         
         let response = await sendJSONData(

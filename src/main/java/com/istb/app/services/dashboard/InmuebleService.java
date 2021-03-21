@@ -1,7 +1,6 @@
 
 package com.istb.app.services.dashboard;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,7 +72,8 @@ public class InmuebleService {
 		
 		inmueble.setFotos( fotosRepository.findAllById(idFotos) );
 		inmueble.setServicios( servicioRepository.findAllById(idServices) );
-		inmueble.setEmpleados( Arrays.asList(empleado) );
+		inmueble.getEmpleados().clear();
+		inmueble.getEmpleados().add(empleado);
 		
 		inmuebleRepository.save(inmueble);
 		
@@ -123,6 +123,19 @@ public class InmuebleService {
 			storedInmueble.setDescripcion( inmueble.getDescripcion() );
 			storedInmueble.setComercializado( inmueble.isComercializado() );
 			storedInmueble.setAlquilado( !storedInmueble.isComercializado() );
+			
+			if( inmueble.getEmpleados() != null ) { 
+				Empleado storedEmployee = empleadoRepository.findById(
+					inmueble.getEmpleados().iterator().next().getId()).get();
+				
+				storedInmueble.getEmpleados().clear();
+				storedInmueble.getEmpleados().add( storedEmployee );
+				storedEmployee.getInmuebles().add(storedInmueble);
+				empleadoRepository.save(storedEmployee);
+
+			}
+
+			inmuebleRepository.save(storedInmueble);
 			
 			response.put("inmueble", storedInmueble);
 

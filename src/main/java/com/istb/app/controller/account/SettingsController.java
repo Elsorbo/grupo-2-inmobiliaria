@@ -5,11 +5,13 @@ import java.security.Principal;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 import com.istb.app.entity.Usuario;
 import com.istb.app.models.FileUpload;
 import com.istb.app.repository.UsuarioRepositoryI;
 import com.istb.app.services.firebase.FirebaseStrategy;
+import com.istb.app.util.ControllerUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -18,6 +20,7 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,7 +49,11 @@ public class SettingsController {
 	
 	@PutMapping("/perfil")
 	@Transactional
-	public ResponseEntity<?> updateProfile(@RequestBody Usuario account) {
+	public ResponseEntity<?> updateProfile(
+		@Valid @RequestBody Usuario account, BindingResult bindObjt) {
+
+		if (bindObjt.hasErrors() ) {
+			return ControllerUtils.getJSONBindErrors(bindObjt); }
 
 		Usuario userAccount = userManager.findByUsuario(account.getUsuario());
 		

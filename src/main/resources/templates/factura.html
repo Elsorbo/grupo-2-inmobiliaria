@@ -1,37 +1,205 @@
-
 <!DOCTYPE html>
-<html lang="es"
-    xmlns:th="http://www.thymeleaf.org"
-    xmlns:sec="http://www.thymeleaf.org/extras/spring-security" >
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="maintemplate :: head">
 </head>
+<style>
+	@import url(https://fonts.googleapis.com/css?family=Raleway:400,300,500,700);
+
+	* {
+		box-sizing: border-box;
+	}
+
+	body .card {
+		font-family: "Raleway";
+		width: 330px;
+		/* position: absolute; */
+		background: white;
+		/* margin: 0 auto; */
+		/* top: 50%; */
+		/* left: 50%; */
+		/* transform: translate(-50%, -50%); */
+		margin-left: 20px;
+		margin-top: 0px;
+		box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+		transition: all 0.3s;
+	}
+
+	body .card:hover {
+		box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	}
+
+	body .card .description {
+		padding: 30px;
+		padding-bottom: 0px;
+		float: left;
+		border-left: 2px solid #efefef;
+	}
+
+	body .card .description h1 {
+		color: #515151;
+		font-weight: 300;
+		padding-top: 15px;
+		margin: 0;
+		font-size: 30px;
+		font-weight: 300;
+	}
+
+	body .card .description h2 {
+		color: #515151;
+		margin: 0;
+		text-transform: uppercase;
+		font-weight: 500;
+		font-size: 1.6em;
+	}
+
+	body .card .description h4 {
+		margin: 0;
+		color: #727272;
+		text-transform: uppercase;
+		font-weight: 500;
+		font-size: 12px;
+	}
+
+	body .card .description p {
+		font-size: 12px;
+		line-height: 20px;
+		color: #727272;
+		padding: 20px 0;
+		margin: 0;
+	}
+
+	body .card .description button {
+		outline: 0;
+		border: 0;
+		background: none;
+		border: 1px solid #d9d9d9;
+		padding: 4px 0px;
+		margin-bottom: 30px;
+		color: #515151;
+		text-transform: uppercase;
+		width: 125px;
+		font-family: inherit;
+		margin-right: 5px;
+		font-size: .95em;
+		transition: all 0.3s ease;
+		font-weight: 500;
+	}
+
+	body .card .description button:hover {
+		border: 1px solid #276678;
+		color: #276678;
+		cursor: pointer;
+	}
+</style>
 
 <body class="">
 
-    <div class="wrapper ">
+	<div class="wrapper ">
 
-        <div th:replace="maintemplate :: sidebar" class="sidebar" data-color="purple" data-background-color="white"
-            data-image="../assets/img/sidebar-1.jpg">
-        </div>
+		<div th:replace="maintemplate :: sidebar" class="sidebar" data-color="purple" data-background-color="white"
+			data-image="../assets/img/sidebar-1.jpg">
+		</div>
 
-        <div class="main-panel">
-            <!-- Navbar -->
-            <nav th:replace="maintemplate :: navbar"
-                class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
-            </nav>
+		<div class="main-panel">
+			<!-- Navbar -->
+			<nav th:replace="maintemplate :: navbar"
+				class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
+			</nav>
 
-            <div class="content">
-                Contenido factura
-                <footer th:replace="maintemplate :: footer" class="footer">
-                </footer>
-            </div>
-        </div>
-    </div>
-    <script>
-        document.querySelector(".facturas").classList.add("active")
-    </script>
-    <div th:replace="maintemplate :: scripts"></div>
+			<div class="content">
+
+				<div id="manager-container" sec:authorize="!hasRole('ARRENDATARIO')">
+					<form action="" method="get">
+						<div class="row" style="margin-left: 20px;">
+							<div class="form-group col-md-6">
+								<label for="">Seleccione un arrendatario</label>
+								<select class="form-control" id="select-tenant">
+									<option th:each="arrendatario : ${arrendatarios}" th:value="${arrendatario.id}"
+										th:text="${arrendatario.usuario.nombres} + ' ' + ${arrendatario.usuario.apellidos}">
+										ArrendatarioID</option>
+								</select>
+							</div>
+						</div>
+					</form>
+
+					<div id="recibo-card-container" class="card-content"
+						style="display: flex; flex-wrap: wrap; margin-left: 35px;">
+
+						<!-- <div id="no-receipts" style="display: none;">
+							<i class="material-icons" style="font-size: 24em;">receipt</i>
+							<span style="font-size: 1.6em; position: absolute; top: 30%">
+								Aún no posee recibos de pago
+							</span>
+						</div> -->
+
+						<div class="card" style="width: 20rem; margin: 12px;" th:each="recibo : ${recibos}">
+							<img class="card-img-top" th:src="${recibo.urlImagen}" rel="nofollow" alt="Card image cap"
+								style="height: 260px;">
+							<div class="card-body">
+								<p class="card-text"
+									th:utext="'<strong>Arrendatario: </strong>' + ${recibo.arrendatario.usuario.nombres + ' ' + recibo.arrendatario.usuario.apellidos}">
+									<strong>Arrendatario: </strong>Nombres Apellidos
+								</p>
+								<p class="card-text" th:utext="'<strong>Periodo: </strong>' + ${recibo.periodoPago}">
+									<strong>Periodo: </strong>Abril 2021
+								</p>
+								<a th:href="@{/recibo/} + ${recibo.id}" class="card-link" target="_blank">Generar
+									factura</a>
+								<!-- <input type="hidden" name="repairid" th:value="${recibo.id}"> -->
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+
+				<div id="tenant-container" sec:authorize="hasRole('ARRENDATARIO')">
+
+					<div id="recibo-card-container" class="card-content" style="display: flex; flex-wrap: wrap;">
+
+						<div th:if="${facturas.size == 0}" id="no-receipts" style="display: block;">
+							<i class="material-icons" style="font-size: 24em;">receipt_long</i>
+							<span style="font-size: 1.6em; position: absolute; top: 30%">
+								Aún no posee recibos facturados
+							</span>
+						</div>
+
+						<div class="card" th:each="factura : ${facturas}">
+							<div class="description">
+								<h2 th:text="${'Factura #: 00' + factura.id}">Numero factura</h2>
+								<h4 th:text="${factura.arrendatario.empleado.usuario.nombres + ' ' + factura.arrendatario.empleado.usuario.apellidos}">Encargado</h4>
+								<h1 th:text="${'$' + factura.total}">$100</h1>
+								<p th:text="${factura.descripcion}">Descripción</p>
+								<button> <a th:href="@{/factura/} + ${factura.id}" style="color: #515151; text-decoration: none;">Ver detalles</a></button>
+								<button>Imprimir</button>
+							</div>
+						</div>
+
+						<!-- <div class="card" style="width: 18rem; margin: 12px;" th:each="factura : ${facturas}">
+							<div class="card-body">
+								<h5 class="card-title"><strong>Detalles de la factura</strong> </h5>
+								<p th:text="${factura.descripcion}" class="card-text">Detalles</p>
+								<p th:utext="${'<strong>Total: </strong>$' + factura.total}" class="card-link">Total</p>
+								<h5 th:utext="${'<strong>Fecha de pago: </strong>' + factura.fechaAdmision}"
+									class="card-title"><strong>Fecha de pago</strong> </h5>
+							</div>
+						</div> -->
+
+					</div>
+
+				</div>
+
+				<footer th:replace="maintemplate :: footer" class="footer">
+				</footer>
+			</div>
+		</div>
+	</div>
+	<script>
+		document.querySelector(".facturas").classList.add("active")
+	</script>
+	<div th:replace="maintemplate :: scripts"></div>
+	<script type="module" th:src="@{/js/dashboard/factura.js}"></script>
 </body>
 
 </html>

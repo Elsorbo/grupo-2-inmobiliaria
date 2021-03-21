@@ -87,12 +87,15 @@
 			<p>Aceptamos: <i class="fa fa-credit-card w3-large"></i> <i class="fab fa-cc-mastercard w3-large"></i> <i
 					class="fab fa-cc-visa w3-large"></i> <i class="fab fa-cc-discover w3-large"></i></p>
 			<hr>
-				<a th:if="${inmueble.empleados.size > 0}" th:attr="href='https://api.whatsapp.com/send/?phone=+593' + ${#strings.substringAfter(inmueble.empleados[0].telefono, 0)} + '&text=Hola+quisiera+mas+información+sobre+el+inmueble https://inmobiliaria-mastarreno.herokuapp.com/infoinmueble/' + ${inmueble.id}"><button type="submit" class="w3-button w3-green w3-third"><i class="fab fa-whatsapp w3-large"></i> Contactar con el asesor</button></a>
+				<a th:if="${inmueble.empleados.size > 0}" target="_blank"
+					th:attr="href='https://api.whatsapp.com/send/?phone=+593' + ${#strings.substringAfter(inmueble.empleados[0].telefono, 0)} + '&text=Hola+quisiera+mas+información+sobre+el+inmueble https://inmobiliaria-mastarreno.herokuapp.com/infoinmueble/' + ${inmueble.id}"><button type="submit" class="w3-button w3-green w3-third">
+					<i class="fab fa-whatsapp w3-large"></i> Contactar con el asesor</button>
+				</a>
 		</div>
 		<hr>
 		
 		<!-- Contact -->
-		<div class="w3-container" id="contact">
+		<div class="w3-container" id="contact" th:if="${inmueble.empleados.size > 0}">
 			<h2>Contacto por Email</h2>
 			<i class="fa fa-phone" style="width:30px"></i> <span
 				th:text="'Teléfono: ' + ${inmueble.empleados[0].telefono} ? ${inmueble.empleados[0].telefono} : 'Teléfono: No disponible'">Phone:

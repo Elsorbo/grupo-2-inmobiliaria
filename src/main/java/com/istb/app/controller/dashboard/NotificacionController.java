@@ -58,14 +58,17 @@ public class NotificacionController {
 			
 			attributes.addAttribute("sectionTitle", "notificaciones");
 			attributes.addAttribute("notificaciones", notificationRepository
-				.findAllByArrendatario_Usuario_Usuario(account.getName()));
+				.findAllByArrendatario_Usuario_UsuarioOrderByFechaGeneracionDesc(
+					account.getName()
+				)
+			);
 			
 		}
 		
 		return "notificacion";
 		
 	}
-
+	
 	@GetMapping("/notificacion")
 	@Transactional
 	public ResponseEntity<?> getNotifications() {
