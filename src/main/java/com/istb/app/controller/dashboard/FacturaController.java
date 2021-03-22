@@ -125,7 +125,7 @@ public class FacturaController {
 	}
 
 	@GetMapping("/facturapdf/{id}")
-	public ResponseEntity<?> getMethodName(@PathVariable int id) 
+	public ResponseEntity<?> getPDFBilling(@PathVariable int id) 
 		throws Exception {
 		
 		HttpHeaders headers = new HttpHeaders();

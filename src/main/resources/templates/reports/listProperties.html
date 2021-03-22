@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+		<title>Lista de inmuebles</title>
+
+		<!-- Favicon -->
+		<!-- <link rel="icon" href="./images/favicon.png" type="image/x-icon" /> -->
+
+		<!-- Invoice styling -->
+		<style>
+			body {
+				font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+				text-align: center;
+				color: #777;
+			}
+
+			body h1 {
+				font-weight: 300;
+				margin-bottom: 0px;
+				padding-bottom: 0px;
+				color: #000;
+			}
+
+			body h3 {
+				font-weight: 300;
+				margin-top: 10px;
+				margin-bottom: 20px;
+				font-style: italic;
+				color: #555;
+			}
+
+			body a {
+				color: #06f;
+			}
+
+			.invoice-box {
+				max-width: 800px;
+				margin: auto;
+				padding: 30px;
+				border: 1px solid #eee;
+				box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+				font-size: 16px;
+				line-height: 24px;
+				font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+				color: #555;
+			}
+
+			.invoice-box table {
+				width: 100%;
+				line-height: inherit;
+				text-align: left;
+				border-collapse: collapse;
+			}
+
+			.invoice-box table td {
+				padding: 5px;
+				vertical-align: top;
+			}
+
+			.invoice-box table tr td:nth-child(2) {
+				text-align: right;
+			}
+
+			.invoice-box table tr.top table td {
+				padding-bottom: 20px;
+			}
+
+			.invoice-box table tr.top table td.title {
+				font-size: 45px;
+				line-height: 45px;
+				color: #333;
+			}
+
+			.invoice-box table tr.information table td {
+				padding-bottom: 40px;
+			}
+
+			.invoice-box table tr.heading td {
+				background: #eee;
+				border-bottom: 1px solid #ddd;
+				font-weight: bold;
+			}
+
+			.invoice-box table tr.details td {
+				padding-bottom: 20px;
+			}
+
+			.invoice-box table tr.item td {
+				border-bottom: 1px solid #eee;
+			}
+
+			.invoice-box table tr.item.last td {
+				border-bottom: none;
+			}
+
+			.invoice-box table tr.total td:nth-child(2) {
+				border-top: 2px solid #eee;
+				font-weight: bold;
+			}
+
+            .th-head {
+                background-color: #bd2000;
+                color: white;
+                padding: 4px;
+                font-size: .90em;
+                text-align: center;
+            
+            }
+
+            .th-row {
+                padding: 12px;
+                font-size: 12px;
+                text-align: center;
+            
+            }
+
+			#body-table-inmuebles tr:nth-child(even) {
+                background-color: #f4f9f9;
+            }
+			
+			@media only screen and (max-width: 600px) {
+				.invoice-box table tr.top table td {
+					width: 100%;
+					display: block;
+					text-align: center;
+				}
+
+				.invoice-box table tr.information table td {
+					width: 100%;
+					display: block;
+					text-align: center;
+				}
+			}
+		</style>
+	</head>
+
+	<body>
+		
+		<div class="invoice-box" style="background-color: white;">
+            <table>
+                <tr class="top">
+                    <td colspan="2">
+                        <table>
+                            <tr>
+                                <td class="title">
+                                    <img src="https://www.bienesonline.com/ecuador/logos/logo-bonito1517263295.jpg"
+                                        alt="Company logo" style="width: 80%; max-width: 200px" />
+                                </td>
+
+                                <td >
+                                    <span>
+                                        Lista de inmuebles
+                                    </span><br />
+                                    <span th:text="${'Fecha de generación: ' + fechaGeneracion}">
+                                        Fecha de generación: Enero 1, 2015
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr class="information">
+                    <td colspan="2">
+                        <table>
+                            <tr>
+                                <td>
+                                    Inmobiliaria Mastarreno, EC.<br />
+                                    Teléfono: 0969139500<br />
+                                    Correo: inmobiliariamastarreno@gmail.com
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <table>
+                    <thead>
+                        <th class="th-head">#</th>
+                        <th class="th-head">Título</th>
+                        <th class="th-head">Area</th>
+                        <th class="th-head">Precio</th>
+                        <th class="th-head">En venta</th>
+                        <th class="th-head" style="text-align: right;">Encargad@</th>
+                    </thead>
+                    <tbody id="body-table-inmuebles">
+                        <tr th:each="inmueble : ${properties}">
+                            <td class="th-row" th:text="${inmueble.id}">id</td>
+                            <td class="th-row" th:text="${inmueble.titulo}" style="text-align: right;">Título</td>
+                            <td class="th-row" th:utext="${inmueble.area} + ' ' + 'm<sup>2</sup>'">Area m2</td>
+                            <td class="th-row" th:text="${'$' + inmueble.precio}" style="text-align: right;">Precio</td>
+                            <td class="text-center th-row" th:text="${inmueble.comercializado} ? 'Si' : 'No' ">En venta</td>
+                            <td class="th-row" th:text="${inmueble.empleados.size > 0} ? 
+                                ${inmueble.empleados[0].usuario.nombres} + ' ' + ${inmueble.empleados[0].usuario.apellidos} 
+                                : 'No asignado'" style="text-align: center;">
+                                Encargado</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                
+            </table>
+        </div>
+        <footer class="footer">
+            <div class="container-fluid">
+                <div class="copyright float-right" style="margin-top: 2em;">
+                    &copy; Inmobiliaria Mastarreno - Todos los derechos reservados
+                </div>
+            </div>
+        </footer>
+	</body>
+</html>
+

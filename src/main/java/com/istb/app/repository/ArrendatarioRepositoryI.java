@@ -16,8 +16,11 @@ public interface ArrendatarioRepositoryI
 	Optional<Arrendatario> findByUsuario_Usuario(String usuario);
 	
 	List<Arrendatario> findAllByEmpleado_Usuario_Usuario(String usuario);
-	
+
 	Page<Arrendatario> findByEmpleado_Usuario_Usuario(
 		String usuario, Pageable paginator);
-
+		
+	Page<Arrendatario> findAllByEmpleado_Usuario_Usuario(
+		String usuario, Pageable paginator);
+	
 }

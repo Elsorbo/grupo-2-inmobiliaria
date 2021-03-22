@@ -1,6 +1,7 @@
 
 package com.istb.app.controller.dashboard;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -11,12 +12,14 @@ import com.istb.app.entity.Usuario;
 import com.istb.app.repository.EmpleadoRepositoryI;
 import com.istb.app.repository.InmuebleRepositoryI;
 import com.istb.app.repository.UsuarioRepositoryI;
+import com.istb.app.services.GeneratePDFService;
 import com.istb.app.services.accounts.AccountsServiceI;
 import com.istb.app.services.firebase.FirebaseStrategy;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +40,9 @@ public class EmployeeController {
 
 	@Autowired
 	private FirebaseStrategy fbmanager;
+	
+	@Autowired
+	private GeneratePDFService pdfManager;
 
 	@Autowired
 	private UsuarioRepositoryI usuarioRepository;
@@ -164,6 +170,22 @@ public class EmployeeController {
 		return ResponseEntity.ok()
 			.contentType(MediaType.APPLICATION_JSON)
 			.body("{\"message\": \"Usuario eliminado correctamente\"}");
+		
+	}
+
+	@GetMapping("/empleadospdf")
+	public ResponseEntity<?> getPDFEmployee() throws Exception {
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_PDF);
+		List<Empleado> employees = empleadoManager.findAll();
+		
+		if( employees.isEmpty() ) { 
+			return null; }
+		
+		return (new ResponseEntity<>(
+			pdfManager.generateEmployeeListPDF(employees).toByteArray(), 
+			headers, HttpStatus.OK));
 		
 	}
 	

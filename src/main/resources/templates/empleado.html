@@ -23,6 +23,9 @@
                     <i class="material-icons">add</i>
                     Añadir empleado
                 </button>
+                <button class="btn btn-social btn-link btn-google"  style="position: relative; left: 60%;">
+                    <a th:href="@{/empleadospdf/}" style="color: #515151; text-decoration: none;" th:download="${'reporte_empleados'}"><i class="material-icons btn-danger" style="font-size: 2.2em; margin-right: 6px;">picture_as_pdf</i> Generar Reporte PDF</a>
+                </button>
                 <div class="card" id="addEmployee" style="display: none; margin: 12px auto; width: 95%;">
                     <h4 class="" style="padding: 20px 0px 0px 20px;">Nuevo empleado</h4>
                     <div class="card-body">

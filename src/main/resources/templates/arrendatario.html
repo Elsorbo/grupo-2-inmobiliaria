@@ -22,6 +22,9 @@
 					<i class="material-icons">add</i>
 					Añadir arrendatario
 				</button>
+				<button class="btn btn-social btn-link btn-google"  style="position: relative; left: 57%;">
+                    <a th:href="@{/arrendatariospdf/}" style="color: #515151; text-decoration: none;" th:download="${'reporte_arrendatarios'}"><i class="material-icons btn-danger" style="font-size: 2.2em; margin-right: 6px;">picture_as_pdf</i> Generar Reporte PDF</a>
+                </button>
 				<div class="card" id="addTenant" style="display: none; margin: 12px auto; width: 95%;">
 					<h4 class="" style="padding: 20px 0px 0px 20px;">Nuevo arrendatario</h4>
 					<div class="card-body">

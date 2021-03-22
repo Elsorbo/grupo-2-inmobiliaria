@@ -23,9 +23,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 			.antMatchers("/", "/infoinmuebles/**/", "/infoinmueble/**",
 				"/images/**", "/css/**", "/js/**").permitAll()
-			.antMatchers("/empleados", "/empleado/**").hasRole("ADMINISTRADOR")
+			.antMatchers("/empleados", "/empleado/**", "/empleadospdf").hasRole("ADMINISTRADOR")
 			.antMatchers("/inmuebles", "/inmueble/**", "/inmueblepics", 
-				"/arrendatarios", "/arrendatario/**").hasAnyRole("EMPLEADO", "ADMINISTRADOR")
+				"/arrendatarios", "/arrendatario/**", "/inmueblespdf", 
+				"/arrendatariospdf").hasAnyRole("EMPLEADO", "ADMINISTRADOR")
 			.antMatchers("/recibos").hasRole("ARRENDATARIO")
 			.anyRequest().authenticated();
 		

@@ -11,12 +11,17 @@ import javax.validation.Valid;
 import com.istb.app.entity.Arrendatario;
 import com.istb.app.repository.ArrendatarioRepositoryI;
 import com.istb.app.repository.InmuebleRepositoryI;
+import com.istb.app.services.GeneratePDFService;
 import com.istb.app.services.dashboard.ArrendatarioService;
 import com.istb.app.util.AccountUtils;
 import com.istb.app.util.ControllerUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -34,11 +39,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ArrendatarioController {
 
 	@Autowired
-	private ArrendatarioService arrendatarioManager;
+	private GeneratePDFService pdfManager;
 
 	@Autowired
 	private InmuebleRepositoryI inmuebleRepository;
-
+	
+	@Autowired
+	private ArrendatarioService arrendatarioManager;
+	
 	@Autowired
 	private ArrendatarioRepositoryI arrendatarioRepository;
 	
@@ -76,10 +84,15 @@ public class ArrendatarioController {
 	@GetMapping("/arrendatario")
 	@Transactional
 	public ResponseEntity<?> obtenerArrendatarios(
-		@RequestParam(defaultValue = "0") int pageNumber) {
+		@RequestParam(defaultValue = "0") int pageNumber, Authentication account) {
 
+		if(AccountUtils.hasRole(account, "EMPLEADO")) {
+			return ControllerUtils.getJSONOkResponse(
+				arrendatarioRepository.findAllByEmpleado_Usuario_Usuario(
+					account.getName(), PageRequest.of(pageNumber, 5, Sort.by("id")) )); }
+		
 		return ControllerUtils.getJSONOkResponse(
-			arrendatarioRepository.findAll( PageRequest.of(pageNumber, 5) ));
+			arrendatarioRepository.findAll( PageRequest.of(pageNumber, 5, Sort.by("id") )));
 		
 	}
 	
@@ -136,6 +149,29 @@ public class ArrendatarioController {
 		
 		return ControllerUtils.getJSONOkResponse(result);
 
+	}
+
+	@GetMapping("/arrendatariospdf")
+	public ResponseEntity<?> getPDFTenants(
+		Authentication account) throws Exception {
+		
+		List<Arrendatario> tenants = null;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_PDF);
+
+		if(AccountUtils.hasRole(account, "ADMINISTRADOR")) {
+			tenants = arrendatarioRepository.findAll(); }
+		else { 
+			tenants = arrendatarioRepository.findAllByEmpleado_Usuario_Usuario(
+				account.getName()); }
+		
+		if( tenants.isEmpty() ) { 
+			return null; }
+		
+		return (new ResponseEntity<>(
+			pdfManager.generateTenantListPDF(tenants).toByteArray(), 
+			headers, HttpStatus.OK));
+		
 	}
 
 }

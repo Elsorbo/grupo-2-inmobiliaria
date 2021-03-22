@@ -17,10 +17,15 @@ public interface InmuebleRepositoryI
 	List<Inmueble> findByAlquilado(boolean alquilado);
 
 	List<Inmueble> findByAlquiladoOrderByIdAsc(boolean alquilado);
+
+	List<Inmueble> findAllByEmpleados_Usuario_UsuarioOrderById(String usuario);
 	
-	Page<Inmueble> findByEmpleados_Usuario_Usuario(String usuario, Pageable paginator);
+	Page<Inmueble> findAllByEmpleados_Usuario_UsuarioOrderById(
+		String usuario, Pageable paginator);
 	
 	List<Inmueble> findByAlquiladoAndEmpleados_Usuario_UsuarioOrderByIdAsc(
 		boolean alquilado, String usuario);
+	
+	Page<Inmueble> findByEmpleados_Usuario_Usuario(String usuario, Pageable paginator);
 	
 }
