@@ -17,6 +17,7 @@ import com.istb.app.repository.EmpleadoRepositoryI;
 import com.istb.app.repository.FotosRepositoryI;
 import com.istb.app.repository.InmuebleRepositoryI;
 import com.istb.app.repository.ServicioRepositoryI;
+import com.istb.app.services.GeneratePDFService;
 import com.istb.app.services.dashboard.InmuebleService;
 import com.istb.app.services.firebase.FirebaseStrategyService;
 import com.istb.app.util.AccountUtils;
@@ -24,6 +25,8 @@ import com.istb.app.util.AccountUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -41,7 +44,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class InmuebleController {
-
+	
+	@Autowired
+	private GeneratePDFService pdfManager;
+	
 	@Autowired
 	private InmuebleService inmuebleManager;
 	
@@ -71,12 +77,12 @@ public class InmuebleController {
 			
 			attributes.addAttribute("empleados", empleadoRepository.findAll()); 
 			attributes.addAttribute("paginator", 
-				inmuebleRepository.findAll( PageRequest.of(0, 5) ));
+				inmuebleRepository.findAll( PageRequest.of(0, 5, Sort.by("id")) ));
 			
 		} else {
 			attributes.addAttribute("paginator", 
 				inmuebleRepository.findByEmpleados_Usuario_Usuario(
-					account.getName(), PageRequest.of(0, 5)) ); }
+					account.getName(), PageRequest.of(0, 5, Sort.by("id"))) ); }
 		
 		return "inmueble";
 		
@@ -158,11 +164,17 @@ public class InmuebleController {
 	@GetMapping("/inmueble")
 	@Transactional
 	public ResponseEntity<?> getInmueble(
-		@RequestParam(defaultValue = "0") int pageNumber) {
+		@RequestParam(defaultValue = "0") int pageNumber, Authentication account) {
 
+		if(AccountUtils.hasRole(account, "EMPLEADO")) {
+			return ResponseEntity.ok()
+				.contentType(MediaType.APPLICATION_JSON)
+				.body( inmuebleRepository.findAllByEmpleados_Usuario_UsuarioOrderById(
+					account.getName(), PageRequest.of(pageNumber, 5)) ); }
+		
 		return ResponseEntity.ok()
 			.contentType(MediaType.APPLICATION_JSON)
-			.body( inmuebleRepository.findAll(PageRequest.of(pageNumber, 5)) );
+			.body( inmuebleRepository.findAll(PageRequest.of(pageNumber, 5, Sort.by("id"))) );
 
 	}
 	
@@ -239,6 +251,29 @@ public class InmuebleController {
 			.contentType(MediaType.APPLICATION_JSON)
 			.body( inmuebleManager.eliminarInmueble(id) );
 
+	}
+
+	@GetMapping("/inmueblespdf")
+	public ResponseEntity<?> getPDFTenants(
+		Authentication account) throws Exception {
+		
+		List<Inmueble> properties = null;
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_PDF);
+
+		if(AccountUtils.hasRole(account, "ADMINISTRADOR")) {
+			properties = inmuebleRepository.findAll(Sort.by("id")); }
+		else { 
+			properties = inmuebleRepository.findAllByEmpleados_Usuario_UsuarioOrderById(
+				account.getName()); }
+		
+		if( properties.isEmpty() ) { 
+			return null; }
+		
+		return (new ResponseEntity<>(
+			pdfManager.generatePropertieListPDF(properties).toByteArray(), 
+			headers, HttpStatus.OK));
+		
 	}
 
 }

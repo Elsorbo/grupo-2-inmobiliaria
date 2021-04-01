@@ -11,12 +11,16 @@ import com.istb.app.entity.Factura;
 import com.istb.app.entity.ReciboPago;
 import com.istb.app.repository.FacturaRepositoryI;
 import com.istb.app.repository.ReciboPagoRepositoryI;
+import com.istb.app.services.GeneratePDFService;
 import com.istb.app.services.dashboard.FacturaService;
 import com.istb.app.util.AccountUtils;
 import com.istb.app.util.ControllerUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -30,9 +34,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class FacturaController {
-
+	
 	@Autowired
 	private FacturaService billManager;
+
+	@Autowired
+	private GeneratePDFService pdfManager;
 	
 	@Autowired
 	private FacturaRepositoryI billRepository;
@@ -115,6 +122,22 @@ public class FacturaController {
 
 		return "detallefactura";
 
+	}
+
+	@GetMapping("/facturapdf/{id}")
+	public ResponseEntity<?> getPDFBilling(@PathVariable int id) 
+		throws Exception {
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_PDF);
+		Optional<Factura> bill = billRepository.findById(id);
+		
+		if( bill.isEmpty() ) { 
+			return null; }
+		
+		return (new ResponseEntity<>(
+			pdfManager.generateInvoicePDF(bill.get()).toByteArray(), headers, HttpStatus.OK));
+		
 	}
 		
 }

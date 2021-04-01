@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-		<title th:text="${'Factura #: 000' + factura.id}">Factura # 000</title>
+		<title>Lista de Arrendatarios</title>
 
 		<!-- Favicon -->
 		<!-- <link rel="icon" href="./images/favicon.png" type="image/x-icon" /> -->
@@ -101,6 +101,26 @@
 				font-weight: bold;
 			}
 
+            .th-head {
+                background-color: #bd2000;
+                color: white;
+                padding: 4px;
+                font-size: .90em;
+                text-align: center;
+            
+            }
+
+            .th-row {
+                padding: 12px;
+                font-size: 12px;
+                text-align: center;
+            
+            }
+
+			#body-table-tenants tr:nth-child(even) {
+                background-color: #f4f9f9;
+            }
+
 			@media only screen and (max-width: 600px) {
 				.invoice-box table tr.top table td {
 					width: 100%;
@@ -131,11 +151,11 @@
                                 </td>
 
                                 <td >
-                                    <span th:text="${'Factura #: 000' + factura.id}">
-                                        Invoice #: 000
+                                    <span>
+                                        Lista de arrendatarios
                                     </span><br />
-                                    <span th:text="${'Fecha: ' + factura.fechaAdmision}">
-                                        Fecha: Enero 1, 2015
+                                    <span th:text="${'Fecha de generación: ' + fechaGeneracion}">
+                                        Fecha de generación: Enero 1, 2015
                                     </span>
                                 </td>
                             </tr>
@@ -152,41 +172,41 @@
                                     Teléfono: 0969139500<br />
                                     Correo: inmobiliariamastarreno@gmail.com
                                 </td>
-
-                                <td>
-                                    <span>Asesor de arrendamiento</span><br />
-                                    <span th:text="${factura.arrendatario.empleado.usuario.nombres + ' ' + factura.arrendatario.empleado.usuario.apellidos}">John Doe</span><br />
-                                    <span th:text="${factura.arrendatario.empleado.usuario.correo}">john@example.com</span>
-                                </td>
                             </tr>
                         </table>
                     </td>
                 </tr>
 
-                <tr class="heading">
-                    <td style="background-color: #bd2000; color: white; padding: 6px;">Detalles</td>
-
-                    <td style="background-color: #bd2000; color: white; padding: 6px;">Precio</td>
-                </tr>
-
-                <tr class="item" th:each="detalle : ${factura.detalles}" th:if="${!detalleStat.last}">
-                    <td th:text="${detalle.concepto}">Concepto</td>
-                        
-                    <td th:text="${'$' + detalle.monto}">$100.00</td>
-                </tr>
-
-                <tr class="item last">
-                    <td th:text="${factura.detalles[factura.detalles.size - 1].concepto}">Domain name (1 year)</td>
-
-                    <td th:text="${'$' + factura.detalles[factura.detalles.size - 1].monto}">$10.00</td>
-                </tr>
-
-                <tr class="total">
-                    <td></td>
-
-                    <td th:text="${'Total: $' + factura.total}">Total: $385.00</td>
-                </tr>
+                <table>
+                    <thead>
+                        <th class="th-head">#</th>
+                        <th class="th-head">Nombres</th>
+                        <th class="th-head">Correo</th>
+                        <th class="th-head">Estado</th>
+                        <th class="th-head" style="text-align: right;">Asesor@</th>
+                    </thead>
+                    <tbody id="body-table-tenants">
+                        <tr th:each="tenant : ${tenants}">
+                            <td class="th-row" th:text="${tenant.id}">id</td>
+                            <td class="th-row" th:text="${tenant.usuario.nombres} + ' ' + ${tenant.usuario.apellidos}">Nombre Apellido</td>
+                            <td class="th-row" th:text="${tenant.usuario.correo}">correo</td>
+                            <td class="th-row" th:text="${tenant.usuario.estado} ? 'Activo' : 'Inactivo'" style="text-align: center;">Estado</td>
+                            <td class="th-row" th:text="${tenant.empleado.usuario.nombres + ' ' + tenant.empleado.usuario.apellidos}" style="text-align: right;">Asesor@</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                
+                
             </table>
         </div>
+        <footer class="footer">
+            <div class="container-fluid">
+                <div class="copyright float-right" style="margin-top: 2em;">
+                    &copy; Inmobiliaria Mastarreno - Todos los derechos reservados
+                </div>
+            </div>
+        </footer>
 	</body>
 </html>
+
