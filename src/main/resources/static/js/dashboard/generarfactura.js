@@ -87,7 +87,7 @@ const getDetailFromTemplate = () => {
             <input required type="text" name="concepto" class="form-control" placeholder="Concepto">
         </div>
         <div class="col-md-3">
-            <input required type="text" name="monto" class="form-control" placeholder="$$ monto" pattern="^[1-9][0-9]{1,6}$">
+            <input required type="number" name="monto" class="form-control" placeholder="$$ monto" step="0.01">
         </div>
     </div>`;
     
