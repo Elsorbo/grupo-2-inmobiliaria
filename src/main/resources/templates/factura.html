@@ -132,7 +132,7 @@
 								Aún no posee recibos de pago
 							</span>
 						</div> -->
-
+						
 						<div class="card" style="width: 20rem; margin: 12px;" th:each="recibo : ${recibos}">
 							<img class="card-img-top" th:src="${recibo.urlImagen}" rel="nofollow" alt="Card image cap"
 								style="height: 260px;">
@@ -149,9 +149,24 @@
 								<!-- <input type="hidden" name="repairid" th:value="${recibo.id}"> -->
 							</div>
 						</div>
-
 					</div>
 
+					<h3 style="margin-left: 20px;"><strong>Facturas generadas</strong></h3>
+					<hr style="margin: 20px;" />
+					<div class="recibo-card-container" 
+						style="display: flex; flex-wrap: wrap; margin-left: 35px;">
+						<div class="card" style="width: 20rem; margin: 12px;" th:each="factura : ${facturas}">
+							<div class="description">
+								<h2 th:text="${'Factura #: 00' + factura.id}">Numero factura</h2>
+								<h4 th:text="${factura.arrendatario.usuario.nombres + ' ' + factura.arrendatario.usuario.apellidos}">Encargado</h4>
+								<h1 th:text="${'$' + factura.total}">$100</h1>
+								<p th:text="${factura.descripcion}">Descripción</p>
+								<button style="width: 250px; margin-bottom: 6px;"> <a th:href="@{/factura/} + ${factura.id}" style="color: #515151; text-decoration: none;">Ver detalles</a></button>
+								<button style="width: 250px; margin-top: 0px;"> <a th:href="@{/facturapdf/} + ${factura.id}" style="color: #515151; text-decoration: none;" th:download="${'factura_' + factura.id + '_' + factura.fechaAdmision}">Obtener PDF</a></button>
+							</div>
+						</div>
+					</div>
+						
 				</div>
 
 				<div id="tenant-container" sec:authorize="hasRole('ARRENDATARIO')">
