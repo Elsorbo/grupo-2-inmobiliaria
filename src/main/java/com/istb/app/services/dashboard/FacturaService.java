@@ -15,6 +15,7 @@ import com.istb.app.repository.ReciboPagoRepositoryI;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -74,13 +75,15 @@ public class FacturaService {
 			)
 		);
 
+		adminAttributes.addAttribute("facturas", facturaRepository.findAll());
+
 		return adminAttributes;
 
 	}
 	
 	@Transactional
-	public Model setEmployeeAttributes(
-		String employee, Model employeeAttributes) {
+	public Model setEmployeeAttributes(String employee, 
+		Model employeeAttributes) {
 
 		employeeAttributes.addAttribute("arrendatarios", 
 			arrendatarioRepository.findAllByEmpleado_Usuario_Usuario(
@@ -96,8 +99,14 @@ public class FacturaService {
 			)
 		);
 
+		employeeAttributes.addAttribute("facturas", 
+			facturaRepository.findAllByArrendatario_Empleado_Usuario_UsuarioOrderByFechaAdmisionDesc(
+				employee
+			)
+		);
+		
 		return employeeAttributes;
-
+		
 	}
 
 	@Transactional

@@ -58,6 +58,7 @@ public class FacturaController {
 			if( AccountUtils.hasRole(account, "ADMINISTRADOR")) {
 				billManager.setAdminAttributes(attributes); } 
 			else { 
+				
 				billManager.setEmployeeAttributes(account.getName(), attributes); }
 			
 		} else { 

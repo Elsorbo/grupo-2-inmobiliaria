@@ -12,5 +12,8 @@ public interface FacturaRepositoryI
 
 	List<Factura> findByArrendatario_Usuario_UsuarioOrderByFechaAdmisionDesc(
 		String usuario);
+
+	List<Factura> findAllByArrendatario_Empleado_Usuario_UsuarioOrderByFechaAdmisionDesc(
+		String empleado);
 	
 }
