@@ -41,7 +41,7 @@ public class Arrendatario implements Serializable  {
 	private Usuario usuario;
 	
 	@Valid
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "empleado_id")
 	@JsonIgnoreProperties({"arrendatarios", "inmuebles", "reparaciones"})
 	private Empleado empleado;
